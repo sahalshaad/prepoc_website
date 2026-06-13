@@ -1,45 +1,99 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { PortfolioProject } from '@/types/admin'
 
-const projects = [
+const INITIAL_PROJECTS = [
   {
     id: 'nexus-commerce',
     title: 'Nexus Commerce',
-    category: 'E-Commerce',
-    tags: ['Web Development', 'Performance Marketing', 'SEO'],
+    clientName: 'Nexus Retail',
+    industry: 'Web Development',
     description:
       '340% increase in online revenue through a complete digital overhaul — new platform, campaign strategy, and conversion optimization.',
-    gradient: 'from-[#0E5D47]/80 via-[#0E5D47]/40 to-transparent',
     bg: 'linear-gradient(135deg, #0E5D47 0%, #051f18 100%)',
-    result: '+340% Revenue',
+    resultsAchieved: '+340% Revenue',
+    tags: ['Web Development', 'Performance Marketing', 'SEO'],
+    isFeatured: true,
+    status: 'published',
+    displayOrder: 1,
+    slug: 'nexus-commerce-overhaul',
+    createdAt: '2026-06-01T12:00:00.000Z',
+    updatedAt: '2026-06-01T12:00:00.000Z'
   },
   {
-    id: 'lumina-brand',
+    id: 'lumina-collective',
     title: 'Lumina Collective',
-    category: 'Branding & Identity',
-    tags: ['Branding', 'Graphic Design', 'Video Production'],
+    clientName: 'Lumina Luxury',
+    industry: 'Branding',
     description:
       'A complete brand identity for a luxury lifestyle company — from logo and visual system to brand film and social presence.',
-    gradient: 'from-[#D4AF37]/70 via-[#D4AF37]/30 to-transparent',
     bg: 'linear-gradient(135deg, #6b4f0a 0%, #1a1200 100%)',
-    result: '5M+ Impressions',
+    resultsAchieved: '5M+ Impressions',
+    tags: ['Branding', 'Graphic Design', 'Video Production'],
+    isFeatured: true,
+    status: 'published',
+    displayOrder: 2,
+    slug: 'lumina-collective-identity',
+    createdAt: '2026-06-02T12:00:00.000Z',
+    updatedAt: '2026-06-02T12:00:00.000Z'
   },
   {
     id: 'apex-mobile',
     title: 'Apex FinTech App',
-    category: 'Mobile App',
-    tags: ['Mobile App Development', 'AI Solutions', 'UX Design'],
+    clientName: 'Apex Financial',
+    industry: 'AI Solutions',
     description:
       'AI-powered personal finance mobile app with 4.9★ App Store rating, serving 80,000+ active users within 6 months of launch.',
-    gradient: 'from-[#1a3a6e]/80 via-[#1a3a6e]/40 to-transparent',
     bg: 'linear-gradient(135deg, #1a3a6e 0%, #060e1f 100%)',
-    result: '80K+ Users',
+    resultsAchieved: '80K+ Users',
+    tags: ['Mobile App Development', 'AI Solutions', 'UX Design'],
+    isFeatured: false,
+    status: 'published',
+    displayOrder: 3,
+    slug: 'apex-fintech-mobile-app',
+    createdAt: '2026-06-03T12:00:00.000Z',
+    updatedAt: '2026-06-03T12:00:00.000Z'
   },
 ]
 
 export default function Portfolio() {
+  const router = useRouter()
+  const [projects, setProjects] = useState<PortfolioProject[]>(INITIAL_PROJECTS as PortfolioProject[])
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch('/api/portfolio')
+        const data = await res.json()
+        if (data.success && data.data) {
+          // Filter for published only and sort:
+          // 1. Featured first
+          // 2. Most recently updated (updatedAt descending)
+          const sorted = (data.data as PortfolioProject[])
+            .filter((p) => p.status === 'published')
+            .sort((a, b) => {
+              if (a.isFeatured && !b.isFeatured) return -1
+              if (!a.isFeatured && b.isFeatured) return 1
+
+              const timeA = new Date(a.updatedAt || a.createdAt || 0).getTime()
+              const timeB = new Date(b.updatedAt || b.createdAt || 0).getTime()
+              return timeB - timeA
+            })
+          
+          // Show only top 3
+          setProjects(sorted.slice(0, 3))
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic portfolio:', err)
+      }
+    }
+    fetchProjects()
+  }, [])
+
   return (
     <section
       id="portfolio"
@@ -86,6 +140,7 @@ export default function Portfolio() {
             transition={{ delay: 0.3, duration: 0.6 }}
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => router.push('/works')}
             className="btn-outline self-start md:self-auto flex-shrink-0"
           >
             View All Projects
@@ -111,10 +166,17 @@ export default function Portfolio() {
               <div className="portfolio-card group" data-cursor-hover>
                 {/* Project BG */}
                 <div
-                  className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-                  style={{ background: project.bg }}
+                  className="absolute inset-0 transition-transform duration-700 group-hover:scale-105 bg-cover bg-center"
+                  style={{
+                    backgroundImage: project.coverImage ? `url(${project.coverImage})` : undefined,
+                    background: !project.coverImage ? (project.bg || 'linear-gradient(135deg, #0E5D47 0%, #051f18 100%)') : undefined
+                  }}
                   aria-hidden="true"
-                />
+                >
+                  {project.coverImage && (
+                    <div className="absolute inset-0 bg-black/60 transition-opacity duration-300 group-hover:bg-black/50" />
+                  )}
+                </div>
 
                 {/* Decorative pattern */}
                 <div
@@ -128,21 +190,21 @@ export default function Portfolio() {
                 {/* Result badge - always visible */}
                 <div className="absolute top-5 right-5 z-10">
                   <span className="bg-black/50 backdrop-blur-sm border border-white/10 text-foreground text-xs font-bold px-3 py-1.5 rounded-full">
-                    {project.result}
+                    {project.resultsAchieved}
                   </span>
                 </div>
 
                 {/* Category */}
                 <div className="absolute top-5 left-5 z-10">
                   <span className="text-xs font-semibold tracking-widest uppercase text-white/60">
-                    {project.category}
+                    {project.industry}
                   </span>
                 </div>
 
                 {/* Hover overlay */}
                 <div className="portfolio-overlay z-10" aria-hidden="true">
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {project.tags.map((tag) => (
+                    {project.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="text-xs px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/80 border border-white/10"

@@ -299,7 +299,7 @@ function RubiksGrid() {
       duration: 0.09,
       ease: 'power1.out'
     })
-  }, [hasLanded, setSettled])
+  }, [hasLanded, isSettled, setSettled])
 
 
   // Pre-calculate the 27 cubes

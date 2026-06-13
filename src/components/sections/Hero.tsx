@@ -190,7 +190,7 @@ export default function Hero() {
     })
 
     return () => { tl.kill() }
-  }, [isSettled])
+  }, [isSettled, heroIntroPlayed, setHeroIntroPlayed])
 
   // ── Zero-CLS cycling word — char-level scaleX reveal (GSAP reference style) ─────
   useEffect(() => {

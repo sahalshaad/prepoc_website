@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play, X, ZoomIn } from 'lucide-react'
-import { GALLERY_ITEMS, type GalleryItem } from '@/data/aboutData'
+import { type GalleryItem } from '@/data/aboutData'
 
 function GalleryCard({ item, onClick }: { item: GalleryItem; onClick: (item: GalleryItem) => void }) {
   return (
@@ -107,7 +107,7 @@ function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void })
   )
 }
 
-export default function OfficeGallery() {
+export default function OfficeGallery({ items }: { items: GalleryItem[] }) {
   const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null)
 
   return (
@@ -163,12 +163,12 @@ export default function OfficeGallery() {
 
         {/* Pinterest-style Masonry layout */}
         <div
-          className="columns-1 sm:columns-2 lg:columns-3 gap-4"
+          className="columns-2 lg:columns-3 gap-2 sm:gap-4"
           role="list"
           aria-label="Office photo gallery"
         >
-          {GALLERY_ITEMS.map((item) => (
-            <div key={item.id} role="listitem" className="break-inside-avoid mb-4">
+          {items.map((item) => (
+            <div key={item.id} role="listitem" className="break-inside-avoid mb-2 sm:mb-4">
               <GalleryCard item={item} onClick={setLightboxItem} />
             </div>
           ))}

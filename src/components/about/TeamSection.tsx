@@ -4,20 +4,12 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Linkedin } from 'lucide-react'
-import { TEAM_MEMBERS, DEPARTMENT_COLORS, type TeamMember } from '@/data/aboutData'
+import Link from 'next/link'
+import { isSafeUrl } from '@/utils/urlValidation'
+import { type TeamMember } from '@/data/aboutData'
 
-const CATEGORIES = [
-  'All',
-  'Leadership',
-  'Web Development',
-  'Digital Marketing',
-  'Branding & Design',
-  'Video Production',
-  'AI & Automation'
-]
 
-function TeamCard({ member }: { member: TeamMember }) {
-  const accentColor = DEPARTMENT_COLORS[member.department] ?? '#D4AF37'
+function TeamCard({ member, accentColor }: { member: TeamMember; accentColor: string }) {
 
   return (
     <motion.div
@@ -50,17 +42,19 @@ function TeamCard({ member }: { member: TeamMember }) {
             unoptimized // Remove when using local assets
           />
           {/* LinkedIn Icon Overlay */}
-          <a
-            href={member.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${member.name} on LinkedIn`}
-            className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          >
-            <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#0a66c2] border border-white/20">
-              <Linkedin className="w-3.5 h-3.5 text-white" />
-            </div>
-          </a>
+          {member.linkedin && isSafeUrl(member.linkedin) && (
+            <a
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} on LinkedIn`}
+              className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#0a66c2] border border-white/20">
+                <Linkedin className="w-3.5 h-3.5 text-white" />
+              </div>
+            </a>
+          )}
         </div>
       </div>
 
@@ -75,10 +69,10 @@ function TeamCard({ member }: { member: TeamMember }) {
   )
 }
 
-export default function TeamSection() {
+export default function TeamSection({ members, colors, departments = ['All'] }: { members: TeamMember[]; colors: Record<string, string>; departments?: string[] }) {
   const [activeFilter, setActiveFilter] = useState('All')
 
-  const filteredMembers = TEAM_MEMBERS.filter(
+  const filteredMembers = members.filter(
     (member) => activeFilter === 'All' || member.department === activeFilter
   )
 
@@ -143,7 +137,7 @@ export default function TeamSection() {
           className="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-12"
           role="tablist"
         >
-          {CATEGORIES.map((category) => (
+          {departments.map((category) => (
             <button
               key={category}
               role="tab"
@@ -170,7 +164,7 @@ export default function TeamSection() {
           <AnimatePresence mode="popLayout">
             {filteredMembers.map((member) => (
               <div key={member.id} role="listitem">
-                <TeamCard member={member} />
+                <TeamCard member={member} accentColor={colors[member.department] ?? '#D4AF37'} />
               </div>
             ))}
           </AnimatePresence>
@@ -184,7 +178,7 @@ export default function TeamSection() {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="text-center text-muted text-sm mt-16"
         >
-          Join our growing team. <a href="/#contact" className="text-white hover:text-[#D4AF37] underline transition-colors">View open positions.</a>
+          Join our growing team. <Link href="/#contact" className="text-white hover:text-[#D4AF37] underline transition-colors">View open positions.</Link>
         </motion.p>
       </div>
     </section>

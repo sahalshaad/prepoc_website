@@ -3,7 +3,8 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Linkedin, Quote } from 'lucide-react'
-import { FOUNDER, LEADERSHIP_TEAM, type LeadershipMember } from '@/data/leadershipData'
+import { isSafeUrl } from '@/utils/urlValidation'
+import { type Founder, type LeadershipMember } from '@/data/leadershipData'
 
 // ─── Small circular card for the leadership row ───────────────────────────────
 
@@ -34,17 +35,19 @@ function LeaderCard({ member, index }: { member: LeadershipMember; index: number
             unoptimized
           />
           {/* LinkedIn hover overlay */}
-          <a
-            href={member.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${member.name} on LinkedIn`}
-            className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          >
-            <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#0a66c2] border border-white/20">
-              <Linkedin className="w-3.5 h-3.5 text-white" />
-            </div>
-          </a>
+          {member.linkedin && isSafeUrl(member.linkedin) && (
+            <a
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} on LinkedIn`}
+              className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#0a66c2] border border-white/20">
+                <Linkedin className="w-3.5 h-3.5 text-white" />
+              </div>
+            </a>
+          )}
         </div>
       </div>
 
@@ -58,7 +61,7 @@ function LeaderCard({ member, index }: { member: LeadershipMember; index: number
 
 // ─── Main Section ─────────────────────────────────────────────────────────────
 
-export default function LeadershipSpotlight() {
+export default function LeadershipSpotlight({ founder, team }: { founder: Founder; team: LeadershipMember[] }) {
   return (
     <section
       id="leadership"
@@ -153,8 +156,8 @@ export default function LeadershipSpotlight() {
               }}
             >
               <Image
-                src={FOUNDER.image}
-                alt={`${FOUNDER.name}, ${FOUNDER.position} at PREPOC`}
+                src={founder.image}
+                alt={`${founder.name}, ${founder.position} at PREPOC`}
                 fill
                 sizes="(max-width: 1024px) 90vw, 420px"
                 className="object-cover object-top"
@@ -168,10 +171,10 @@ export default function LeadershipSpotlight() {
                 style={{ background: 'linear-gradient(to top, rgba(5,5,5,0.92) 0%, transparent 100%)' }}
               >
                 <p className="font-heading font-bold text-foreground text-xl leading-tight">
-                  {FOUNDER.name}
+                  {founder.name}
                 </p>
                 <p className="text-sm font-medium" style={{ color: '#0E5D47' }}>
-                  {FOUNDER.position}
+                  {founder.position}
                 </p>
               </div>
             </div>
@@ -202,10 +205,10 @@ export default function LeadershipSpotlight() {
               className="text-foreground font-body mb-5 leading-relaxed"
               style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.2rem)', lineHeight: 1.8 }}
             >
-              &ldquo;{FOUNDER.message}&rdquo;
+              &ldquo;{founder.message}&rdquo;
             </motion.p>
 
-            {FOUNDER.messageExtended && (
+            {founder.messageExtended && (
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -214,7 +217,7 @@ export default function LeadershipSpotlight() {
                 className="text-muted-foreground font-body mb-8"
                 style={{ fontSize: '1rem', lineHeight: 1.8 }}
               >
-                {FOUNDER.messageExtended}
+                {founder.messageExtended}
               </motion.p>
             )}
 
@@ -227,7 +230,7 @@ export default function LeadershipSpotlight() {
               className="flex flex-wrap gap-2 mb-8"
               aria-label="Founder credentials"
             >
-              {FOUNDER.credentials.map((cred) => (
+              {founder.credentials.map((cred) => (
                 <li
                   key={cred}
                   className="text-xs font-medium px-3 py-1.5 rounded-full"
@@ -250,26 +253,28 @@ export default function LeadershipSpotlight() {
             <div className="flex items-center gap-4">
               <div>
                 <p className="font-heading font-bold text-foreground text-lg leading-tight">
-                  {FOUNDER.name}
+                  {founder.name}
                 </p>
-                <p className="text-sm text-muted-foreground">{FOUNDER.position}</p>
+                <p className="text-sm text-muted-foreground">{founder.position}</p>
               </div>
 
-              <a
-                href={FOUNDER.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${FOUNDER.name} on LinkedIn`}
-                className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.03]"
-                style={{
-                  background: 'rgba(10,102,194,0.12)',
-                  border: '1px solid rgba(10,102,194,0.35)',
-                  color: '#5fa8d3',
-                }}
-              >
-                <Linkedin className="w-4 h-4" />
-                LinkedIn
-              </a>
+              {founder.linkedin && isSafeUrl(founder.linkedin) && (
+                <a
+                  href={founder.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${founder.name} on LinkedIn`}
+                  className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.03]"
+                  style={{
+                    background: 'rgba(10,102,194,0.12)',
+                    border: '1px solid rgba(10,102,194,0.35)',
+                    color: '#5fa8d3',
+                  }}
+                >
+                  <Linkedin className="w-4 h-4" />
+                  LinkedIn
+                </a>
+              )}
             </div>
           </motion.div>
         </div>
@@ -303,7 +308,7 @@ export default function LeadershipSpotlight() {
           role="list"
           aria-label="PREPOC leadership team"
         >
-          {LEADERSHIP_TEAM.map((member, index) => (
+          {team.map((member, index) => (
             <div role="listitem" key={member.id}>
               <LeaderCard member={member} index={index} />
             </div>

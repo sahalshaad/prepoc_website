@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { isSafeUrl } from '@/utils/urlValidation'
 
 const footerLinks = {
   Services: [
@@ -118,16 +120,18 @@ export default function Footer() {
             {/* Social links */}
             <div className="flex items-center gap-3" aria-label="Social media links">
               {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-icon"
-                  aria-label={`Follow us on ${social.name}`}
-                >
-                  {social.icon}
-                </a>
+                isSafeUrl(social.href) && (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-icon"
+                    aria-label={`Follow us on ${social.name}`}
+                  >
+                    {social.icon}
+                  </a>
+                )
               ))}
             </div>
           </div>
@@ -142,9 +146,15 @@ export default function Footer() {
                 <ul className="space-y-3" aria-label={`${category} links`}>
                   {links.map((link) => (
                     <li key={link}>
-                      <a href="#" className="footer-link">
-                        {link}
-                      </a>
+                      {link === 'Careers' ? (
+                        <Link href="/careers" className="footer-link">
+                          {link}
+                        </Link>
+                      ) : (
+                        <a href="#" className="footer-link">
+                          {link}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>

@@ -1,0 +1,34 @@
+{
+  "AUDIT_LOGS": [
+    {
+      "id": "log_1781339156342_atkuaq9",
+      "timestamp": "2026-06-13T08:25:56.342Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "LEAD",
+      "entityId": "5",
+      "details": {
+        "status": "contacted"
+      }
+    },
+    {
+      "id": "log_1781339150841_2rkrz2l",
+      "timestamp": "2026-06-13T08:25:50.841Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "LEAD",
+      "entityId": "1",
+      "details": {
+        "status": "contacted"
+      }
+    },
+    {
+      "id": "log_1781339085448_u9tf4hh",
+      "timestamp": "2026-06-13T08:24:45.448Z",
+      "adminId": "system",
+      "action": "BULK_UPDATE",
+      "entity": "PORTFOLIO",
+      "entityId": "all"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { ABOUT_STATS } from '@/data/aboutData'
+import { type Stat } from '@/data/aboutData'
 import { CheckCircle2 } from 'lucide-react'
 
 const HIGHLIGHTS = [
@@ -59,7 +59,7 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
   )
 }
 
-export default function OurStory() {
+export default function OurStory({ stats }: { stats: Stat[] }) {
   return (
     <section
       id="story"
@@ -159,7 +159,7 @@ export default function OurStory() {
               className="glass rounded-3xl p-5 sm:p-8 md:p-12 mb-6"
             >
               <div className="grid grid-cols-2 gap-10">
-                {ABOUT_STATS.map((stat) => (
+                {stats.map((stat) => (
                   <StatCounter key={stat.label} {...stat} />
                 ))}
               </div>

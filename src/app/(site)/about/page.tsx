@@ -1,0 +1,103 @@
+import type { Metadata } from 'next'
+import fs from 'fs/promises'
+import path from 'path'
+import CustomCursor from '@/components/common/CustomCursor'
+import AboutTimeline from '@/components/about/AboutTimeline'
+import AboutHero from '@/components/about/AboutHero'
+import OurStory from '@/components/about/OurStory'
+import LeadershipSpotlight from '@/components/about/LeadershipSpotlight'
+import TeamSection from '@/components/about/TeamSection'
+import CompanyValues from '@/components/about/CompanyValues'
+import OfficeGallery from '@/components/about/OfficeGallery'
+import AboutCTA from '@/components/about/AboutCTA'
+import { type TeamMember } from '@/data/aboutData'
+
+export const metadata: Metadata = {
+  title: 'About PREPOC Technologies | Our Team & Story',
+  description:
+    'Meet the team behind PREPOC Technologies — a premium digital agency of strategists, designers, developers, and storytellers. Learn our story, values, and the people driving exceptional results.',
+  keywords: [
+    'PREPOC Technologies team',
+    'about PREPOC',
+    'digital agency team',
+    'who we are',
+    'our story',
+    'digital agency UAE',
+    'creative team',
+  ],
+  alternates: { canonical: 'https://prepoc.com/about' },
+  openGraph: {
+    type: 'website',
+    url: 'https://prepoc.com/about',
+    title: 'About PREPOC Technologies | Our Team & Story',
+    description: 'Meet the passionate team behind PREPOC — where strategy, design, and technology converge.',
+    siteName: 'PREPOC Technologies',
+  },
+}
+
+export const dynamic = 'force-dynamic'
+
+export default async function AboutPage() {
+  const aboutPath = path.join(process.cwd(), 'src', 'data', 'aboutData.json')
+  const aboutContent = await fs.readFile(aboutPath, 'utf-8')
+  const aboutJson = JSON.parse(aboutContent)
+
+  let departments = ['All']
+  try {
+    const depsContent = await fs.readFile(path.join(process.cwd(), 'src', 'data', 'departmentsData.json'), 'utf-8')
+    const deps = JSON.parse(depsContent)
+    deps.sort((a: Record<string, unknown>, b: Record<string, unknown>) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0))
+    departments = ['All', ...deps.filter((d: Record<string, unknown>) => d.isActive).map((d: Record<string, unknown>) => d.name as string)]
+  } catch (_e) {}
+
+  const members = (aboutJson.TEAM_MEMBERS || []) as TeamMember[]
+  
+  // Derive Founder/CEO from isFounder flag
+  const founderMember = members.find((m: TeamMember) => m.isFounder)
+  const founder = founderMember ? {
+    name: founderMember.name,
+    position: founderMember.title,
+    message: founderMember.message || '',
+    messageExtended: founderMember.messageExtended,
+    image: founderMember.image,
+    linkedin: founderMember.linkedin,
+    credentials: founderMember.credentials || []
+  } : {
+    name: 'Aslam',
+    position: 'Founder & CEO',
+    message: '',
+    image: '',
+    linkedin: '',
+    credentials: []
+  }
+
+  // Derive Leadership Team members (excluding the founder)
+  const team = members
+    .filter((m: TeamMember) => m.isLeadership && m.isActive && !m.isFounder)
+    .map((m: TeamMember) => ({
+      id: m.id,
+      name: m.name,
+      role: m.title,
+      image: m.image,
+      linkedin: m.linkedin
+    }))
+
+  return (
+    <>
+      <CustomCursor />
+
+      {/* Left-side floating section timeline (desktop only) */}
+      <AboutTimeline />
+
+      <main id="main-content">
+        <AboutHero />
+        <OurStory stats={aboutJson.ABOUT_STATS} />
+        <LeadershipSpotlight founder={founder} team={team} />
+        <CompanyValues values={aboutJson.COMPANY_VALUES} />
+        <TeamSection members={members.filter((m: TeamMember) => m.isActive)} colors={aboutJson.DEPARTMENT_COLORS} departments={departments} />
+        <OfficeGallery items={aboutJson.GALLERY_ITEMS} />
+        <AboutCTA />
+      </main>
+    </>
+  )
+}

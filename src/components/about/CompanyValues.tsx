@@ -1,9 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { COMPANY_VALUES } from '@/data/aboutData'
+import { type Value } from '@/data/aboutData'
 
-export default function CompanyValues() {
+export default function CompanyValues({ values }: { values: Value[] }) {
   return (
     <section
       id="values"
@@ -46,7 +46,7 @@ export default function CompanyValues() {
 
         {/* Values grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {COMPANY_VALUES.map((value, index) => (
+          {values.map((value, index) => (
             <motion.div
               key={value.title}
               initial={{ opacity: 0, y: 40 }}
