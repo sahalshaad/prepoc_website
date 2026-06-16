@@ -49,6 +49,7 @@ module.exports = {
         heading: ['var(--font-sora)', 'Sora', 'sans-serif'],
         body: ['var(--font-inter)', 'Inter', 'sans-serif'],
         sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        outfit: ['var(--font-outfit)', 'Outfit', 'sans-serif'],
       },
       fontSize: {
         '7xl': ['4.5rem', { lineHeight: '1.1' }],

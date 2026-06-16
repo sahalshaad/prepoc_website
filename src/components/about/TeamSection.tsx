@@ -25,14 +25,14 @@ function TeamCard({ member, accentColor }: { member: TeamMember; accentColor: st
         {/* Glow Ring (hover) */}
         <div 
           className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{ background: `linear-gradient(135deg, ${accentColor}, transparent)` }}
+          style={{ background: `linear-gradient(135deg, rgba(59,130,246,0.3), transparent)` }}
         />
         
         {/* Default subtle border */}
-        <div className="absolute inset-0 rounded-full border border-white/10 group-hover:border-transparent transition-colors duration-500" />
+        <div className="absolute inset-0 rounded-full border border-neutral-200 group-hover:border-transparent transition-colors duration-500" />
         
         {/* Image Container */}
-        <div className="relative w-full h-full rounded-full overflow-hidden bg-black/30">
+        <div className="relative w-full h-full rounded-full overflow-hidden bg-neutral-100">
           <Image
             src={member.image}
             alt={`${member.name}, ${member.title} at PREPOC`}
@@ -59,10 +59,10 @@ function TeamCard({ member, accentColor }: { member: TeamMember; accentColor: st
       </div>
 
       {/* Info */}
-      <h4 className="font-heading font-semibold text-foreground text-base leading-tight mb-1">
+      <h4 className="font-outfit font-semibold text-black text-base leading-tight mb-1">
         {member.name}
       </h4>
-      <p className="text-xs font-medium text-muted-foreground">
+      <p className="text-xs font-medium text-neutral-500 font-outfit">
         {member.title}
       </p>
     </motion.div>
@@ -79,14 +79,13 @@ export default function TeamSection({ members, colors, departments = ['All'] }: 
   return (
     <section
       id="team"
-      className="section-padding relative overflow-hidden min-h-[800px]"
-      style={{ background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 100%)' }}
+      className="section-padding relative overflow-hidden min-h-[800px] bg-white"
       aria-label="Meet the PREPOC team"
     >
       {/* Ambient orb */}
       <div
-        className="orb orb-primary absolute"
-        style={{ width: '500px', height: '500px', top: '10%', right: '-150px', opacity: 0.15 }}
+        className="absolute rounded-full pointer-events-none"
+        style={{ width: '500px', height: '500px', top: '10%', right: '-150px', background: 'radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, transparent 70%)', filter: 'blur(40px)' }}
         aria-hidden="true"
       />
 
@@ -99,10 +98,7 @@ export default function TeamSection({ members, colors, departments = ['All'] }: 
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="section-label mb-4">The People</div>
-            <div className="flex justify-center">
-              <div className="section-divider" aria-hidden="true" />
-            </div>
+            <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4">The People</div>
           </motion.div>
 
           <motion.h2
@@ -110,10 +106,10 @@ export default function TeamSection({ members, colors, departments = ['All'] }: 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading font-bold text-foreground mb-4"
-            style={{ fontSize: 'clamp(1.8rem, 5vw, 4rem)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+            className="font-outfit font-medium text-black mb-4"
+            style={{ fontSize: 'clamp(1.8rem, 5vw, 4rem)', lineHeight: 1.2, letterSpacing: '-0.02em' }}
           >
-            Meet the <span className="text-gradient-gold">Team.</span>
+            Meet the <span className="text-blue-500">Team.</span>
           </motion.h2>
 
           <motion.p
@@ -121,7 +117,7 @@ export default function TeamSection({ members, colors, departments = ['All'] }: 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground max-w-2xl mx-auto"
+            className="text-neutral-600 font-outfit max-w-2xl mx-auto"
             style={{ fontSize: '1.1rem', lineHeight: 1.75 }}
           >
             The people driving growth, creativity, and innovation at PREPOC.
@@ -143,10 +139,10 @@ export default function TeamSection({ members, colors, departments = ['All'] }: 
               role="tab"
               aria-selected={activeFilter === category}
               onClick={() => setActiveFilter(category)}
-              className={`px-4 py-2.5 rounded-full text-xs font-semibold transition-all duration-300 border min-h-[40px] ${
+              className={`px-4 py-2.5 rounded-full font-outfit text-xs font-semibold transition-all duration-300 border min-h-[40px] ${
                 activeFilter === category
-                  ? 'bg-white/10 text-white border-white/20 shadow-lg'
-                  : 'bg-transparent text-muted hover:text-white border-white/5 hover:border-white/20 hover:bg-white/5'
+                  ? 'bg-white text-black border-neutral-200 shadow-sm'
+                  : 'bg-transparent text-neutral-500 hover:text-black border-transparent hover:border-neutral-200 hover:bg-neutral-50'
               }`}
             >
               {category}
@@ -176,9 +172,9 @@ export default function TeamSection({ members, colors, departments = ['All'] }: 
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center text-muted text-sm mt-16"
+          className="text-center text-neutral-500 font-outfit text-sm mt-16"
         >
-          Join our growing team. <Link href="/#contact" className="text-white hover:text-[#D4AF37] underline transition-colors">View open positions.</Link>
+          Join our growing team. <Link href="/#contact" className="text-blue-600 hover:text-blue-700 underline transition-colors">View open positions.</Link>
         </motion.p>
       </div>
     </section>

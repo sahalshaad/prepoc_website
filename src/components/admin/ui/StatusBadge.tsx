@@ -1,7 +1,7 @@
-import type { LeadStatus } from '@/types/admin'
+import type { LeadStatus, ApplicationStatus } from '@/types/admin'
 
 const STATUS_CONFIG: Record<
-  LeadStatus,
+  LeadStatus | ApplicationStatus,
   { label: string; bg: string; text: string; dot: string }
 > = {
   new: {
@@ -34,10 +34,40 @@ const STATUS_CONFIG: Record<
     text: '#71717a',
     dot: '#52525b',
   },
+  reviewed: {
+    label: 'Reviewed',
+    bg: 'rgba(245,158,11,0.1)',
+    text: '#fbbf24',
+    dot: '#f59e0b',
+  },
+  shortlisted: {
+    label: 'Shortlisted',
+    bg: 'rgba(168,85,247,0.1)',
+    text: '#c084fc',
+    dot: '#a855f7',
+  },
+  interview_scheduled: {
+    label: 'Interview',
+    bg: 'rgba(212,175,55,0.1)',
+    text: '#D4AF37',
+    dot: '#D4AF37',
+  },
+  hired: {
+    label: 'Hired',
+    bg: 'rgba(34,197,94,0.1)',
+    text: '#4ade80',
+    dot: '#22c55e',
+  },
+  rejected: {
+    label: 'Rejected',
+    bg: 'rgba(239,68,68,0.1)',
+    text: '#f87171',
+    dot: '#ef4444',
+  },
 }
 
 interface StatusBadgeProps {
-  status: LeadStatus
+  status: LeadStatus | ApplicationStatus
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {

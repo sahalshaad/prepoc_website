@@ -5,6 +5,7 @@ import Hero from '@/components/sections/Hero'
 import Services from '@/components/sections/Services'
 import About from '@/components/sections/About'
 import Process from '@/components/sections/Process'
+import ProcessMarquee from '@/components/sections/ProcessMarquee'
 import Portfolio from '@/components/sections/Portfolio'
 import Testimonials from '@/components/sections/Testimonials'
 import Technologies from '@/components/sections/Technologies'
@@ -25,6 +26,7 @@ export default function Home() {
       <Services />
       <About />
       <Process />
+      <ProcessMarquee />
       <Portfolio />
       <Technologies />
       <Testimonials />

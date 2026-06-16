@@ -133,13 +133,14 @@ export interface TeamMemberCMS {
 export interface ServiceCMS {
   id: string
   title: string
-  description: string
-  shortDescription: string
-  icon: string
-  color: string
+  desc: string
+  list: { text: string }[]
+  buttons: { label: string; href: string; primary: boolean }[]
+  image: string
   isActive: boolean
   displayOrder: number
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 // ─── Portfolio ───────────────────────────────────────────────

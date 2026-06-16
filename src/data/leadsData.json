@@ -79,6 +79,28 @@
       "status": "contacted",
       "submittedAt": "2026-06-08T15:00:00Z",
       "updatedAt": "2026-06-09T10:00:00Z"
+    },
+    {
+      "name": "Razal",
+      "email": "razal@razal.in",
+      "company": "RKR Solutions",
+      "serviceInterested": "SEO Services",
+      "message": "i want seo",
+      "id": "lead-1781593504558",
+      "status": "new",
+      "submittedAt": "2026-06-16T07:05:04.558Z",
+      "updatedAt": "2026-06-16T07:05:04.561Z"
+    },
+    {
+      "name": "sahal",
+      "email": "sahal@gmail.com",
+      "company": "prepoc",
+      "serviceInterested": "Digital Marketing",
+      "message": "digital marketing\n",
+      "id": "lead-1781611966603",
+      "status": "new",
+      "submittedAt": "2026-06-16T12:12:46.603Z",
+      "updatedAt": "2026-06-16T12:12:46.604Z"
     }
   ]
 }

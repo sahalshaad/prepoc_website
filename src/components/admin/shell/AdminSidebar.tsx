@@ -25,6 +25,7 @@ import {
   UserPlus,
   FileText,
   Building2,
+  Send,
   type LucideIcon
 } from 'lucide-react'
 
@@ -63,6 +64,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Operations',
     items: [
       { label: 'Leads', href: '/admin/leads', icon: Mail, badge: 7 },
+      { label: 'Newsletter', href: '/admin/newsletter', icon: Send },
       { label: 'Careers', href: '/admin/careers', icon: UserPlus },
       { label: 'Job Applications', href: '/admin/job-applications', icon: FileText },
       { label: 'Media Library', href: '/admin/media', icon: FolderOpen },

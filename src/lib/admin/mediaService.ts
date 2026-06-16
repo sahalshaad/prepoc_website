@@ -21,12 +21,12 @@ const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads')
 const THUMBNAILS_DIR = path.join(UPLOADS_DIR, 'thumbnails')
 
 // Ensure directories exist
-const CATEGORIES = ['founders', 'team', 'gallery', 'services', 'portfolio', 'testimonials', 'videos']
+const CATEGORIES = ['founders', 'team', 'gallery', 'services', 'portfolio', 'testimonials', 'videos', 'marquee', 'partner-logos']
 
 export function initializeMediaDirectories() {
   if (!existsSync(UPLOADS_DIR)) mkdirSync(UPLOADS_DIR, { recursive: true })
   if (!existsSync(THUMBNAILS_DIR)) mkdirSync(THUMBNAILS_DIR, { recursive: true })
-  
+
   for (const cat of CATEGORIES) {
     const catDir = path.join(UPLOADS_DIR, cat)
     const thumbDir = path.join(THUMBNAILS_DIR, cat)
@@ -108,9 +108,9 @@ export async function saveMedia(file: File, category: string): Promise<MediaUplo
     const safeName = sanitizeFilename(path.basename(originalName, ext))
     const timestamp = Date.now()
     const random = crypto.randomBytes(4).toString('hex')
-    
+
     const buffer = Buffer.from(await file.arrayBuffer())
-    
+
     if (isImage) {
       return await processImage(buffer, safeName, category, timestamp, random, mimeType)
     } else {
@@ -137,7 +137,7 @@ async function processImage(
     const filename = `${timestamp}-${random}-${safeName}.svg`
     const filePath = path.join(UPLOADS_DIR, category, filename)
     await fs.writeFile(filePath, buffer)
-    
+
     // SVG thumbnail is just the SVG itself
     const thumbPath = path.join(THUMBNAILS_DIR, category, filename)
     await fs.writeFile(thumbPath, buffer)
@@ -189,7 +189,7 @@ async function processVideo(
 ): Promise<MediaUploadResponse> {
   const outputFilename = `${timestamp}-${random}-${safeName}.mp4`
   const thumbFilename = `${timestamp}-${random}-${safeName}.webp`
-  
+
   const outputPath = path.join(UPLOADS_DIR, category, outputFilename)
 
   const tempInputFilename = `temp-${timestamp}-${random}${originalExt}`
@@ -245,7 +245,7 @@ async function processVideo(
   } finally {
     // Cleanup temp file
     if (existsSync(tempInputPath)) {
-      await fs.unlink(tempInputPath).catch(() => {})
+      await fs.unlink(tempInputPath).catch(() => { })
     }
   }
 }
@@ -285,7 +285,7 @@ export async function deleteMedia(fileUrl: string): Promise<boolean> {
 
 export async function listMedia(category?: string) {
   initializeMediaDirectories()
-  
+
   const catsToScan = category && CATEGORIES.includes(category) ? [category] : CATEGORIES
   const results = []
 
@@ -296,7 +296,7 @@ export async function listMedia(category?: string) {
     const files = await fs.readdir(catDir)
     for (const file of files) {
       if (file === '.DS_Store' || file.startsWith('.')) continue
-      
+
       const filePath = path.join(catDir, file)
       const stats = await fs.stat(filePath)
       if (!stats.isFile()) continue

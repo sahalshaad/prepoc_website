@@ -80,20 +80,17 @@ export default function AboutTimeline() {
         initial={{ opacity: 0, x: -24 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col gap-1 py-3 px-2 rounded-2xl transition-all duration-500"
+        className="flex flex-col gap-1 py-3 px-2 rounded-2xl transition-all duration-500 bg-white"
         style={{
-          background: navHovered ? 'rgba(255,255,255,0.03)' : 'transparent',
-          backdropFilter: navHovered ? 'blur(20px)' : 'blur(0px)',
-          WebkitBackdropFilter: navHovered ? 'blur(20px)' : 'blur(0px)',
-          border: navHovered ? '1px solid rgba(255,255,255,0.07)' : '1px solid transparent',
-          boxShadow: navHovered ? '0 8px 32px rgba(0,0,0,0.4)' : 'none',
+          border: navHovered ? '1px solid rgba(0,0,0,0.1)' : '1px solid transparent',
+          boxShadow: navHovered ? '0 4px 20px rgba(0,0,0,0.08)' : '0 4px 12px rgba(0,0,0,0.04)',
         }}
       >
         {/* Vertical connector line */}
         <div
           className="absolute left-1/2 -translate-x-1/2 top-5 bottom-5 w-px pointer-events-none transition-opacity duration-500"
           style={{ 
-            background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.08) 80%, transparent)',
+            background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.1) 80%, transparent)',
             opacity: navHovered ? 1 : 0 
           }}
           aria-hidden="true"
@@ -121,14 +118,14 @@ export default function AboutTimeline() {
                       width: isActive || isHovered ? 32 : 6,
                       height: isActive || isHovered ? 32 : 6,
                       backgroundColor: isActive
-                        ? 'rgba(14, 93, 71, 0.35)'
+                        ? '#dbeafe' // blue-100
                         : isHovered
-                        ? 'rgba(212, 175, 55, 0.12)'
-                        : 'rgba(255,255,255,0.2)',
+                        ? '#f5f5f5' // neutral-100
+                        : '#e5e5e5', // neutral-200
                       borderColor: isActive
-                        ? 'rgba(14, 93, 71, 0.7)'
+                        ? '#3b82f6' // blue-500
                         : isHovered
-                        ? 'rgba(212, 175, 55, 0.4)'
+                        ? '#d4d4d8' // neutral-300
                         : 'transparent',
                       borderRadius: isActive || isHovered ? 12 : 9999,
                       scale: isActive ? 1.05 : 1,
@@ -149,7 +146,7 @@ export default function AboutTimeline() {
                           <Icon
                             className="w-3.5 h-3.5"
                             style={{
-                              color: isActive ? '#0E5D47' : '#D4AF37',
+                              color: isActive ? '#3b82f6' : '#52525b',
                             }}
                           />
                         </motion.div>
@@ -169,8 +166,8 @@ export default function AboutTimeline() {
                       transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                       className="ml-2 pr-3 text-xs font-medium whitespace-nowrap overflow-hidden"
                       style={{
-                        fontFamily: 'var(--font-heading)',
-                        color: isActive ? '#F8F8F8' : '#D4AF37',
+                        fontFamily: 'var(--font-outfit)',
+                        color: isActive ? '#000000' : '#52525b',
                         letterSpacing: '0.02em',
                       }}
                     >
@@ -185,7 +182,7 @@ export default function AboutTimeline() {
                 animate={{ opacity: 0 }}
                 whileFocus={{ opacity: 1 }}
                 className="absolute inset-0 rounded-xl pointer-events-none"
-                style={{ boxShadow: '0 0 0 2px rgba(212,175,55,0.7)' }}
+                style={{ boxShadow: '0 0 0 2px rgba(59,130,246,0.5)' }}
                 aria-hidden="true"
               />
             </div>

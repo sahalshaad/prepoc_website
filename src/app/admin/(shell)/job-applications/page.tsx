@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { PageHeader } from '@/components/admin/ui/PageHeader'
 import { StatusBadge } from '@/components/admin/ui/StatusBadge'
 import { JobApplication, ApplicationStatus } from '@/types/admin'
-import { Search, Mail, FileText, ArrowRight, Download, Link as LinkIcon, MapPin, Briefcase } from 'lucide-react'
+import { Search, Mail, FileText, Trash2, Download, Link as LinkIcon, MapPin, Briefcase } from 'lucide-react'
 
 const STATUS_OPTIONS: Array<ApplicationStatus | 'all'> = ['all', 'new', 'reviewed', 'shortlisted', 'interview_scheduled', 'hired', 'rejected']
 
@@ -69,6 +69,27 @@ export default function JobApplicationsPage() {
       console.error(err)
       alert('Failed to update status: ' + (err instanceof Error ? err.message : String(err)))
       setApplications((prev) => prev.map((a) => a.id === id ? { ...a, status: target.status } : a))
+    }
+  }
+
+  const deleteApplication = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this job application? This action cannot be undone.')) return
+
+    const previousApps = [...applications]
+    setApplications((prev) => prev.filter((a) => a.id !== id))
+
+    try {
+      const res = await fetch('/api/admin/job-applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', id }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.success) throw new Error(data.error)
+    } catch (err) {
+      console.error(err)
+      alert('Failed to delete application: ' + (err instanceof Error ? err.message : String(err)))
+      setApplications(previousApps)
     }
   }
 
@@ -197,10 +218,15 @@ export default function JobApplicationsPage() {
 
               <p className="text-xs" style={{ color: '#52525b' }}>{timeAgo(app.submittedAt)}</p>
               
-              <button className="w-7 h-7 flex items-center justify-center rounded-lg" style={{ color: '#52525b' }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#D4AF37'; e.currentTarget.style.background = 'rgba(212,175,55,0.1)' }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = '#52525b'; e.currentTarget.style.background = 'transparent' }}>
-                <ArrowRight size={13} />
+              <button 
+                onClick={() => deleteApplication(app.id)}
+                className="w-7 h-7 flex items-center justify-center rounded-lg transition-all duration-150" 
+                style={{ color: '#52525b' }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = 'rgba(239,68,68,0.1)' }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = '#52525b'; e.currentTarget.style.background = 'transparent' }}
+                title="Delete Application"
+              >
+                <Trash2 size={13} />
               </button>
             </div>
           ))}

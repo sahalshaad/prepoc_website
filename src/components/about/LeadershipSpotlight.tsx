@@ -21,11 +21,11 @@ function LeaderCard({ member, index }: { member: LeadershipMember; index: number
       <div className="relative w-24 h-24 md:w-28 md:h-28 mb-4 rounded-full p-[2px] transition-transform duration-500 group-hover:scale-105">
         <div
           className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{ background: 'linear-gradient(135deg, #D4AF37, transparent)' }}
+          style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.3), transparent)' }}
           aria-hidden="true"
         />
-        <div className="absolute inset-0 rounded-full border border-white/10 group-hover:border-transparent transition-colors duration-500" aria-hidden="true" />
-        <div className="relative w-full h-full rounded-full overflow-hidden bg-black/30">
+        <div className="absolute inset-0 rounded-full border border-neutral-200 group-hover:border-transparent transition-colors duration-500" aria-hidden="true" />
+        <div className="relative w-full h-full rounded-full overflow-hidden bg-neutral-100">
           <Image
             src={member.image}
             alt={`${member.name}, ${member.role} at PREPOC`}
@@ -51,10 +51,10 @@ function LeaderCard({ member, index }: { member: LeadershipMember; index: number
         </div>
       </div>
 
-      <h4 className="font-heading font-semibold text-foreground text-base leading-tight mb-1">
+      <h4 className="font-outfit font-semibold text-black text-base leading-tight mb-1">
         {member.name}
       </h4>
-      <p className="text-xs font-medium text-muted-foreground">{member.role}</p>
+      <p className="text-xs font-medium text-neutral-500 font-outfit">{member.role}</p>
     </motion.div>
   )
 }
@@ -65,19 +65,18 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
   return (
     <section
       id="leadership"
-      className="section-padding relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #050505 100%)' }}
+      className="section-padding relative overflow-hidden bg-white"
       aria-label="PREPOC Leadership Spotlight"
     >
       {/* Ambient orbs */}
       <div
-        className="orb orb-accent absolute pointer-events-none"
-        style={{ width: '500px', height: '500px', top: '-80px', right: '-120px', opacity: 0.18 }}
+        className="absolute rounded-full pointer-events-none"
+        style={{ width: '500px', height: '500px', top: '-80px', right: '-120px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%)', filter: 'blur(40px)' }}
         aria-hidden="true"
       />
       <div
-        className="orb orb-primary absolute pointer-events-none"
-        style={{ width: '350px', height: '350px', bottom: '0px', left: '-80px', opacity: 0.12 }}
+        className="absolute rounded-full pointer-events-none"
+        style={{ width: '350px', height: '350px', bottom: '0px', left: '-80px', background: 'radial-gradient(circle, rgba(5, 150, 105, 0.04) 0%, transparent 70%)', filter: 'blur(40px)' }}
         aria-hidden="true"
       />
 
@@ -91,10 +90,7 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="section-label mb-4">Leadership</div>
-            <div className="flex justify-center">
-              <div className="section-divider" aria-hidden="true" />
-            </div>
+            <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4">Leadership</div>
           </motion.div>
 
           <motion.h2
@@ -102,11 +98,11 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading font-bold text-foreground mt-6 mb-4"
-            style={{ fontSize: 'clamp(2rem, 4.5vw, 3.5rem)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+            className="font-outfit font-medium text-black mt-6 mb-4"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1.2, letterSpacing: '-0.02em' }}
           >
             Meet the People{' '}
-            <span className="text-gradient-green">Leading</span> PREPOC
+            <span className="text-blue-500">Leading</span> PREPOC
           </motion.h2>
 
           <motion.p
@@ -114,7 +110,7 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground max-w-2xl mx-auto"
+            className="text-neutral-600 font-outfit max-w-2xl mx-auto"
             style={{ fontSize: '1.05rem', lineHeight: 1.8 }}
           >
             Behind every successful project is a team guided by experience, vision, and a
@@ -137,7 +133,7 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
             <div
               className="absolute inset-0 rounded-[2rem] pointer-events-none"
               style={{
-                background: 'radial-gradient(ellipse at 30% 50%, rgba(14,93,71,0.22) 0%, transparent 70%)',
+                background: 'radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.15) 0%, transparent 70%)',
                 filter: 'blur(30px)',
                 transform: 'scale(1.1)',
               }}
@@ -146,13 +142,10 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
 
             {/* Glass card */}
             <div
-              className="relative rounded-[2rem] overflow-hidden max-w-[280px] sm:max-w-[360px] lg:max-w-[420px]"
+              className="relative rounded-[2rem] overflow-hidden max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] bg-white border border-neutral-200 shadow-md"
               style={{
                 width: '100%',
                 aspectRatio: '4/5',
-                background: 'rgba(255,255,255,0.025)',
-                border: '1px solid rgba(14,93,71,0.25)',
-                boxShadow: '0 24px 64px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)',
               }}
             >
               <Image
@@ -168,12 +161,12 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
               {/* Bottom name overlay */}
               <div
                 className="absolute bottom-0 left-0 right-0 px-6 py-5"
-                style={{ background: 'linear-gradient(to top, rgba(5,5,5,0.92) 0%, transparent 100%)' }}
+                style={{ background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, transparent 100%)' }}
               >
-                <p className="font-heading font-bold text-foreground text-xl leading-tight">
+                <p className="font-outfit font-bold text-black text-xl leading-tight">
                   {founder.name}
                 </p>
-                <p className="text-sm font-medium" style={{ color: '#0E5D47' }}>
+                <p className="text-sm font-medium text-blue-600 font-outfit">
                   {founder.position}
                 </p>
               </div>
@@ -189,11 +182,10 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
           >
             {/* Quote icon */}
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
-              style={{ background: 'rgba(14,93,71,0.12)', border: '1px solid rgba(14,93,71,0.3)' }}
+              className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-blue-50 border border-blue-100"
               aria-hidden="true"
             >
-              <Quote className="w-5 h-5" style={{ color: '#0E5D47' }} />
+              <Quote className="w-5 h-5 text-blue-500" />
             </div>
 
             {/* Message paragraphs */}
@@ -202,7 +194,7 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-foreground font-body mb-5 leading-relaxed"
+              className="text-black font-outfit mb-5 leading-relaxed"
               style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.2rem)', lineHeight: 1.8 }}
             >
               &ldquo;{founder.message}&rdquo;
@@ -214,7 +206,7 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.28 }}
-                className="text-muted-foreground font-body mb-8"
+                className="text-neutral-600 font-outfit mb-8"
                 style={{ fontSize: '1rem', lineHeight: 1.8 }}
               >
                 {founder.messageExtended}
@@ -233,11 +225,8 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
               {founder.credentials.map((cred) => (
                 <li
                   key={cred}
-                  className="text-xs font-medium px-3 py-1.5 rounded-full"
+                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 font-outfit"
                   style={{
-                    background: 'rgba(14,93,71,0.1)',
-                    border: '1px solid rgba(14,93,71,0.3)',
-                    color: '#0E5D47',
                     letterSpacing: '0.02em',
                   }}
                 >
@@ -247,15 +236,15 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
             </motion.ul>
 
             {/* Divider */}
-            <div className="h-px mb-8" style={{ background: 'rgba(255,255,255,0.06)' }} aria-hidden="true" />
+            <div className="h-px mb-8 bg-neutral-200" aria-hidden="true" />
 
             {/* Name block + LinkedIn */}
             <div className="flex items-center gap-4">
               <div>
-                <p className="font-heading font-bold text-foreground text-lg leading-tight">
+                <p className="font-outfit font-bold text-black text-lg leading-tight">
                   {founder.name}
                 </p>
-                <p className="text-sm text-muted-foreground">{founder.position}</p>
+                <p className="text-sm text-neutral-500 font-outfit">{founder.position}</p>
               </div>
 
               {founder.linkedin && isSafeUrl(founder.linkedin) && (
@@ -264,12 +253,7 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${founder.name} on LinkedIn`}
-                  className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.03]"
-                  style={{
-                    background: 'rgba(10,102,194,0.12)',
-                    border: '1px solid rgba(10,102,194,0.35)',
-                    color: '#5fa8d3',
-                  }}
+                  className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.03] bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 font-outfit"
                 >
                   <Linkedin className="w-4 h-4" />
                   LinkedIn
@@ -286,7 +270,7 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="h-px mb-14 md:mb-16"
-          style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)' }}
+          style={{ background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.1), transparent)' }}
           aria-hidden="true"
         />
 
@@ -296,8 +280,8 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center text-xs tracking-widest uppercase mb-10"
-          style={{ color: 'rgba(248,248,248,0.35)', fontFamily: 'var(--font-heading)', letterSpacing: '0.15em' }}
+          className="text-center text-xs tracking-widest uppercase mb-10 text-neutral-400 font-outfit"
+          style={{ letterSpacing: '0.15em' }}
         >
           Leadership Team
         </motion.p>

@@ -2,18 +2,18 @@
 
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react'
+import { Highlight } from '@/components/ui/Highlight'
 
 export default function CTA() {
   const handleEmailClick = () => {
-    window.location.href = 'mailto:hello@prepoc.com'
+    window.location.href = 'mailto:info@prepoc.in'
   }
 
   return (
     <section
       id="contact"
-      className="section-padding relative overflow-hidden"
+      className="section-padding relative overflow-hidden bg-white"
       aria-label="Contact and call to action"
-      style={{ background: 'linear-gradient(180deg, #050505 0%, #0a0a0a 100%)' }}
     >
       {/* Background glow */}
       <div
@@ -26,7 +26,7 @@ export default function CTA() {
             width: '800px',
             height: '500px',
             background:
-              'radial-gradient(ellipse, rgba(14, 93, 71, 0.2) 0%, rgba(212, 175, 55, 0.05) 40%, transparent 70%)',
+              'radial-gradient(ellipse, rgba(59, 130, 246, 0.05) 0%, rgba(5, 150, 105, 0.02) 40%, transparent 70%)',
           }}
         />
       </div>
@@ -34,13 +34,13 @@ export default function CTA() {
       <div className="container-wide relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Main CTA block */}
-          <div className="glass rounded-3xl md:rounded-[2.5rem] p-6 sm:p-10 md:p-16 text-center mb-12 relative overflow-hidden">
+          <div className="bg-neutral-50 border border-neutral-200 shadow-sm rounded-3xl md:rounded-[2.5rem] p-6 sm:p-10 md:p-16 text-center mb-12 relative overflow-hidden">
             {/* Inner glow */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  'linear-gradient(135deg, rgba(14, 93, 71, 0.08) 0%, rgba(212, 175, 55, 0.04) 50%, transparent 100%)',
+                  'linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(5, 150, 105, 0.02) 50%, transparent 100%)',
               }}
               aria-hidden="true"
             />
@@ -52,10 +52,10 @@ export default function CTA() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="relative z-10"
             >
-              <div className="section-label mb-5">Let&apos;s Work Together</div>
+              <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-5">Let&apos;s Work Together</div>
 
               <h2
-                className="font-heading font-bold text-foreground mb-6"
+                className="font-outfit font-medium text-black mb-6"
                 style={{
                   fontSize: 'clamp(2rem, 5vw, 4rem)',
                   lineHeight: 1.1,
@@ -64,11 +64,11 @@ export default function CTA() {
               >
                 Ready to Scale Your
                 <br />
-                <span className="text-gradient-gold">Business?</span>
+                <Highlight color="text-blue-500/20"><span className="text-blue-500">Business?</span></Highlight>
               </h2>
 
               <p
-                className="text-muted-foreground font-body max-w-xl mx-auto mb-10"
+                className="text-neutral-600 font-outfit max-w-xl mx-auto mb-10"
                 style={{ fontSize: '1.05rem', lineHeight: 1.8 }}
               >
                 Tell us about your project and let&apos;s build something extraordinary together.
@@ -80,8 +80,7 @@ export default function CTA() {
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={handleEmailClick}
-                  className="btn-primary text-base py-4 px-9 w-full sm:w-auto"
-                  style={{ fontSize: '1rem' }}
+                  className="inline-flex items-center justify-center gap-2 bg-black text-white px-9 py-4 rounded-full hover:bg-neutral-800 transition-colors font-medium text-sm w-full sm:w-auto"
                 >
                   Start a Project
                   <ArrowUpRight className="w-5 h-5" />
@@ -90,9 +89,8 @@ export default function CTA() {
                 <motion.a
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  href="tel:+15550000000"
-                  className="btn-outline text-base py-4 px-9 w-full sm:w-auto"
-                  style={{ fontSize: '1rem' }}
+                  href="tel:+919072595415"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-black border border-neutral-300 px-9 py-4 rounded-full hover:bg-neutral-50 transition-colors font-medium text-sm w-full sm:w-auto"
                 >
                   Schedule a Call
                 </motion.a>
@@ -112,20 +110,20 @@ export default function CTA() {
               {
                 icon: Mail,
                 label: 'Email Us',
-                value: 'hello@prepoc.com',
-                href: 'mailto:hello@prepoc.com',
+                value: 'info@prepoc.in',
+                href: 'mailto:info@prepoc.in',
               },
               {
                 icon: Phone,
                 label: 'Call Us',
-                value: '+1 (555) 000-0000',
-                href: 'tel:+15550000000',
+                value: '+91 9072595415',
+                href: 'tel:+919072595415',
               },
               {
                 icon: MapPin,
                 label: 'Visit Us',
-                value: 'San Francisco, CA',
-                href: '#',
+                value: 'Pantheerankavu, Kozhikode, Kerala 673019',
+                href: 'https://maps.google.com/?q=Pantheerankavu,Kozhikode,Kerala,India,673019',
               },
             ].map((item) => {
               const Icon = item.icon
@@ -133,18 +131,17 @@ export default function CTA() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="glass rounded-2xl p-4 sm:p-6 flex items-center gap-4 hover:border-primary/30 transition-all duration-300 group"
+                  className="bg-white border border-neutral-200 shadow-sm rounded-2xl p-4 sm:p-6 flex items-center gap-4 hover:border-blue-500/30 hover:shadow-md transition-all duration-300 group"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
-                    style={{ background: 'rgba(14, 93, 71, 0.15)' }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform bg-blue-50"
                     aria-hidden="true"
                   >
-                    <Icon className="w-4 h-4 text-primary" />
+                    <Icon className="w-4 h-4 text-blue-500" />
                   </div>
                   <div>
-                    <div className="text-muted text-xs tracking-wide">{item.label}</div>
-                    <div className="text-foreground text-sm font-medium">{item.value}</div>
+                    <div className="text-neutral-500 text-xs tracking-wide font-outfit">{item.label}</div>
+                    <div className="text-black text-sm font-semibold font-outfit">{item.value}</div>
                   </div>
                 </a>
               )

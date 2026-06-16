@@ -12,27 +12,26 @@ export default function AboutHero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #050505 0%, #080808 100%)' }}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white"
       aria-label="About PREPOC hero"
     >
       {/* Ambient orbs */}
       <div
-        className="orb orb-primary absolute"
-        style={{ width: '600px', height: '600px', top: '-100px', left: '-100px', opacity: 0.35 }}
+        className="absolute rounded-full"
+        style={{ width: '600px', height: '600px', top: '-100px', left: '-100px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%)', filter: 'blur(40px)' }}
         aria-hidden="true"
       />
       <div
-        className="orb orb-accent absolute"
-        style={{ width: '400px', height: '400px', bottom: '0', right: '-80px', opacity: 0.2 }}
+        className="absolute rounded-full"
+        style={{ width: '400px', height: '400px', bottom: '0', right: '-80px', background: 'radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, transparent 70%)', filter: 'blur(40px)' }}
         aria-hidden="true"
       />
 
       {/* Watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden" aria-hidden="true">
         <span
-          className="font-heading font-black text-white whitespace-nowrap"
-          style={{ fontSize: 'clamp(8rem, 22vw, 22rem)', letterSpacing: '-0.05em', opacity: 0.015 }}
+          className="font-outfit font-black text-black whitespace-nowrap"
+          style={{ fontSize: 'clamp(8rem, 22vw, 22rem)', letterSpacing: '-0.05em', opacity: 0.03 }}
         >
           ABOUT
         </span>
@@ -47,12 +46,10 @@ export default function AboutHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 mb-8"
+          className="inline-flex items-center gap-2 mb-8 bg-neutral-100 border border-neutral-200 text-neutral-600 px-4 py-1.5 rounded-full text-sm font-medium"
         >
-          <span className="hero-badge">
-            <span className="badge-dot" aria-hidden="true" />
-            Est. 2019 · Premium Digital Agency
-          </span>
+          <span className="w-1.5 h-1.5 rounded-full bg-blue-500" aria-hidden="true" />
+          Est. 2019 · Premium Digital Agency
         </motion.div>
 
         {/* Headline */}
@@ -60,12 +57,12 @@ export default function AboutHero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="font-heading font-bold text-foreground mb-6"
+          className="font-outfit font-medium text-black mb-6"
           style={{ fontSize: 'clamp(2.2rem, 7vw, 6rem)', lineHeight: 1.05, letterSpacing: '-0.03em' }}
         >
           The Minds Behind
           <br />
-          <span className="text-gradient-green">PREPOC</span>
+          <span className="text-blue-500">PREPOC</span>
         </motion.h1>
 
         {/* Subheadline */}
@@ -73,7 +70,7 @@ export default function AboutHero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.25 }}
-          className="text-muted-foreground font-body max-w-2xl mx-auto mb-12"
+          className="text-neutral-600 font-outfit max-w-2xl mx-auto mb-12"
           style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', lineHeight: 1.8 }}
         >
           We are a team of strategists, designers, developers, and storytellers united
@@ -87,11 +84,11 @@ export default function AboutHero() {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4"
         >
-          <button onClick={scrollToStory} className="btn-primary w-full sm:w-auto">
+          <button onClick={scrollToStory} className="inline-flex items-center justify-center gap-2 bg-black text-white px-9 py-4 rounded-full hover:bg-neutral-800 transition-colors font-medium text-sm w-full sm:w-auto">
             Meet the Team
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5" />
           </button>
-          <Link href="/#contact" className="btn-outline w-full sm:w-auto text-center">
+          <Link href="/#contact" className="inline-flex items-center justify-center gap-2 bg-white text-black border border-neutral-300 px-9 py-4 rounded-full hover:bg-neutral-50 transition-colors font-medium text-sm w-full sm:w-auto">
             Work With Us
           </Link>
         </motion.div>

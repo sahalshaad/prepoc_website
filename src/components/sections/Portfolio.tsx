@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { PortfolioProject } from '@/types/admin'
@@ -62,7 +62,8 @@ const INITIAL_PROJECTS = [
 
 export default function Portfolio() {
   const router = useRouter()
-  const [projects, setProjects] = useState<PortfolioProject[]>(INITIAL_PROJECTS as PortfolioProject[])
+  const [allProjects, setAllProjects] = useState<PortfolioProject[]>(INITIAL_PROJECTS as PortfolioProject[])
+  const [activeCategory, setActiveCategory] = useState('All')
 
   useEffect(() => {
     async function fetchProjects() {
@@ -84,8 +85,7 @@ export default function Portfolio() {
               return timeB - timeA
             })
           
-          // Show only top 3
-          setProjects(sorted.slice(0, 3))
+          setAllProjects(sorted)
         }
       } catch (err) {
         console.error('Failed to fetch dynamic portfolio:', err)
@@ -94,12 +94,23 @@ export default function Portfolio() {
     fetchProjects()
   }, [])
 
+  // Extract unique industries dynamically
+  const dynamicCategories = Array.from(
+    new Set(allProjects.map((p) => p.industry))
+  ).filter(Boolean) as string[]
+
+  const categories = ['All', ...dynamicCategories]
+
+  // Filter projects by active category
+  const filteredProjects = activeCategory === 'All'
+    ? allProjects
+    : allProjects.filter((p) => p.industry === activeCategory)
+
   return (
     <section
       id="portfolio"
-      className="section-padding relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #050505 0%, #080808 100%)' }}
-      aria-label="Portfolio and case studies"
+      className="section-padding relative overflow-hidden bg-white"
+      aria-label="Our featured projects"
     >
       <div className="container-wide">
         {/* Header */}
@@ -111,130 +122,140 @@ export default function Portfolio() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="section-label mb-4">Case Studies</div>
-              <div className="section-divider" aria-hidden="true" />
+              <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4">Our Work</div>
             </motion.div>
-
+ 
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-heading font-bold text-foreground"
+              className="font-outfit font-medium text-black mb-6"
               style={{
-                fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
-                lineHeight: 1.1,
+                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                lineHeight: 1.2,
                 letterSpacing: '-0.02em',
               }}
             >
-              Our Work
+              Work That Speaks
               <br />
-              <span className="text-gradient-gold">Speaks Volumes.</span>
+              <span className="text-blue-500">For Itself.</span>
             </motion.h2>
           </div>
-
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+ 
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => router.push('/works')}
-            className="btn-outline self-start md:self-auto flex-shrink-0"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-neutral-600 font-outfit"
+            style={{ fontSize: '1.05rem', lineHeight: 1.8 }}
           >
-            View All Projects
-            <ArrowUpRight className="w-4 h-4" />
-          </motion.button>
+            A curated selection of our digital transformation projects that delivered measurable impact for our clients.
+          </motion.p>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5" role="list">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.12,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              role="listitem"
-            >
-              <div className="portfolio-card group" data-cursor-hover>
-                {/* Project BG */}
-                <div
-                  className="absolute inset-0 transition-transform duration-700 group-hover:scale-105 bg-cover bg-center"
-                  style={{
-                    backgroundImage: project.coverImage ? `url(${project.coverImage})` : undefined,
-                    background: !project.coverImage ? (project.bg || 'linear-gradient(135deg, #0E5D47 0%, #051f18 100%)') : undefined
-                  }}
-                  aria-hidden="true"
+        {/* Dynamic Category Filtering Bar */}
+        {categories.length > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-wrap items-center justify-center gap-2 mb-12"
+            aria-label="Project categories"
+          >
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 border focus:outline-none ${
+                    isActive 
+                      ? 'bg-blue-500 text-white border-blue-500 shadow-sm' 
+                      : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100 hover:text-black'
+                  }`}
                 >
-                  {project.coverImage && (
-                    <div className="absolute inset-0 bg-black/60 transition-opacity duration-300 group-hover:bg-black/50" />
+                  {cat}
+                </button>
+              )
+            })}
+          </motion.div>
+        )}
+ 
+        {/* Projects Grid */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{
+                  duration: 0.6,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                role="listitem"
+                className="bg-neutral-50 border border-neutral-200 rounded-[2rem] overflow-hidden group cursor-pointer shadow-sm hover:shadow-md transition-shadow flex flex-col h-full"
+                onClick={() => router.push(`/portfolio/${project.slug}`)}
+              >
+                {/* Image/Visual Container */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100 flex items-center justify-center">
+                  {project.coverImage ? (
+                    <img 
+                      src={project.coverImage} 
+                      alt={project.title} 
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="relative z-10 w-4/5 h-4/5 glass rounded-xl flex items-center justify-center border border-neutral-200/50 shadow-sm bg-white/80">
+                      <span className="font-outfit font-semibold text-neutral-800 text-xl md:text-2xl opacity-70">
+                        {project.title}
+                      </span>
+                    </div>
                   )}
                 </div>
-
-                {/* Decorative pattern */}
-                <div
-                  className="absolute inset-0 opacity-10"
-                  style={{
-                    backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%)',
-                  }}
-                  aria-hidden="true"
-                />
-
-                {/* Result badge - always visible */}
-                <div className="absolute top-5 right-5 z-10">
-                  <span className="bg-black/50 backdrop-blur-sm border border-white/10 text-foreground text-xs font-bold px-3 py-1.5 rounded-full">
-                    {project.resultsAchieved}
-                  </span>
-                </div>
-
-                {/* Category */}
-                <div className="absolute top-5 left-5 z-10">
-                  <span className="text-xs font-semibold tracking-widest uppercase text-white/60">
-                    {project.industry}
-                  </span>
-                </div>
-
-                {/* Hover overlay */}
-                <div className="portfolio-overlay z-10" aria-hidden="true">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {project.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/80 border border-white/10"
-                      >
-                        {tag}
+ 
+                <div className="p-8 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-outfit font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wide">
+                        {project.industry}
                       </span>
-                    ))}
+                      <span className="text-sm font-outfit font-bold text-black">
+                        {project.resultsAchieved}
+                      </span>
+                    </div>
+ 
+                    <h3 className="font-outfit text-2xl font-semibold text-black mb-3">
+                      {project.title}
+                    </h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed mb-6 font-outfit line-clamp-2">
+                      {project.description}
+                    </p>
                   </div>
-                  <h3 className="font-heading font-bold text-white text-xl mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-white/70 text-sm leading-relaxed">
-                    {project.description}
-                  </p>
-                  <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-accent">
-                    View Case Study
-                    <ArrowUpRight className="w-4 h-4" />
+ 
+                  <div className="pt-6 border-t border-neutral-200 flex items-center justify-between">
+                    <span className="text-sm font-outfit font-medium text-black">
+                      View Case Study
+                    </span>
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center bg-neutral-100 text-black transition-all duration-300 group-hover:bg-blue-500 group-hover:text-white group-hover:scale-110 group-hover:-rotate-12"
+                      aria-hidden="true"
+                    >
+                      <ArrowUpRight className="w-5 h-5" />
+                    </div>
                   </div>
                 </div>
-
-                {/* Bottom info — always visible on mobile, hides on desktop hover */}
-                <div className="absolute bottom-5 left-5 right-5 z-10 group-hover:opacity-0 sm:group-hover:opacity-0 transition-opacity duration-300">
-                  <h3 className="font-heading font-bold text-white text-lg">
-                    {project.title}
-                  </h3>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   )

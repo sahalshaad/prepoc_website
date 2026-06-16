@@ -86,3 +86,20 @@ export const DepartmentSchema = z.object({
   isActive: z.boolean().optional(),
   displayOrder: z.number().int().optional()
 })
+
+export const ServiceItemSchema = z.object({
+  id: z.string().optional(),
+  title: z.string().min(2, 'Title is required'),
+  desc: z.string().min(10, 'Description is required'),
+  list: z.array(z.object({ text: z.string() })).min(1, 'At least one list item is required'),
+  buttons: z.array(z.object({
+    label: z.string(),
+    href: z.string(),
+    primary: z.boolean()
+  })),
+  image: z.string(),
+  displayOrder: z.number().int().optional(),
+  isActive: z.boolean().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional()
+})

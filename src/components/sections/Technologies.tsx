@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Highlight } from '@/components/ui/Highlight'
 
 // Tech names shown in marquee (no external images needed — text-based)
 const techRow1 = [
@@ -20,9 +21,9 @@ const clientLogos = [
 
 function TechBadge({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center gap-2 px-5 py-2.5 mx-2 rounded-full border border-white/8 bg-white/[0.03] text-muted text-sm font-medium whitespace-nowrap transition-colors hover:text-foreground hover:border-white/15">
+    <span className="inline-flex items-center gap-2 px-5 py-2.5 mx-2 rounded-full border border-neutral-200 bg-white text-neutral-600 text-sm font-medium whitespace-nowrap transition-colors hover:text-black hover:border-neutral-300 shadow-sm">
       <span
-        className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"
+        className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"
         aria-hidden="true"
       />
       {name}
@@ -34,11 +35,10 @@ export default function Technologies() {
   return (
     <section
       id="technologies"
-      className="py-16 relative overflow-hidden"
+      className="section-padding relative overflow-hidden bg-white"
       style={{
-        background: 'linear-gradient(180deg, #050505 0%, #080808 50%, #050505 100%)',
-        borderTop: '1px solid rgba(255,255,255,0.04)',
-        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        borderTop: '1px solid #e5e7eb',
+        borderBottom: '1px solid #e5e7eb',
       }}
       aria-label="Technologies we use"
     >
@@ -50,19 +50,19 @@ export default function Technologies() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <div className="section-label mb-2">Tech Stack</div>
+          <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-2">Tech Stack</div>
           <h2
-            className="font-heading font-bold text-foreground"
+            className="font-outfit font-medium text-black mb-6"
             style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '-0.02em' }}
           >
             Powered by{' '}
-            <span className="text-gradient-gold">World-Class Technology</span>
+            <Highlight color="text-blue-500/20"><span className="text-blue-500">World-Class Technology</span></Highlight>
           </h2>
         </motion.div>
       </div>
 
       {/* Row 1: Left scroll */}
-      <div className="marquee-container mb-4" aria-hidden="true">
+      <div className="marquee-container" aria-hidden="true">
         <div className="marquee-track py-2">
           {[...techRow1, ...techRow1].map((tech, i) => (
             <TechBadge key={`r1-${i}`} name={tech} />
@@ -81,31 +81,31 @@ export default function Technologies() {
 
       {/* Client logos */}
       <div className="container-wide">
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center text-muted text-xs tracking-widest uppercase mb-6"
-        >
-          Trusted by forward-thinking companies
-        </motion.p>
-        <div
-          className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8"
-          aria-label="Client companies"
-        >
-          {clientLogos.map((logo, i) => (
-            <motion.span
-              key={logo}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.5 }}
-              className="font-heading font-bold text-white/20 hover:text-white/50 transition-colors"
-              style={{ fontSize: 'clamp(0.85rem, 1.5vw, 1.05rem)', letterSpacing: '-0.01em' }}
-            >
-              {logo}
-            </motion.span>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center text-neutral-500 text-xs tracking-widest uppercase mb-6"
+          >
+            Trusted by forward-thinking companies
+          </motion.p>
+          <div
+            className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8"
+            aria-label="Client companies"
+          >
+            {clientLogos.map((logo, i) => (
+              <motion.span
+                key={logo}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05, duration: 0.5 }}
+                className="font-outfit font-bold text-neutral-300 hover:text-neutral-500 transition-colors"
+                style={{ fontSize: 'clamp(0.85rem, 1.5vw, 1.05rem)', letterSpacing: '-0.01em' }}
+              >
+                {logo}
+              </motion.span>
           ))}
         </div>
       </div>

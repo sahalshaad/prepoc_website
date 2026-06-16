@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/admin/ui/PageHeader'
 import { Plus, Briefcase, Search, Trash2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 import { PortfolioProject } from '@/types/admin'
+import { MarqueeManager } from '@/components/admin/portfolio/MarqueeManager'
 
 export default function PortfolioPage() {
   const [projects, setProjects] = useState<PortfolioProject[]>([])
@@ -130,6 +131,9 @@ export default function PortfolioPage() {
           ✓ {deleteSuccess}
         </div>
       )}
+
+      {/* Hero Marquee Image Manager */}
+      <MarqueeManager />
 
       {/* Search Bar */}
       <div className="flex gap-3 mb-5 justify-end">

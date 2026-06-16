@@ -7,13 +7,12 @@ export default function CompanyValues({ values }: { values: Value[] }) {
   return (
     <section
       id="values"
-      className="section-padding relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #0a0a0a 0%, #050505 100%)' }}
+      className="section-padding relative overflow-hidden bg-neutral-50"
       aria-label="PREPOC company values"
     >
       <div
-        className="orb orb-accent absolute"
-        style={{ width: '400px', height: '400px', bottom: '-100px', left: '-100px', opacity: 0.15 }}
+        className="absolute rounded-full"
+        style={{ width: '400px', height: '400px', bottom: '-100px', left: '-100px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%)', filter: 'blur(40px)' }}
         aria-hidden="true"
       />
 
@@ -26,10 +25,7 @@ export default function CompanyValues({ values }: { values: Value[] }) {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="section-label mb-4">What Drives Us</div>
-            <div className="flex justify-center">
-              <div className="section-divider" aria-hidden="true" />
-            </div>
+            <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4">What Drives Us</div>
           </motion.div>
 
           <motion.h2
@@ -37,10 +33,10 @@ export default function CompanyValues({ values }: { values: Value[] }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading font-bold text-foreground"
-            style={{ fontSize: 'clamp(2rem, 4.5vw, 3.5rem)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+            className="font-outfit font-medium text-black"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1.2, letterSpacing: '-0.02em' }}
           >
-            Our Core <span className="text-gradient-green">Values</span>
+            Our Core <span className="text-blue-500">Values</span>
           </motion.h2>
         </div>
 
@@ -53,26 +49,25 @@ export default function CompanyValues({ values }: { values: Value[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.65, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group process-step text-center"
+              className="group bg-white border border-neutral-200 shadow-sm rounded-3xl p-6 md:p-8 text-center hover:shadow-md transition-shadow relative overflow-hidden"
             >
               {/* Large number watermark */}
-              <span className="process-number" aria-hidden="true">
+              <span className="absolute -top-4 -right-4 text-neutral-100 font-outfit font-bold opacity-50 select-none pointer-events-none" style={{ fontSize: '6rem', lineHeight: '1' }} aria-hidden="true">
                 {String(index + 1).padStart(2, '0')}
               </span>
 
               {/* Icon */}
               <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-5 transition-transform duration-300 group-hover:scale-110"
-                style={{ background: 'rgba(14, 93, 71, 0.15)', border: '1px solid rgba(14, 93, 71, 0.3)' }}
+                className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-5 transition-transform duration-300 group-hover:scale-110 bg-blue-50 relative z-10"
                 aria-hidden="true"
               >
                 {value.icon}
               </div>
 
-              <h3 className="font-heading font-semibold text-foreground text-lg mb-3">
+              <h3 className="font-outfit font-semibold text-black text-lg mb-3 relative z-10">
                 {value.title}
               </h3>
-              <p className="text-muted text-sm leading-relaxed">
+              <p className="text-neutral-500 font-outfit text-sm leading-relaxed relative z-10">
                 {value.description}
               </p>
             </motion.div>

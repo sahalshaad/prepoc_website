@@ -1,0 +1,179 @@
+{
+  "SERVICES": [
+    {
+      "id": "1",
+      "title": "Websites Design",
+      "desc": "Our Team have built over <strong>100+ websites</strong> for our customers, with each one individually designed to engage, attract and stand out from the competition at prices from as low as <strong>AED 799</strong> incVAT. We provide professional website design services to create fast, user-friendly, and online stores that drive boost sales.",
+      "list": [
+        {
+          "text": "Unique <b>professional</b> website design ✏️"
+        },
+        {
+          "text": "Dedicated <b>project manager</b>"
+        },
+        {
+          "text": "Update, <b>edit & add</b> pages 📄"
+        },
+        {
+          "text": "<b>Search Engine Optimization</b>"
+        },
+        {
+          "text": "<b>No outsourcing</b> or hidden costs 🇦🇪"
+        }
+      ],
+      "buttons": [
+        {
+          "label": "Learn More",
+          "href": "#",
+          "primary": true
+        },
+        {
+          "label": "Pricing",
+          "href": "#",
+          "primary": false
+        }
+      ],
+      "image": "https://innovix99.ae/wp-content/uploads/2026/02/websites-home1.webp",
+      "isActive": true,
+      "displayOrder": 1,
+      "createdAt": "2026-06-15T00:00:00.000Z",
+      "updatedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "Ecommerce Website",
+      "desc": "Our team has <strong>designed and developed 100+ websites</strong> for businesses, each one built to attract customers, engage visitors, and stand out from the competition — all at affordable prices.",
+      "list": [
+        {
+          "text": "<b>Secure</b> Online Payments 💳"
+        },
+        {
+          "text": "Easy <b>Product Management</b>"
+        },
+        {
+          "text": "Mobile Friendly Store"
+        },
+        {
+          "text": "<b>Order</b> & Customer Management"
+        },
+        {
+          "text": "<b>SEO</b> Ready Store"
+        }
+      ],
+      "buttons": [
+        {
+          "label": "See examples",
+          "href": "#",
+          "primary": true
+        }
+      ],
+      "image": "https://innovix99.ae/wp-content/uploads/2026/02/logo-design-home2.webp",
+      "isActive": true,
+      "displayOrder": 2,
+      "createdAt": "2026-06-15T00:00:00.000Z",
+      "updatedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "title": "Marketing",
+      "desc": "Whether you're launching a brand new company or you're an established business, as a PREPOC customer we actively work with you to boost your sales and create brand awareness. Looking for more? We offer a range of marketing packages to fastrack your success!",
+      "list": [
+        {
+          "text": "Local <b>lead generation</b> 🚀"
+        },
+        {
+          "text": "Search Engine Optimisation <b>(SEO)</b>"
+        },
+        {
+          "text": "Google & social media ads"
+        },
+        {
+          "text": "Engaging <b>Instagram Reels</b> & Video Content 📱"
+        }
+      ],
+      "buttons": [
+        {
+          "label": "Get a Quote",
+          "href": "#",
+          "primary": true
+        }
+      ],
+      "image": "https://innovix99.ae/wp-content/uploads/2026/02/marketing3.webp",
+      "isActive": true,
+      "displayOrder": 3,
+      "createdAt": "2026-06-15T00:00:00.000Z",
+      "updatedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "4",
+      "title": "LMS (Learning Management System)",
+      "desc": "Empower your educational institution or corporate training with a custom <strong>Learning Management System</strong>. We build scalable, interactive platforms designed to deliver courses, track student progress, and manage educational content effortlessly.",
+      "list": [
+        {
+          "text": "Custom <b>Course Creation</b> & Management 📚"
+        },
+        {
+          "text": "Student Progress <b>Tracking & Analytics</b>"
+        },
+        {
+          "text": "Secure <b>Payment Gateway</b> Integration"
+        },
+        {
+          "text": "Interactive Quizzes & Assignments"
+        },
+        {
+          "text": "Seamless <b>Video Streaming</b> capabilities"
+        }
+      ],
+      "buttons": [
+        {
+          "label": "Explore LMS",
+          "href": "#",
+          "primary": true
+        }
+      ],
+      "image": "/uploads/portfolio/1781323092735-7d349d5f-business-drivenwebapplications.webp",
+      "isActive": true,
+      "displayOrder": 4,
+      "createdAt": "2026-06-15T00:00:00.000Z",
+      "updatedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "5",
+      "title": "ERP Web Software",
+      "desc": "Streamline your business operations with a tailored <strong>Enterprise Resource Planning (ERP)</strong> solution. We develop comprehensive software to manage your inventory, HR, finance, and CRM, all from a single centralized dashboard designed specifically for your workflow.",
+      "list": [
+        {
+          "text": "Centralized <b>Business Dashboard</b> 📊"
+        },
+        {
+          "text": "Automated <b>Workflow Processes</b>"
+        },
+        {
+          "text": "Custom <b>Inventory & HR</b> Management"
+        },
+        {
+          "text": "Real-time <b>Data Analytics</b> & Reporting"
+        },
+        {
+          "text": "High-level <b>Data Security</b> & Compliance"
+        },
+        {
+          "text": "hhdhbd dhhdbd hdbhbd&nbsp;"
+        }
+      ],
+      "buttons": [
+        {
+          "label": "View ERP Solutions",
+          "href": "#",
+          "primary": true
+        }
+      ],
+      "image": "/uploads/portfolio/1781323092735-7d349d5f-business-drivenwebapplications.webp",
+      "isActive": true,
+      "displayOrder": 5,
+      "createdAt": "2026-06-15T00:00:00.000Z",
+      "updatedAt": "2026-06-15T08:32:44.284Z"
+    }
+  ]
+}

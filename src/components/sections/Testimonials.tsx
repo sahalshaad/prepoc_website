@@ -54,7 +54,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="section-padding bg-bg relative overflow-hidden"
+      className="section-padding bg-neutral-50 relative overflow-hidden"
       aria-label="Client testimonials"
     >
       {/* Background orb */}
@@ -63,7 +63,7 @@ export default function Testimonials() {
         style={{
           width: '600px',
           height: '600px',
-          background: 'radial-gradient(circle, rgba(14, 93, 71, 0.08) 0%, transparent 60%)',
+          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 60%)',
         }}
         aria-hidden="true"
       />
@@ -77,8 +77,7 @@ export default function Testimonials() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="section-label mb-4">Testimonials</div>
-            <div className="section-divider mx-auto" aria-hidden="true" />
+            <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4">Testimonials</div>
           </motion.div>
 
           <motion.h2
@@ -86,16 +85,16 @@ export default function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading font-bold text-foreground mb-4"
+            className="font-outfit font-medium text-black mb-4"
             style={{
-              fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
-              lineHeight: 1.1,
+              fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+              lineHeight: 1.2,
               letterSpacing: '-0.02em',
             }}
           >
             Trusted by Leaders
             <br />
-            <span className="text-gradient-gold">Across Industries.</span>
+            <span className="text-blue-500">Across Industries.</span>
           </motion.h2>
         </div>
 
@@ -118,7 +117,7 @@ export default function Testimonials() {
               }}
               role="listitem"
             >
-              <div className="testimonial-card h-full" data-cursor-hover>
+              <div className="bg-white border border-neutral-200 shadow-sm rounded-[2rem] p-8 md:p-10 h-full hover:shadow-md transition-shadow">
                 {/* Stars */}
                 <div
                   className="flex items-center gap-1 mb-5"
@@ -128,7 +127,7 @@ export default function Testimonials() {
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
                     <Star
                       key={i}
-                      className="w-4 h-4 fill-accent text-accent"
+                      className="w-4 h-4 fill-amber-400 text-amber-400"
                       aria-hidden="true"
                     />
                   ))}
@@ -136,8 +135,8 @@ export default function Testimonials() {
 
                 {/* Content */}
                 <blockquote
-                  className="text-foreground/85 font-body leading-relaxed mb-8 relative z-10"
-                  style={{ fontSize: '0.95rem' }}
+                  className="text-neutral-700 font-outfit leading-relaxed mb-8 relative z-10"
+                  style={{ fontSize: '1rem' }}
                 >
                   &ldquo;{testimonial.content}&rdquo;
                 </blockquote>
@@ -145,20 +144,16 @@ export default function Testimonials() {
                 {/* Author */}
                 <div className="flex items-center gap-4">
                   <div
-                    className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 font-heading font-bold text-sm text-foreground"
-                    style={{
-                      background: `rgba(${testimonial.accentColor === '#0E5D47' ? '14, 93, 71' : '212, 175, 55'}, 0.2)`,
-                      border: `1px solid rgba(${testimonial.accentColor === '#0E5D47' ? '14, 93, 71' : '212, 175, 55'}, 0.4)`,
-                    }}
+                    className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 font-outfit font-bold text-sm text-blue-700 bg-blue-100"
                     aria-hidden="true"
                   >
                     {testimonial.initials}
                   </div>
                   <div>
-                    <div className="font-heading font-semibold text-foreground text-sm">
+                    <div className="font-outfit font-semibold text-black text-sm">
                       {testimonial.name}
                     </div>
-                    <div className="text-muted text-xs">
+                    <div className="text-neutral-500 text-xs">
                       {testimonial.role} · {testimonial.company}
                     </div>
                   </div>
@@ -174,7 +169,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-8 mt-10 pt-8 border-t border-white/5"
+          className="flex flex-wrap items-center justify-center gap-8 mt-10 pt-8 border-t border-neutral-200"
           aria-label="Platform ratings"
         >
           {[
@@ -183,9 +178,9 @@ export default function Testimonials() {
             { platform: 'DesignRush', score: 'Top Agency', reviews: '2024' },
           ].map((item) => (
             <div key={item.platform} className="text-center">
-              <div className="font-heading font-bold text-foreground text-lg">{item.score}</div>
-              <div className="text-accent text-xs font-semibold">{item.platform}</div>
-              <div className="text-muted text-xs">{item.reviews}</div>
+              <div className="font-outfit font-bold text-black text-lg">{item.score}</div>
+              <div className="text-blue-500 text-xs font-semibold">{item.platform}</div>
+              <div className="text-neutral-500 text-xs">{item.reviews}</div>
             </div>
           ))}
         </motion.div>

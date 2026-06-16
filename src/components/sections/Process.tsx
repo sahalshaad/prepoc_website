@@ -10,7 +10,7 @@ const steps = [
     description:
       'We dive deep into your business, audience, competitors, and goals to build a comprehensive understanding of the landscape.',
     icon: Search,
-    color: '#0E5D47',
+    color: '#3b82f6', // blue-500
   },
   {
     number: '02',
@@ -18,7 +18,7 @@ const steps = [
     description:
       'Crafting a data-backed roadmap tailored to your unique objectives — every decision is intentional and measurable.',
     icon: Lightbulb,
-    color: '#D4AF37',
+    color: '#059669', // emerald-600
   },
   {
     number: '03',
@@ -26,7 +26,7 @@ const steps = [
     description:
       'Our design team brings the strategy to life with stunning visuals, intuitive UX, and on-brand creative assets.',
     icon: Figma,
-    color: '#0E5D47',
+    color: '#3b82f6',
   },
   {
     number: '04',
@@ -34,7 +34,7 @@ const steps = [
     description:
       'Engineered to perform. We build fast, scalable, accessible solutions that push boundaries and exceed expectations.',
     icon: Code2,
-    color: '#D4AF37',
+    color: '#059669',
   },
   {
     number: '05',
@@ -42,7 +42,7 @@ const steps = [
     description:
       'We don&apos;t just launch — we monitor, optimize, and scale. Continuous improvement is built into everything we do.',
     icon: Rocket,
-    color: '#0E5D47',
+    color: '#3b82f6',
   },
 ]
 
@@ -50,11 +50,11 @@ export default function Process() {
   return (
     <section
       id="process"
-      className="section-padding bg-bg relative overflow-hidden"
+      className="section-padding bg-neutral-50 relative overflow-hidden"
       aria-label="Our process"
     >
       {/* Connecting line decoration */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" aria-hidden="true" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-neutral-200" aria-hidden="true" />
 
       <div className="container-wide">
         {/* Section header */}
@@ -65,8 +65,7 @@ export default function Process() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="section-label mb-4">Our Approach</div>
-            <div className="section-divider mx-auto" aria-hidden="true" />
+            <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4">Our Approach</div>
           </motion.div>
 
           <motion.h2
@@ -74,16 +73,16 @@ export default function Process() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading font-bold text-foreground mb-6"
+            className="font-outfit font-medium text-black mb-6"
             style={{
-              fontSize: 'clamp(2rem, 4.5vw, 3.5rem)',
-              lineHeight: 1.1,
+              fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+              lineHeight: 1.2,
               letterSpacing: '-0.02em',
             }}
           >
             How We Turn
             <br />
-            <span className="text-gradient-gold">Vision Into Reality</span>
+            <span className="text-blue-500">Vision Into Reality</span>
           </motion.h2>
 
           <motion.p
@@ -91,7 +90,7 @@ export default function Process() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground font-body"
+            className="text-neutral-600 font-outfit"
             style={{ fontSize: '1.05rem', lineHeight: 1.8 }}
           >
             A proven 5-step framework that transforms ideas into market-ready solutions
@@ -103,14 +102,14 @@ export default function Process() {
         <div className="relative">
           {/* Vertical connecting line on desktop */}
           <div
-            className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/5 to-transparent -translate-x-1/2"
+            className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-neutral-200 -translate-x-1/2"
             aria-hidden="true"
           />
 
           <div className="space-y-6 lg:space-y-4">
             {steps.map((step, index) => {
               const Icon = step.icon
-              const isGold = step.color === '#D4AF37'
+              const isBlue = step.color === '#3b82f6'
               const isEven = index % 2 === 1
 
               return (
@@ -132,17 +131,17 @@ export default function Process() {
                   >
                     {/* Step card */}
                     <div className={isEven ? 'lg:order-2' : ''}>
-                      <div className="process-step group">
-                        <div className="process-number" aria-hidden="true">
+                      <div className="bg-white border border-neutral-200 shadow-sm rounded-3xl p-8 relative overflow-hidden group">
+                        <div className="absolute top-4 right-6 text-[4rem] font-black text-black/5 select-none" aria-hidden="true">
                           {step.number}
                         </div>
 
                         <div
                           className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
                           style={{
-                            background: isGold
-                              ? 'rgba(212, 175, 55, 0.12)'
-                              : 'rgba(14, 93, 71, 0.15)',
+                            background: isBlue
+                              ? 'rgba(59, 130, 246, 0.1)'
+                              : 'rgba(5, 150, 105, 0.1)',
                           }}
                           aria-hidden="true"
                         >
@@ -163,15 +162,15 @@ export default function Process() {
                         </div>
 
                         <h3
-                          className="font-heading font-bold text-foreground mb-3"
+                          className="font-outfit font-semibold text-black mb-3"
                           style={{ fontSize: '1.4rem', letterSpacing: '-0.01em' }}
                         >
                           {step.title}
                         </h3>
 
                         <p
-                          className="text-muted-foreground font-body leading-relaxed"
-                          style={{ fontSize: '0.9rem' }}
+                          className="text-neutral-600 font-outfit leading-relaxed"
+                          style={{ fontSize: '0.95rem' }}
                         >
                           {step.description}
                         </p>

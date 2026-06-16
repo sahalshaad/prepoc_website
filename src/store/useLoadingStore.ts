@@ -12,9 +12,9 @@ interface LoadingState {
 }
 
 export const useLoadingStore = create<LoadingState>((set) => ({
-  isLoading: true,
-  hasLanded: false,
-  isSettled: false,
+  isLoading: false,
+  hasLanded: true,
+  isSettled: true,
   heroIntroPlayed: false,
   setLoading: (val) => set({ isLoading: val }),
   setLanded: (val) => set({ hasLanded: val }),

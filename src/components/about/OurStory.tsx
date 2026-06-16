@@ -50,11 +50,11 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 
   return (
     <div ref={ref} className="text-center">
-      <div className="stat-number mb-2" aria-label={`${value}${suffix} ${label}`} aria-live="polite">
+      <div className="text-4xl md:text-5xl font-outfit font-bold text-black mb-2" aria-label={`${value}${suffix} ${label}`} aria-live="polite">
         {count}
-        <span className="text-gradient-gold">{suffix}</span>
+        <span className="text-blue-500">{suffix}</span>
       </div>
-      <div className="text-muted text-sm tracking-wide font-medium">{label}</div>
+      <div className="text-neutral-500 text-sm tracking-wide font-outfit font-medium">{label}</div>
     </div>
   )
 }
@@ -63,8 +63,7 @@ export default function OurStory({ stats }: { stats: Stat[] }) {
   return (
     <section
       id="story"
-      className="section-padding relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #050505 0%, #090909 50%, #050505 100%)' }}
+      className="section-padding relative overflow-hidden bg-neutral-50"
       aria-label="Our Story"
     >
       {/* Subtle grid */}
@@ -81,8 +80,7 @@ export default function OurStory({ stats }: { stats: Stat[] }) {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="section-label mb-4">Our Story</div>
-              <div className="section-divider" aria-hidden="true" />
+              <div className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4">Our Story</div>
             </motion.div>
 
             <motion.h2
@@ -90,13 +88,13 @@ export default function OurStory({ stats }: { stats: Stat[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-heading font-bold text-foreground mb-4"
-              style={{ fontSize: 'clamp(2rem, 4.5vw, 3.5rem)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+              className="font-outfit font-medium text-black mb-4"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 1.2, letterSpacing: '-0.02em' }}
             >
               We Don&apos;t Just
               <br />
               Build — We
-              <span className="text-gradient-green"> Transform.</span>
+              <span className="text-blue-500"> Transform.</span>
             </motion.h2>
 
             <motion.p
@@ -104,7 +102,7 @@ export default function OurStory({ stats }: { stats: Stat[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-muted-foreground font-body mb-4"
+              className="text-neutral-600 font-outfit mb-4"
               style={{ fontSize: '1.05rem', lineHeight: 1.8 }}
             >
               PREPOC Technologies was founded in 2019 with a simple belief: every business — regardless
@@ -118,7 +116,7 @@ export default function OurStory({ stats }: { stats: Stat[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.28 }}
-              className="text-muted-foreground font-body mb-6"
+              className="text-neutral-600 font-outfit mb-6"
               style={{ fontSize: '1.05rem', lineHeight: 1.8 }}
             >
               Today we serve clients across the UAE, UK, and South Asia — delivering measurable results
@@ -140,9 +138,9 @@ export default function OurStory({ stats }: { stats: Stat[] }) {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.32 + i * 0.06, duration: 0.5 }}
-                  className="flex items-start gap-3 text-sm text-muted-foreground"
+                  className="flex items-start gap-3 text-sm text-neutral-600 font-outfit"
                 >
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-primary mt-0.5" aria-hidden="true" />
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-blue-500 mt-0.5" aria-hidden="true" />
                   {item}
                 </motion.li>
               ))}
@@ -151,37 +149,47 @@ export default function OurStory({ stats }: { stats: Stat[] }) {
 
           {/* Right: stats + badge */}
           <div>
+            {/* Stats Grid */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="glass rounded-3xl p-5 sm:p-8 md:p-12 mb-6"
+              className="relative group mb-6"
             >
-              <div className="grid grid-cols-2 gap-10">
-                {stats.map((stat) => (
-                  <StatCounter key={stat.label} {...stat} />
-                ))}
+              {/* Glowing backdrops for real glass refraction */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-100/40 via-white/0 to-emerald-100/40 rounded-3xl blur-2xl pointer-events-none" />
+              
+              <div className="relative z-10 bg-white/40 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.04)] rounded-3xl p-5 sm:p-8 md:p-12">
+                <div className="grid grid-cols-2 gap-10">
+                  {stats.map((stat) => (
+                    <StatCounter key={stat.label} {...stat} />
+                  ))}
+                </div>
               </div>
             </motion.div>
 
+            {/* Award badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.4 }}
-              className="glass rounded-2xl p-5 flex items-center gap-5"
+              className="relative group"
             >
-              <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'rgba(212, 175, 55, 0.15)' }}
-                aria-hidden="true"
-              >
-                <span className="text-2xl">🏆</span>
-              </div>
-              <div>
-                <div className="font-heading font-semibold text-foreground mb-1">Top-Rated Digital Agency</div>
-                <div className="text-muted text-sm">Recognized by Clutch, DesignRush &amp; GoodFirms</div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-emerald-50/30 rounded-2xl blur-xl pointer-events-none" />
+              
+              <div className="relative z-10 bg-white/40 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.03)] rounded-2xl p-5 flex items-center gap-5">
+                <div
+                  className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 bg-blue-50/80 border border-blue-100/50"
+                  aria-hidden="true"
+                >
+                  <span className="text-2xl">🏆</span>
+                </div>
+                <div>
+                  <div className="font-outfit font-semibold text-black mb-1">Top-Rated Digital Agency</div>
+                  <div className="text-neutral-500 font-outfit text-sm">Recognized by Clutch, DesignRush &amp; GoodFirms</div>
+                </div>
               </div>
             </motion.div>
           </div>

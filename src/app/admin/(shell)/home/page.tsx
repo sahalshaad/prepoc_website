@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { PageHeader } from '@/components/admin/ui/PageHeader'
 import { Save, Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { PartnerLogosManager } from '@/components/admin/home/PartnerLogosManager'
 
 const INITIAL_HERO = {
   heading: 'Grow Your Business with',
@@ -120,6 +121,10 @@ export default function HomeEditorPage() {
                   className="w-full"
                 />
               </Field>
+            </div>
+            
+            <div className="pt-4 border-t mt-6" style={{ borderColor: '#27272a' }}>
+              <PartnerLogosManager />
             </div>
           </div>
         </EditorSection>

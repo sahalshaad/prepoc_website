@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import Footer from '@/components/layout/Footer'
 import { PortfolioProject } from '@/types/admin'
+import { Highlight } from '@/components/ui/Highlight'
 
 interface WorksClientProps {
   initialProjects: PortfolioProject[]
@@ -69,7 +70,7 @@ export default function WorksClient({ initialProjects }: WorksClientProps) {
               className="font-heading font-bold text-foreground mb-6"
               style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
             >
-              Projects That Drive <span className="text-gradient-gold">Results</span>
+              Projects That Drive <Highlight color="text-[#d4af37]/30"><span className="text-gradient-gold">Results</span></Highlight>
             </motion.h1>
 
             <motion.p

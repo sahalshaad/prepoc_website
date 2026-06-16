@@ -1,10 +1,18 @@
 import type { Metadata, Viewport } from 'next'
-import { Sora, Inter } from 'next/font/google'
+import { Sora, Inter, Outfit } from 'next/font/google'
 import './globals.css'
+import LeadCapturePopup from '@/components/ui/LeadCapturePopup'
 
 const sora = Sora({
   subsets: ['latin'],
   variable: '--font-sora',
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700', '800'],
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
   display: 'swap',
   weight: ['300', '400', '500', '600', '700', '800'],
 })
@@ -51,11 +59,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sora.variable} ${inter.variable}`}
+      className={`${sora.variable} ${inter.variable} ${outfit.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         {children}
+        <LeadCapturePopup />
       </body>
     </html>
   )

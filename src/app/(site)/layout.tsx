@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import SmoothScroll from '@/components/common/SmoothScroll'
 import CustomCursor from '@/components/common/CustomCursor'
 import Navbar from '@/components/layout/Navbar'
-import ClientPreloader from '@/components/loading/ClientPreloader'
+import TopBar from '@/components/layout/TopBar'
+
 
 export const metadata: Metadata = {
   openGraph: {
@@ -42,11 +43,14 @@ export default function SiteLayout({
 }) {
   return (
     <>
-      <ClientPreloader />
+
       <SmoothScroll>
         <CustomCursor />
-        <Navbar />
-        {children}
+        <div className="relative z-10 flex flex-col min-h-screen">
+          <TopBar />
+          <Navbar />
+          <main className="flex-1">{children}</main>
+        </div>
       </SmoothScroll>
     </>
   )

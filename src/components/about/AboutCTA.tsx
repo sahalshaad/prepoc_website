@@ -8,15 +8,14 @@ export default function AboutCTA() {
   return (
     <section
       id="cta"
-      className="section-padding relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #080808 0%, #050505 100%)' }}
+      className="section-padding relative overflow-hidden bg-neutral-50"
       aria-label="Work with PREPOC"
     >
       {/* Glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 60% 50% at 50% 100%, rgba(14,93,71,0.18) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 60% 50% at 50% 100%, rgba(59,130,246,0.1) 0%, transparent 70%)',
         }}
         aria-hidden="true"
       />
@@ -27,7 +26,7 @@ export default function AboutCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="section-label mb-4"
+          className="text-blue-500 font-semibold tracking-wider uppercase text-sm mb-4"
         >
           Ready to Grow?
         </motion.div>
@@ -37,12 +36,12 @@ export default function AboutCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="font-heading font-bold text-foreground mb-6"
-          style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+          className="font-outfit font-medium text-black mb-6"
+          style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', lineHeight: 1.2, letterSpacing: '-0.02em' }}
         >
           Let&apos;s Build Something
           <br />
-          <span className="text-gradient-gold">Remarkable Together.</span>
+          <span className="text-blue-500">Remarkable Together.</span>
         </motion.h2>
 
         <motion.p
@@ -50,7 +49,7 @@ export default function AboutCTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-muted-foreground max-w-lg mx-auto mb-10"
+          className="text-neutral-600 font-outfit max-w-lg mx-auto mb-10"
           style={{ fontSize: '1.05rem', lineHeight: 1.75 }}
         >
           Join the 50+ businesses that trust PREPOC to drive their digital growth.
@@ -64,15 +63,15 @@ export default function AboutCTA() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4"
         >
-          <Link href="/#contact" className="btn-primary w-full sm:w-auto justify-center">
+          <Link href="/#contact" className="btn-primary w-full sm:w-auto justify-center font-outfit">
             Start a Project
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
-            href="mailto:hello@prepoc.com"
-            className="btn-outline flex items-center gap-2 w-full sm:w-auto justify-center"
+            href="mailto:info@prepoc.in"
+            className="btn-outline flex items-center gap-2 w-full sm:w-auto justify-center text-black border-neutral-300 hover:bg-neutral-100 font-outfit"
           >
-            hello@prepoc.com
+            info@prepoc.in
             <ArrowUpRight className="w-4 h-4" />
           </Link>
         </motion.div>
