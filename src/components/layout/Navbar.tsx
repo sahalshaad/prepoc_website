@@ -13,7 +13,7 @@ const navItems = [
   { label: 'Services', href: '#services', isLink: false, homeHref: '/#services', hasDropdown: true },
   { label: 'Portfolio', href: '#portfolio', isLink: false, homeHref: '/#portfolio', hasDropdown: false },
   { label: 'About Us', href: '/about', isLink: true, homeHref: '/about', hasDropdown: false },
-  { label: 'Blog', href: '#blog', isLink: false, homeHref: '/#blog', hasDropdown: false },
+  { label: 'Blog', href: '/blog', isLink: true, homeHref: '/blog', hasDropdown: false },
 ]
 
 export default function Navbar() {
@@ -177,7 +177,7 @@ export default function Navbar() {
                                       { label: 'All Services', href: '#services', homeHref: '/#services' },
                                       { label: 'Our Process', href: '#process', homeHref: '/#process' },
                                       { label: 'Case Studies', href: '#portfolio', homeHref: '/#portfolio' },
-                                      { label: 'FAQ', href: '#services', homeHref: '/#services' },
+                                      { label: 'FAQ', href: '#faq', homeHref: '/#faq' },
                                     ].map(link => (
                                       <button 
                                         key={link.label} 

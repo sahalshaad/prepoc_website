@@ -1,5 +1,3 @@
-'use client'
-
 import Footer from '@/components/layout/Footer'
 import Hero from '@/components/sections/Hero'
 import Services from '@/components/sections/Services'
@@ -10,8 +8,16 @@ import Portfolio from '@/components/sections/Portfolio'
 import Testimonials from '@/components/sections/Testimonials'
 import Technologies from '@/components/sections/Technologies'
 import CTA from '@/components/sections/CTA'
+import FAQClient from '@/components/sections/FAQClient'
+import { prisma } from '@/lib/prisma'
 
-export default function Home() {
+export default async function Home() {
+  const faqs = await prisma.faq.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' },
+    select: { id: true, question: true, answer: true },
+  })
+
   return (
     <main id="main-content">
       {/* Skip to main content for accessibility */}
@@ -31,8 +37,10 @@ export default function Home() {
       <Technologies />
       <Testimonials />
       <CTA />
+      <FAQClient faqs={faqs} />
 
       <Footer />
     </main>
   )
 }
+

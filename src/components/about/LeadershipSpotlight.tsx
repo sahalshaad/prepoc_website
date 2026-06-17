@@ -59,9 +59,150 @@ function LeaderCard({ member, index }: { member: LeadershipMember; index: number
   )
 }
 
+// ─── Single Founder Spotlight Block ───────────────────────────────────────────
+
+function FounderSpotlight({ founder, imageLeft }: { founder: Founder; imageLeft: boolean }) {
+  const portrait = (
+    <motion.div
+      initial={{ opacity: 0, x: imageLeft ? -40 : 40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex justify-center"
+    >
+      <div
+        className="absolute inset-0 rounded-[2rem] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.15) 0%, transparent 70%)',
+          filter: 'blur(30px)',
+          transform: 'scale(1.1)',
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="relative rounded-[2rem] overflow-hidden max-w-[280px] sm:max-w-[340px] lg:max-w-[400px] bg-white border border-neutral-200 shadow-md"
+        style={{ width: '100%', aspectRatio: '4/5' }}
+      >
+        <Image
+          src={founder.image}
+          alt={`${founder.name}, ${founder.position} at PREPOC`}
+          fill
+          sizes="(max-width: 1024px) 90vw, 400px"
+          className="object-cover object-top"
+          priority
+          unoptimized
+        />
+        <div
+          className="absolute bottom-0 left-0 right-0 px-6 py-5"
+          style={{ background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, transparent 100%)' }}
+        >
+          <p className="font-outfit font-bold text-black text-xl leading-tight">{founder.name}</p>
+          <p className="text-sm font-medium text-blue-600 font-outfit">{founder.position}</p>
+        </div>
+      </div>
+    </motion.div>
+  )
+
+  const message = (
+    <motion.div
+      initial={{ opacity: 0, x: imageLeft ? 40 : -40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-blue-50 border border-blue-100"
+        aria-hidden="true"
+      >
+        <Quote className="w-5 h-5 text-blue-500" />
+      </div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        className="text-black font-outfit mb-5 leading-relaxed"
+        style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.2rem)', lineHeight: 1.8 }}
+      >
+        &ldquo;{founder.message}&rdquo;
+      </motion.p>
+
+      {founder.messageExtended && (
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.28 }}
+          className="text-neutral-600 font-outfit mb-8"
+          style={{ fontSize: '1rem', lineHeight: 1.8 }}
+        >
+          {founder.messageExtended}
+        </motion.p>
+      )}
+
+      {founder.credentials.length > 0 && (
+        <motion.ul
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="flex flex-wrap gap-2 mb-8"
+          aria-label={`${founder.name} credentials`}
+        >
+          {founder.credentials.map((cred) => (
+            <li
+              key={cred}
+              className="text-xs font-medium px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 font-outfit"
+              style={{ letterSpacing: '0.02em' }}
+            >
+              {cred}
+            </li>
+          ))}
+        </motion.ul>
+      )}
+
+      <div className="h-px mb-8 bg-neutral-200" aria-hidden="true" />
+
+      <div className="flex items-center gap-4">
+        <div>
+          <p className="font-outfit font-bold text-black text-lg leading-tight">{founder.name}</p>
+          <p className="text-sm text-neutral-500 font-outfit">{founder.position}</p>
+        </div>
+
+        {founder.linkedin && isSafeUrl(founder.linkedin) && (
+          <a
+            href={founder.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${founder.name} on LinkedIn`}
+            className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.03] bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 font-outfit"
+          >
+            <Linkedin className="w-4 h-4" />
+            LinkedIn
+          </a>
+        )}
+      </div>
+    </motion.div>
+  )
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 md:mb-20 max-w-5xl mx-auto">
+      {imageLeft ? portrait : message}
+      {imageLeft ? message : portrait}
+    </div>
+  )
+}
+
 // ─── Main Section ─────────────────────────────────────────────────────────────
 
-export default function LeadershipSpotlight({ founder, team }: { founder: Founder; team: LeadershipMember[] }) {
+export default function LeadershipSpotlight({
+  founders,
+  team,
+}: {
+  founders: Founder[]
+  team: LeadershipMember[]
+}) {
   return (
     <section
       id="leadership"
@@ -118,150 +259,23 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
           </motion.p>
         </div>
 
-        {/* ── Founder Spotlight ─────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 md:mb-20 max-w-5xl mx-auto">
-
-          {/* Left — Portrait */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-            className="relative flex justify-center"
-          >
-            {/* Outer glow ring */}
-            <div
-              className="absolute inset-0 rounded-[2rem] pointer-events-none"
-              style={{
-                background: 'radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.15) 0%, transparent 70%)',
-                filter: 'blur(30px)',
-                transform: 'scale(1.1)',
-              }}
-              aria-hidden="true"
-            />
-
-            {/* Glass card */}
-            <div
-              className="relative rounded-[2rem] overflow-hidden max-w-[280px] sm:max-w-[360px] lg:max-w-[420px] bg-white border border-neutral-200 shadow-md"
-              style={{
-                width: '100%',
-                aspectRatio: '4/5',
-              }}
-            >
-              <Image
-                src={founder.image}
-                alt={`${founder.name}, ${founder.position} at PREPOC`}
-                fill
-                sizes="(max-width: 1024px) 90vw, 420px"
-                className="object-cover object-top"
-                priority
-                unoptimized
-              />
-
-              {/* Bottom name overlay */}
-              <div
-                className="absolute bottom-0 left-0 right-0 px-6 py-5"
-                style={{ background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, transparent 100%)' }}
-              >
-                <p className="font-outfit font-bold text-black text-xl leading-tight">
-                  {founder.name}
-                </p>
-                <p className="text-sm font-medium text-blue-600 font-outfit">
-                  {founder.position}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right — Message */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* Quote icon */}
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-blue-50 border border-blue-100"
-              aria-hidden="true"
-            >
-              <Quote className="w-5 h-5 text-blue-500" />
-            </div>
-
-            {/* Message paragraphs */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-black font-outfit mb-5 leading-relaxed"
-              style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.2rem)', lineHeight: 1.8 }}
-            >
-              &ldquo;{founder.message}&rdquo;
-            </motion.p>
-
-            {founder.messageExtended && (
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+        {/* ── Founder Spotlights ─────────────────────────────────────────── */}
+        {founders.map((founder, index) => (
+          <div key={founder.name + index}>
+            <FounderSpotlight founder={founder} imageLeft={index % 2 === 0} />
+            {index < founders.length - 1 && (
+              <motion.div
+                initial={{ opacity: 0, scaleX: 0 }}
+                whileInView={{ opacity: 1, scaleX: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.28 }}
-                className="text-neutral-600 font-outfit mb-8"
-                style={{ fontSize: '1rem', lineHeight: 1.8 }}
-              >
-                {founder.messageExtended}
-              </motion.p>
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="h-px mb-16 md:mb-20 max-w-5xl mx-auto"
+                style={{ background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.08), transparent)' }}
+                aria-hidden="true"
+              />
             )}
-
-            {/* Credentials */}
-            <motion.ul
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-wrap gap-2 mb-8"
-              aria-label="Founder credentials"
-            >
-              {founder.credentials.map((cred) => (
-                <li
-                  key={cred}
-                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 font-outfit"
-                  style={{
-                    letterSpacing: '0.02em',
-                  }}
-                >
-                  {cred}
-                </li>
-              ))}
-            </motion.ul>
-
-            {/* Divider */}
-            <div className="h-px mb-8 bg-neutral-200" aria-hidden="true" />
-
-            {/* Name block + LinkedIn */}
-            <div className="flex items-center gap-4">
-              <div>
-                <p className="font-outfit font-bold text-black text-lg leading-tight">
-                  {founder.name}
-                </p>
-                <p className="text-sm text-neutral-500 font-outfit">{founder.position}</p>
-              </div>
-
-              {founder.linkedin && isSafeUrl(founder.linkedin) && (
-                <a
-                  href={founder.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${founder.name} on LinkedIn`}
-                  className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.03] bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 font-outfit"
-                >
-                  <Linkedin className="w-4 h-4" />
-                  LinkedIn
-                </a>
-              )}
-            </div>
-          </motion.div>
-        </div>
+          </div>
+        ))}
 
         {/* ── Divider ───────────────────────────────────────────────────── */}
         <motion.div
@@ -303,3 +317,4 @@ export default function LeadershipSpotlight({ founder, team }: { founder: Founde
     </section>
   )
 }
+

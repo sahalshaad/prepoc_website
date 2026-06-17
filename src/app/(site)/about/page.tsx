@@ -52,26 +52,31 @@ export default async function AboutPage() {
 
   const members = (aboutJson.TEAM_MEMBERS || []) as TeamMember[]
   
-  // Derive Founder/CEO from isFounder flag
-  const founderMember = members.find((m: TeamMember) => m.isFounder)
-  const founder = founderMember ? {
-    name: founderMember.name,
-    position: founderMember.title,
-    message: founderMember.message || '',
-    messageExtended: founderMember.messageExtended,
-    image: founderMember.image,
-    linkedin: founderMember.linkedin,
-    credentials: founderMember.credentials || []
-  } : {
-    name: 'Aslam',
-    position: 'Founder & CEO',
-    message: '',
-    image: '',
-    linkedin: '',
-    credentials: []
-  }
+  const founderMembers = members
+    .filter((m: TeamMember) => m.isFounder && m.isActive)
+    .sort((a: TeamMember, b: TeamMember) => ((a as any).founderOrder ?? 0) - ((b as any).founderOrder ?? 0))
 
-  // Derive Leadership Team members (excluding the founder)
+  const founders: import('@/data/leadershipData').Founder[] = founderMembers.length > 0
+    ? founderMembers.map((m: TeamMember) => ({
+        name: m.name,
+        position: m.title,
+        message: m.message || '',
+        messageExtended: m.messageExtended,
+        image: m.image,
+        linkedin: m.linkedin,
+        credentials: m.credentials || [],
+        founderOrder: (m as any).founderOrder ?? 0,
+      }))
+    : [{
+        name: 'Aslam',
+        position: 'Founder',
+        message: '',
+        image: '',
+        linkedin: '',
+        credentials: [],
+      }]
+
+  // Derive Leadership Team members (excluding founders)
   const team = members
     .filter((m: TeamMember) => m.isLeadership && m.isActive && !m.isFounder)
     .map((m: TeamMember) => ({
@@ -92,7 +97,7 @@ export default async function AboutPage() {
       <main id="main-content">
         <AboutHero />
         <OurStory stats={aboutJson.ABOUT_STATS} />
-        <LeadershipSpotlight founder={founder} team={team} />
+        <LeadershipSpotlight founders={founders} team={team} />
         <CompanyValues values={aboutJson.COMPANY_VALUES} />
         <TeamSection members={members.filter((m: TeamMember) => m.isActive)} colors={aboutJson.DEPARTMENT_COLORS} departments={departments} />
         <OfficeGallery items={aboutJson.GALLERY_ITEMS} />

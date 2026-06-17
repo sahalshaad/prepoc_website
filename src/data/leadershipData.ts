@@ -6,6 +6,7 @@ export interface Founder {
   image: string
   linkedin: string
   credentials: string[]
+  founderOrder?: number
 }
 
 export interface LeadershipMember {

@@ -21,7 +21,7 @@ const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads')
 const THUMBNAILS_DIR = path.join(UPLOADS_DIR, 'thumbnails')
 
 // Ensure directories exist
-const CATEGORIES = ['founders', 'team', 'gallery', 'services', 'portfolio', 'testimonials', 'videos', 'marquee', 'partner-logos']
+const CATEGORIES = ['founders', 'team', 'gallery', 'services', 'portfolio', 'testimonials', 'videos', 'marquee', 'partner-logos', 'blog']
 
 export function initializeMediaDirectories() {
   if (!existsSync(UPLOADS_DIR)) mkdirSync(UPLOADS_DIR, { recursive: true })

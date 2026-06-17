@@ -7,7 +7,7 @@ import { Upload, X, FileVideo, Image as ImageIcon, Loader2 } from 'lucide-react'
 interface MediaUploaderProps {
   value: string
   onChange: (url: string) => void
-  category: 'founders' | 'team' | 'gallery' | 'services' | 'portfolio' | 'testimonials' | 'videos'
+  category: 'founders' | 'team' | 'gallery' | 'services' | 'portfolio' | 'testimonials' | 'videos' | 'blog'
   accept?: 'image' | 'video' | 'any'
   label?: string
 }

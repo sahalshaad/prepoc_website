@@ -26,6 +26,8 @@ import {
   FileText,
   Building2,
   Send,
+  HelpCircle,
+  BookOpen,
   type LucideIcon
 } from 'lucide-react'
 
@@ -53,11 +55,13 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Home Page', href: '/admin/home', icon: Home },
       { label: 'About Page', href: '/admin/about', icon: Info },
+      { label: 'Blog', href: '/admin/blog', icon: BookOpen },
       { label: 'Team', href: '/admin/team', icon: Users },
       { label: 'Services', href: '/admin/services', icon: Zap },
       { label: 'Portfolio', href: '/admin/portfolio', icon: Briefcase },
       { label: 'Testimonials', href: '/admin/testimonials', icon: Star },
       { label: 'Gallery', href: '/admin/gallery', icon: Image },
+      { label: 'FAQ', href: '/admin/faq', icon: HelpCircle },
     ],
   },
   {

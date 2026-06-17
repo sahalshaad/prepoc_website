@@ -26,3 +26,96 @@ model Campaign {
   createdAt       DateTime @default(now())
   sentAt          DateTime?
 }
+
+model Faq {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogAuthor {
+  id          String     @id @default(cuid())
+  name        String
+  image       String?
+  role        String?
+  bio         String?
+  linkedinUrl String?
+  posts       BlogPost[]
+}
+
+model BlogCategory {
+  id              String     @id @default(cuid())
+  name            String
+  slug            String     @unique
+  description     String?
+  metaTitle       String?
+  metaDescription String?
+  categoryImage   String?
+  posts           BlogPost[]
+}
+
+model BlogTag {
+  id    String     @id @default(cuid())
+  name  String
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+model BlogPost {
+  id                String       @id @default(cuid())
+  title             String
+  slug              String       @unique
+  content           String 
+  excerpt           String?
+  status            String       @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  
+  categoryId        String?
+  category          BlogCategory? @relation(fields: [categoryId], references: [id])
+  
+  tags              BlogTag[]
+  
+  authorId          String?
+  author            BlogAuthor?  @relation(fields: [authorId], references: [id])
+  
+  seoTitle          String?
+  seoDescription    String?
+  seoKeywords       String?
+  canonicalUrl      String?
+  schemaMarkup      String?
+  
+  featuredImage     String?
+  featuredImageAlt  String?
+  ogImage           String?
+  
+  views             Int          @default(0)
+  estimatedReadTime Int?
+  allowComments     Boolean      @default(false)
+  isPinned          Boolean      @default(false)
+  isFeatured        Boolean      @default(false)
+  sortOrder         Int          @default(0)
+  
+  publishedAt       DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  
+  revisions         BlogRevision[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([categoryId])
+  @@index([publishedAt])
+}
+
+model BlogRevision {
+  id        String   @id @default(cuid())
+  postId    String
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+}
+
+
