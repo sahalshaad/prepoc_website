@@ -16,9 +16,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  output: 'standalone',
   serverExternalPackages: ['sharp', 'fluent-ffmpeg', '@ffmpeg-installer/ffmpeg'],
   async headers() {
     return [
