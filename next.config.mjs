@@ -12,6 +12,8 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
+    cpus: 4,
+    workerThreads: false,
   },
   typescript: {
     ignoreBuildErrors: true,
