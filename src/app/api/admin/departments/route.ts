@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import { readData, writeData } from '@/lib/dataStore'
@@ -8,6 +9,8 @@ import { DepartmentCMS } from '@/types/admin'
 const DEPS_PATH = path.join(process.cwd(), 'src', 'data', 'departmentsData.json')
 
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const deps = await readData<DepartmentCMS[]>(DEPS_PATH, [])
     deps.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
@@ -28,6 +31,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const parseResult = DepartmentSchema.safeParse(body)
@@ -63,6 +68,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const { id, name, isActive, displayOrder, action, departments } = body
@@ -105,6 +112,8 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const { searchParams } = new URL(req.url)
     const id = searchParams.get('id')

@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import { z } from 'zod'
@@ -9,6 +10,8 @@ import { ServiceCMS } from '@/types/admin'
 const BulkServicesSchema = z.array(ServiceItemSchema)
 
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const dataPath = path.join(process.cwd(), 'src', 'data', 'servicesData.json')
     const dataJson = await readData(dataPath, { SERVICES: [] })
@@ -21,6 +24,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const { service, services } = body
@@ -76,6 +81,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const { searchParams } = new URL(req.url)
     const id = searchParams.get('id')

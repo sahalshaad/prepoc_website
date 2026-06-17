@@ -2,9 +2,11 @@
 
 import { newsletterService } from '@/services/newsletterService'
 import { revalidatePath } from 'next/cache'
+import { requireAdmin } from '@/lib/admin/auth'
 
 export async function createCampaignAction(subject: string, content: string) {
   try {
+    await requireAdmin()
     const campaign = await newsletterService.createCampaign({ subject, content })
     revalidatePath('/admin/newsletter')
     return { success: true, campaign }
@@ -15,6 +17,7 @@ export async function createCampaignAction(subject: string, content: string) {
 
 export async function sendCampaignAction(campaignId: string) {
   try {
+    await requireAdmin()
     await newsletterService.sendCampaign(campaignId)
     revalidatePath('/admin/newsletter')
     return { success: true }

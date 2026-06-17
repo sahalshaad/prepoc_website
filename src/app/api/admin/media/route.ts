@@ -1,7 +1,10 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { listMedia, deleteMedia } from '@/lib/admin/mediaService'
 
 export async function GET(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const { searchParams } = new URL(req.url)
     const category = searchParams.get('category') || undefined
@@ -14,6 +17,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const { searchParams } = new URL(req.url)
     const url = searchParams.get('url')

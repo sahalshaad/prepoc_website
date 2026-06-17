@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Clock, Calendar, ChevronRight, Share2, Facebook, Twitter, Linkedin, Link as LinkIcon, Check } from 'lucide-react'
+import sanitizeHtml from 'sanitize-html'
 
 // Helper to format date
 const formatDate = (dateStr: string) => {
@@ -121,7 +122,14 @@ export default function SinglePostClient({ post, relatedPosts }: { post: any, re
           <div 
             id="article-content"
             className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-a:text-[#0E5D47] hover:prose-a:text-[#0b4d3a] prose-img:rounded-xl"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content, {
+              allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'iframe']),
+              allowedAttributes: {
+                ...sanitizeHtml.defaults.allowedAttributes,
+                'img': ['src', 'alt', 'width', 'height'],
+                'iframe': ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen']
+              }
+            }) }}
           />
 
           {/* Tags */}

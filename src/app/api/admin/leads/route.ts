@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import { z } from 'zod'
@@ -9,6 +10,8 @@ import { ContactLead } from '@/types/admin'
 const BulkLeadsSchema = z.array(LeadSchema.extend({ id: z.string(), submittedAt: z.string() }).passthrough())
 
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const dataPath = path.join(process.cwd(), 'src', 'data', 'leadsData.json')
     const dataJson = await readData(dataPath, { LEADS: [] })
@@ -21,6 +24,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const { lead, leads } = body

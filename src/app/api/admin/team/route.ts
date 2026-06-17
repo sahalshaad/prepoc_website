@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import { z } from 'zod'
@@ -9,6 +10,8 @@ import { TeamMember } from '@/data/aboutData'
 const BulkTeamMemberSchema = z.array(TeamMemberSchema)
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const { member, members } = body
@@ -104,6 +107,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const aboutPath = path.join(process.cwd(), 'src', 'data', 'aboutData.json')
     const aboutJson = await readData(aboutPath, { TEAM_MEMBERS: [] })

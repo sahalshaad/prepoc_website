@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/admin/ui/PageHeader'
 import { MediaUploader } from '@/components/admin/ui/MediaUploader'
 import { GripVertical, Pencil, ToggleLeft, ToggleRight, Save, Plus, Trash2, X } from 'lucide-react'
 import { ServiceCMS } from '@/types/admin'
+import sanitizeHtml from 'sanitize-html'
 
 export default function ServicesPage() {
   const [services, setServices] = useState<ServiceCMS[]>([])
@@ -298,7 +299,7 @@ export default function ServicesPage() {
               <p className="text-sm font-medium" style={{ color: '#F8F8F8' }}>
                 {service.title}
               </p>
-              <p className="text-xs truncate max-w-[400px]" style={{ color: '#71717a' }} dangerouslySetInnerHTML={{ __html: service.desc.substring(0, 100) }} />
+              <p className="text-xs truncate max-w-[400px]" style={{ color: '#71717a' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(service.desc.substring(0, 100)) }} />
             </div>
 
             {/* Actions */}

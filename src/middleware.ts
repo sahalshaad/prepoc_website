@@ -16,10 +16,12 @@ export function middleware(request: NextRequest) {
   }
 
   const session = request.cookies.get('prepoc-admin-session')
-  const validToken = process.env.ADMIN_SESSION_TOKEN
   
-  // Secure comparison without fallback
-  const isAuthenticated = !!(session?.value && validToken && session.value === validToken)
+  // Edge runtime cannot query SQLite directly.
+  // Middleware does a lightweight check for cookie existence.
+  // Full cryptographically secure DB session validation is enforced
+  // downstream in the Server Components/Actions via requireAdmin().
+  const isAuthenticated = !!session?.value
 
   // Handle protected API routes
   if (isAdminApi || isUploadApi || isMediaApi) {
@@ -34,9 +36,6 @@ export function middleware(request: NextRequest) {
 
   // Handle Admin Pages
   if (PUBLIC_ADMIN_PATHS.includes(pathname)) {
-    if (isAuthenticated) {
-      return NextResponse.redirect(new URL('/admin/dashboard', request.url))
-    }
     return NextResponse.next()
   }
 

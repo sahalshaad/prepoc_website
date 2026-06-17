@@ -1,11 +1,19 @@
 import { AdminSidebar } from '@/components/admin/shell/AdminSidebar'
 import { AdminTopbar } from '@/components/admin/shell/AdminTopbar'
+import { requireAdmin } from '@/lib/admin/auth'
+import { redirect } from 'next/navigation'
 
-export default function AdminShellLayout({
+export default async function AdminShellLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  try {
+    await requireAdmin()
+  } catch (e) {
+    redirect('/admin/login')
+  }
+
   return (
     <div
       className="flex h-screen overflow-hidden"

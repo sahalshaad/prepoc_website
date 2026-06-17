@@ -5,6 +5,7 @@ import { Check, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { ServiceCMS } from '@/types/admin'
 import { Highlight } from '@/components/ui/Highlight'
+import sanitizeHtml from 'sanitize-html'
 
 export default function Services() {
   const [features, setFeatures] = useState<ServiceCMS[]>([])
@@ -106,7 +107,7 @@ export default function Services() {
 
                 <p
                   className="text-neutral-600 leading-relaxed mb-8 text-[17px]"
-                  dangerouslySetInnerHTML={{ __html: feature.desc }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(feature.desc) }}
                 />
 
                 <ul className="space-y-4 mb-10">
@@ -115,7 +116,7 @@ export default function Services() {
                       <div className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
                         <Check size={12} strokeWidth={3} />
                       </div>
-                      <span className="text-neutral-800" dangerouslySetInnerHTML={{ __html: item.text }} />
+                      <span className="text-neutral-800" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.text) }} />
                     </li>
                   ))}
                 </ul>

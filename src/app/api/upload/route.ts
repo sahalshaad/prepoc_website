@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { saveMedia } from '@/lib/admin/mediaService'
 import { checkRateLimit } from '@/lib/rateLimit'
@@ -6,6 +7,8 @@ import { checkRateLimit } from '@/lib/rateLimit'
 export const maxDuration = 60 // Allow up to 60s for video optimization
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown'
     const isAllowed = checkRateLimit(ip, 'upload', 10, 60 * 60 * 1000)

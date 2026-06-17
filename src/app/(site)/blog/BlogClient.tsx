@@ -233,7 +233,7 @@ export default function BlogClient({ initialPosts, categories }: BlogClientProps
                         />
                         <div className="absolute top-4 left-4">
                           <span className="px-3 py-1 text-xs font-semibold bg-white/90 backdrop-blur-sm text-[#0E5D47] rounded-full shadow-sm">
-                            {post.category}
+                            {post.categoryName}
                           </span>
                         </div>
                       </Link>

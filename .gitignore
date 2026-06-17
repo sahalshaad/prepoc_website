@@ -35,3 +35,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# PII and Database Files
+prisma/dev.db
+public/uploads/resumes/*
+storage/private/resumes/*
+src/data/leadsData.json
+src/data/jobApplicationsData.json
+dev.db

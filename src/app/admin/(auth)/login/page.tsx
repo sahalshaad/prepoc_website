@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { loginAction } from '@/lib/admin/auth'
+import Link from 'next/link'
 
 
 export default function LoginPage() {
@@ -120,7 +121,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@prepoc.com"
+                placeholder="admin@prepoc.in"
                 required
                 autoComplete="email"
                 className="w-full px-3.5 py-2.5 rounded-lg text-sm outline-none transition-all duration-200"
@@ -173,6 +174,15 @@ export default function LoginPage() {
                   e.target.style.boxShadow = 'none'
                 }}
               />
+              <div className="mt-2 flex justify-end">
+                <Link
+                  href="/admin/login/forgot"
+                  className="text-xs transition-colors duration-200 hover:text-white"
+                  style={{ color: '#D4AF37', fontFamily: 'var(--font-inter)' }}
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             {/* Error message */}

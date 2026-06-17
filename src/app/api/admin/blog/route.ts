@@ -1,7 +1,10 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search') || '';
@@ -38,6 +41,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json();
     const { title, slug, content, excerpt, status, categoryId, authorId, tags, featuredImage, seoTitle, seoDescription, isFeatured, isPinned } = body;

@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import { readData, writeData } from '@/lib/dataStore'
@@ -7,6 +8,8 @@ import { JobApplication } from '@/types/admin'
 const DATA_PATH = path.join(process.cwd(), 'src', 'data', 'jobApplicationsData.json')
 
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const dataJson = await readData(DATA_PATH, { APPLICATIONS: [] })
     return NextResponse.json({ success: true, data: dataJson.APPLICATIONS || [] })
@@ -18,6 +21,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const { application, action, id } = body

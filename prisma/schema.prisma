@@ -118,4 +118,84 @@ model BlogRevision {
   createdAt DateTime @default(now())
 }
 
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+model AdminUser {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  passwordHash String
+  role         AdminRole   @default(ADMIN)
+
+  lastLogin    DateTime?
+  passwordChangedAt DateTime?
+  requiresPasswordChange Boolean @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  sessions     Session[]
+  resetTokens  PasswordResetToken[]
+}
+
+model Session {
+  id         String    @id @default(cuid())
+  tokenHash  String    @unique
+  adminId    String
+
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+
+  admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ipAddress String
+  attemptAt DateTime @default(now())
+
+  @@index([email, ipAddress, attemptAt])
+}
+
+model PasswordResetToken {
+  id          String    @id @default(cuid())
+  adminUserId String
+  tokenHash   String    @unique
+
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  adminUser AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+}
+
+model ResetAttempt {
+  id        String   @id @default(cuid())
+  ipAddress String
+  attemptAt DateTime @default(now())
+
+  @@index([ipAddress, attemptAt])
+}
+
+model AdminAuditLog {
+  id          String   @id @default(cuid())
+  adminUserId String?
+  action      String
+
+  metadata    Json?
+
+  ipAddress   String?
+  userAgent   String?
+
+  timestamp   DateTime @default(now())
+
+  @@index([adminUserId])
+  @@index([action])
+}
 

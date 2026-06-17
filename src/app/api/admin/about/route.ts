@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs/promises'
 import path from 'path'
@@ -20,6 +21,8 @@ function memberToFounder(m: TeamMember) {
 
 // ─── GET ─────────────────────────────────────────────────────────────────────
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const aboutPath = path.join(process.cwd(), 'src', 'data', 'aboutData.json')
     const aboutContent = await fs.readFile(aboutPath, 'utf-8')
@@ -54,6 +57,8 @@ export async function GET() {
 
 // ─── POST ────────────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const { founders, values } = body

@@ -1,7 +1,10 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const post = await prisma.blogPost.findUnique({
       where: { id: params.id },
@@ -28,6 +31,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json();
     const { title, slug, content, excerpt, status, categoryId, authorId, tags, featuredImage, seoTitle, seoDescription, isFeatured, isPinned } = body;
@@ -87,6 +92,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     await prisma.blogPost.delete({
       where: { id: params.id },

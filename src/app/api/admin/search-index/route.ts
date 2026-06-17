@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextResponse } from 'next/server'
 import fs from 'fs/promises'
 import path from 'path'
@@ -35,6 +36,8 @@ async function safeReadFile(fileName: string) {
 }
 
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const results: SearchIndexItem[] = [...PAGES]
 

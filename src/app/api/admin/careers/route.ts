@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 import { readData, writeData } from '@/lib/dataStore'
@@ -6,6 +7,8 @@ import { logAdminAction } from '@/lib/admin/auditLogger'
 import { JobVacancy } from '@/types/admin'
 
 export async function GET() {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const dataPath = path.join(process.cwd(), 'src', 'data', 'careersData.json')
     const dataJson = await readData(dataPath, { VACANCIES: [] })
@@ -18,6 +21,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
+
   try {
     const body = await req.json()
     const { vacancy, action, id } = body

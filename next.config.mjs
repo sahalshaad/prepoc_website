@@ -50,8 +50,10 @@ const nextConfig = {
             value: 'strict-origin-when-cross-origin'
           },
           {
-            key: 'Content-Security-Policy-Report-Only',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://randomuser.me https://images.unsplash.com; font-src 'self' data:; connect-src 'self';"
+            key: 'Content-Security-Policy',
+            value: process.env.NODE_ENV === 'development'
+              ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://randomuser.me https://images.unsplash.com; font-src 'self' data:; connect-src 'self';"
+              : "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://randomuser.me https://images.unsplash.com; font-src 'self' data:; connect-src 'self';"
           }
         ]
       }

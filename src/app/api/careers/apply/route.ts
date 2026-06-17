@@ -44,19 +44,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Resume must be less than 10MB' }, { status: 400 })
     }
 
-    // Validate resume format
+    // Validate resume format (Whitelisting approach)
     const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
     if (!validTypes.includes(resumeFile.type)) {
       return NextResponse.json({ success: false, error: 'Resume must be a PDF, DOC, or DOCX file' }, { status: 400 })
     }
 
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'resumes')
+    const uploadDir = path.join(process.cwd(), 'storage', 'private', 'resumes')
     await fs.mkdir(uploadDir, { recursive: true })
 
     const ext = resumeFile.name.split('.').pop()?.toLowerCase() || 'pdf'
-    // Prevent executable extensions
-    if (['exe', 'sh', 'bat', 'js', 'php'].includes(ext)) {
-      return NextResponse.json({ success: false, error: 'Invalid file extension' }, { status: 400 })
+    // Strict extension whitelisting
+    if (!['pdf', 'doc', 'docx'].includes(ext)) {
+      return NextResponse.json({ success: false, error: 'Invalid file extension. Only .pdf, .doc, and .docx are allowed.' }, { status: 400 })
     }
 
     const filename = `resume-${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(arrayBuffer)
     await fs.writeFile(filepath, buffer)
 
-    const resumeUrl = `/uploads/resumes/${filename}`
+    const resumeUrl = `/api/admin/job-applications/download?file=${filename}`
 
     const application: JobApplication = {
       id: `app-${Date.now()}`,

@@ -2,9 +2,11 @@
 
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { requireAdmin } from '@/lib/admin/auth'
 
 export async function createFaqAction(data: { question: string; answer: string; order?: number }) {
   try {
+    await requireAdmin()
     const faq = await prisma.faq.create({
       data: {
         question: data.question.trim(),
@@ -26,6 +28,7 @@ export async function updateFaqAction(
   data: { question?: string; answer?: string; order?: number; isActive?: boolean }
 ) {
   try {
+    await requireAdmin()
     const faq = await prisma.faq.update({
       where: { id },
       data: {
@@ -45,6 +48,7 @@ export async function updateFaqAction(
 
 export async function deleteFaqAction(id: string) {
   try {
+    await requireAdmin()
     await prisma.faq.delete({ where: { id } })
     revalidatePath('/admin/faq')
     revalidatePath('/')
@@ -56,6 +60,7 @@ export async function deleteFaqAction(id: string) {
 
 export async function reorderFaqAction(items: { id: string; order: number }[]) {
   try {
+    await requireAdmin()
     await Promise.all(
       items.map((item) =>
         prisma.faq.update({ where: { id: item.id }, data: { order: item.order } })
