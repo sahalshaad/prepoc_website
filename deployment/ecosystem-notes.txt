@@ -1,0 +1,26 @@
+cPanel Passenger Deployment Instructions
+----------------------------------------
+This application is configured to run on cPanel's Node.js Passenger environment using a Next.js Standalone build.
+
+Application Setup:
+1. In cPanel, navigate to "Setup Node.js App".
+2. Create a new Node.js application.
+3. Select Node.js version 20.x (must match local 20.20.2).
+4. Application Root: Set to the path where you uploaded these files (e.g., prepoc-website).
+5. Application URL: Set to your public domain.
+6. Application Startup File: server.js
+7. Save the application.
+
+Environment Variables:
+Make sure to add the following required environment variables in the cPanel Node.js App interface:
+- NODE_ENV: production
+- PORT: 3000 (Passenger will inject this automatically, but Next.js respects it)
+- NEXT_PUBLIC_SITE_URL: (Your public URL)
+- RESEND_API_KEY: (Your production Resend API key)
+- RESEND_FROM_EMAIL: noreply@prepoc.in
+- DATABASE_URL: (Your production database connection string)
+
+Restart Procedure:
+Any time you update the codebase or change environment variables:
+1. Open "Setup Node.js App" in cPanel.
+2. Click the "Restart" button for this application to gracefully restart the Passenger worker threads.

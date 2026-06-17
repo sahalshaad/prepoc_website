@@ -1,0 +1,50 @@
+[
+  {
+    "id": "leadership",
+    "name": "Leadership",
+    "isActive": true,
+    "displayOrder": 1,
+    "createdAt": "2026-06-13T00:00:00Z",
+    "updatedAt": "2026-06-13T00:00:00Z"
+  },
+  {
+    "id": "digital-marketing",
+    "name": "Digital Marketing",
+    "isActive": true,
+    "displayOrder": 2,
+    "createdAt": "2026-06-13T00:00:00Z",
+    "updatedAt": "2026-06-13T00:00:00Z"
+  },
+  {
+    "id": "branding-design",
+    "name": "Branding & Design",
+    "isActive": true,
+    "displayOrder": 3,
+    "createdAt": "2026-06-13T00:00:00Z",
+    "updatedAt": "2026-06-13T00:00:00Z"
+  },
+  {
+    "id": "web-development",
+    "name": "Web Development",
+    "isActive": true,
+    "displayOrder": 4,
+    "createdAt": "2026-06-13T00:00:00Z",
+    "updatedAt": "2026-06-13T00:00:00Z"
+  },
+  {
+    "id": "video-production",
+    "name": "Video Production",
+    "isActive": true,
+    "displayOrder": 6,
+    "createdAt": "2026-06-13T00:00:00Z",
+    "updatedAt": "2026-06-13T00:00:00Z"
+  },
+  {
+    "id": "verification-dept",
+    "name": "Verified Dept",
+    "isActive": false,
+    "displayOrder": 8,
+    "createdAt": "2026-06-13T06:13:55.687Z",
+    "updatedAt": "2026-06-13T06:15:04.383Z"
+  }
+]

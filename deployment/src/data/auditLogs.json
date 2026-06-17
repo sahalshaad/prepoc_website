@@ -1,0 +1,61 @@
+{
+  "AUDIT_LOGS": [
+    {
+      "id": "log_1781618732219_lpsz905",
+      "timestamp": "2026-06-16T14:05:32.219Z",
+      "adminId": "system",
+      "action": "DELETE",
+      "entity": "JOB_APPLICATION",
+      "entityId": "app-1781522681393"
+    },
+    {
+      "id": "log_1781613408334_icjyhfx",
+      "timestamp": "2026-06-16T12:36:48.334Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "JOB_APPLICATION",
+      "entityId": "app-1781522681393",
+      "details": {
+        "status": "rejected"
+      }
+    },
+    {
+      "id": "log_1781512364284_f9ae3pl",
+      "timestamp": "2026-06-15T08:32:44.284Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "SERVICE",
+      "entityId": "5"
+    },
+    {
+      "id": "log_1781339156342_atkuaq9",
+      "timestamp": "2026-06-13T08:25:56.342Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "LEAD",
+      "entityId": "5",
+      "details": {
+        "status": "contacted"
+      }
+    },
+    {
+      "id": "log_1781339150841_2rkrz2l",
+      "timestamp": "2026-06-13T08:25:50.841Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "LEAD",
+      "entityId": "1",
+      "details": {
+        "status": "contacted"
+      }
+    },
+    {
+      "id": "log_1781339085448_u9tf4hh",
+      "timestamp": "2026-06-13T08:24:45.448Z",
+      "adminId": "system",
+      "action": "BULK_UPDATE",
+      "entity": "PORTFOLIO",
+      "entityId": "all"
+    }
+  ]
+}

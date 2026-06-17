@@ -1,0 +1,42 @@
+{
+  "app/admin/(shell)/about/page.tsx -> @/components/admin/ui/MediaUploader": {
+    "id": 9119,
+    "files": [
+      "static/chunks/1500.f0a78b70eacaef6e.js"
+    ]
+  },
+  "app/admin/(shell)/portfolio/[id]/page.tsx -> @/components/admin/ui/MediaUploader": {
+    "id": 9119,
+    "files": [
+      "static/chunks/5772-2d538cc4a7c2ac4a.js",
+      "static/chunks/9119.f0a78b70eacaef6e.js"
+    ]
+  },
+  "app/admin/(shell)/portfolio/new/page.tsx -> @/components/admin/ui/MediaUploader": {
+    "id": 9119,
+    "files": [
+      "static/chunks/5772-2d538cc4a7c2ac4a.js",
+      "static/chunks/9119.f0a78b70eacaef6e.js"
+    ]
+  },
+  "app/admin/(shell)/team/[id]/page.tsx -> @/components/admin/ui/MediaUploader": {
+    "id": 9119,
+    "files": [
+      "static/chunks/5772-2d538cc4a7c2ac4a.js",
+      "static/chunks/9119.f0a78b70eacaef6e.js"
+    ]
+  },
+  "app/admin/(shell)/team/new/page.tsx -> @/components/admin/ui/MediaUploader": {
+    "id": 9119,
+    "files": [
+      "static/chunks/5772-2d538cc4a7c2ac4a.js",
+      "static/chunks/9119.f0a78b70eacaef6e.js"
+    ]
+  },
+  "components/common/SmoothScroll.tsx -> lenis": {
+    "id": 65792,
+    "files": [
+      "static/chunks/5792.606193ae83c48c62.js"
+    ]
+  }
+}

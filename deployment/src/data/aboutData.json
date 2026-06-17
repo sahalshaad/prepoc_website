@@ -1,0 +1,246 @@
+{
+  "TEAM_MEMBERS": [
+    {
+      "id": 1,
+      "name": "Aslam",
+      "title": "Founder",
+      "department": "Leadership",
+      "bio": "Founder of PREPOC Technologies.",
+      "image": "/uploads/founders/1781169952494-9241b9b7-onamnyzlocksbeardbeardiesofigbeardskeralamundudhothinyzlocksbeardoil.webp",
+      "linkedin": "https://linkedin.com/",
+      "isFounder": true,
+      "founderOrder": 1,
+      "isLeadership": true,
+      "isActive": true,
+      "message": "PC Muhammed Aslam is a purpose-driven entrepreneur with over a decade of hands-on business experience. With roots in Kerala, Aslam built businesses from the ground up — most notably a successful venture in the coconut-based product industry, which he led for over seven years. In 2021 he founded Nyzlocks, a premium men's grooming brand now expanding across India.",
+      "messageExtended": "His ability to identify niche demands, connect with consumer sentiment, and scale products through digital channels positions him as a new-generation leader in India's grooming industry.",
+      "credentials": ["10+ Years Entrepreneurship", "Kerala & India Markets", "Brand Builder"]
+    },
+    {
+      "id": 101,
+      "name": "Muhammed Sahal",
+      "title": "CEO",
+      "department": "Leadership",
+      "bio": "CEO of PREPOC Technologies.",
+      "image": "/uploads/founders/1781169952494-9241b9b7-onamnyzlocksbeardbeardiesofigbeardskeralamundudhothinyzlocksbeardoil.webp",
+      "linkedin": "https://linkedin.com/",
+      "isFounder": true,
+      "founderOrder": 2,
+      "isLeadership": true,
+      "isActive": true,
+      "message": "At PREPOC, we believe every business deserves world-class digital execution — not just big brands. Our mission is to be the growth engine for ambitious companies, combining strategy, creativity, and technology to deliver results that truly move the needle.",
+      "messageExtended": "What started as a vision has grown into a 30-strong team of specialists across marketing, design, engineering, video, and AI — united by a singular commitment to our clients' success.",
+      "credentials": ["Digital Strategy Expert", "150+ Brands Scaled", "UAE & South Asia"]
+    },
+    {
+      "id": 2,
+      "name": "Rohan Mehta",
+      "title": "Chief Technology Officer",
+      "department": "Leadership",
+      "bio": "",
+      "image": "https://randomuser.me/api/portraits/men/32.jpg",
+      "linkedin": "https://linkedin.com/",
+      "isFounder": false,
+      "isLeadership": true,
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "name": "Zara Ahmed",
+      "title": "Creative Director",
+      "department": "Leadership",
+      "bio": "",
+      "image": "https://randomuser.me/api/portraits/women/68.jpg",
+      "linkedin": "https://linkedin.com/",
+      "isFounder": false,
+      "isLeadership": true,
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "name": "Tariq Hassan",
+      "title": "Head of Growth",
+      "department": "Leadership",
+      "bio": "",
+      "image": "https://randomuser.me/api/portraits/men/55.jpg",
+      "linkedin": "https://linkedin.com/",
+      "isFounder": false,
+      "isLeadership": true,
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "name": "Priya Nair",
+      "title": "Operations Director",
+      "department": "Leadership",
+      "bio": "",
+      "image": "https://randomuser.me/api/portraits/women/29.jpg",
+      "linkedin": "https://linkedin.com/",
+      "isFounder": false,
+      "isLeadership": true,
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "name": "Muhammad Shahalshad",
+      "title": "Ai Specialist",
+      "department": "Web Development",
+      "bio": "",
+      "image": "/uploads/team/1781173337215-104d8343-whatsappimage2024-11-11at22.16.31.webp",
+      "linkedin": "",
+      "isFounder": false,
+      "isLeadership": false,
+      "isActive": true
+    }
+  ],
+  "DEPARTMENT_COLORS": {
+    "Leadership": "#D4AF37",
+    "Digital Marketing": "#0E5D47",
+    "Branding & Design": "#ff00aa",
+    "Web Development": "#00f3ff",
+    "AI & Automation": "#9d00ff",
+    "Video Production": "#ff5e00"
+  },
+  "ABOUT_STATS": [
+    {
+      "value": 150,
+      "suffix": "+",
+      "label": "Projects Delivered"
+    },
+    {
+      "value": 50,
+      "suffix": "+",
+      "label": "Happy Clients"
+    },
+    {
+      "value": 5,
+      "suffix": "+",
+      "label": "Years of Excellence"
+    },
+    {
+      "value": 99,
+      "suffix": "%",
+      "label": "Client Satisfaction"
+    }
+  ],
+  "COMPANY_VALUES": [
+    {
+      "icon": "🎯",
+      "title": "Results First",
+      "description": "Every decision is backed by data. We measure what matters and optimize relentlessly."
+    },
+    {
+      "icon": "🤝",
+      "title": "True Partnership",
+      "description": "We treat your business as our own. Your wins are our wins, your challenges are ours to solve."
+    },
+    {
+      "icon": "⚡",
+      "title": "Speed & Precision",
+      "description": "We move fast without cutting corners. Agile execution with an obsession for quality."
+    },
+    {
+      "icon": "🌍",
+      "title": "Global Thinking",
+      "description": "World-class expertise delivered with local understanding across every market we serve."
+    }
+  ],
+  "GALLERY_ITEMS": [
+    {
+      "id": 1,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "alt": "PREPOC open office workspace",
+      "size": "tall",
+      "caption": "Our Creative Hub"
+    },
+    {
+      "id": 2,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+      "alt": "Team collaboration session",
+      "size": "normal",
+      "caption": "Strategy Sessions"
+    },
+    {
+      "id": 3,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?w=800&q=80",
+      "alt": "Modern meeting room",
+      "size": "normal",
+      "caption": "Innovation Lab"
+    },
+    {
+      "id": 4,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80",
+      "alt": "Team working on design",
+      "size": "wide",
+      "caption": "Design Studio"
+    },
+    {
+      "id": 5,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1587560699334-cc4ff634909a?w=800&q=80",
+      "alt": "Video production setup",
+      "size": "tall",
+      "caption": "Production Suite"
+    },
+    {
+      "id": 6,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80",
+      "alt": "Team lunch and culture",
+      "size": "normal",
+      "caption": "Team Culture"
+    },
+    {
+      "id": 7,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80",
+      "alt": "Developer workstation",
+      "size": "normal",
+      "caption": "Engineering Space"
+    },
+    {
+      "id": 8,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80",
+      "alt": "Client presentation",
+      "size": "wide",
+      "caption": "Client Presentations"
+    },
+    {
+      "id": 9,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80",
+      "alt": "Creative brainstorm wall",
+      "size": "normal",
+      "caption": "Idea Walls"
+    },
+    {
+      "id": 10,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1573165850883-9b0e18c44bd2?w=800&q=80",
+      "alt": "Team celebrating a launch",
+      "size": "normal",
+      "caption": "Launch Day"
+    },
+    {
+      "id": 11,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?w=800&q=80",
+      "alt": "Rooftop office view",
+      "size": "tall",
+      "caption": "The Rooftop Lounge"
+    },
+    {
+      "id": 12,
+      "type": "image",
+      "src": "https://images.unsplash.com/photo-1559526324-593bc073d938?w=800&q=80",
+      "alt": "Agency awards on display",
+      "size": "normal",
+      "caption": "Our Awards"
+    }
+  ]
+}
