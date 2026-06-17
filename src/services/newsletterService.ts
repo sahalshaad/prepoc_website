@@ -1,9 +1,16 @@
 import { prisma } from '@/lib/prisma'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key')
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'newsletter@prepoc.in'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://prepoc.in'
+
+function getResend() {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY is not configured')
+  }
+  return new Resend(apiKey)
+}
 
 export const newsletterService = {
   /**
@@ -62,6 +69,7 @@ export const newsletterService = {
     const unsubscribeLink = `${SITE_URL}/api/unsubscribe?email=${encodeURIComponent(email)}`
 
     try {
+      const resend = getResend()
       await resend.emails.send({
         from: `PREPOC Technologies <${FROM_EMAIL}>`,
         to: email,
@@ -164,6 +172,7 @@ export const newsletterService = {
       })
 
       try {
+        const resend = getResend()
         await resend.batch.send(emailPayloads)
         totalSent += batch.length
         
