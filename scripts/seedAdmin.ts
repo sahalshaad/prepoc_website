@@ -1,40 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import readline from 'readline'
-import { Writable } from 'stream'
 
 const prisma = new PrismaClient()
-
-// Helper to mask password input
-function promptUser(query: string, hideInput: boolean = false): Promise<string> {
-  return new Promise((resolve) => {
-    let muted = false
-
-    const mutableStdout = new Writable({
-      write(chunk, encoding, callback) {
-        if (!muted) {
-          process.stdout.write(chunk, encoding)
-        }
-        callback()
-      },
-    })
-
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: mutableStdout,
-      terminal: true,
-    })
-
-    process.stdout.write(query)
-    muted = hideInput
-
-    rl.question('', (answer) => {
-      rl.close()
-      if (hideInput) console.log() // Print newline after hidden input
-      resolve(answer)
-    })
-  })
-}
 
 // Password Policy Validation
 function validatePassword(password: string): boolean {
@@ -55,79 +22,73 @@ function validatePassword(password: string): boolean {
 }
 
 async function main() {
-  console.log('\n--- PREPOC Admin Seeding ---\n')
+  console.log('\n[INFO] --- PREPOC Admin Seeding Started ---')
+  console.log('[INFO] Starting database connection...')
+  await prisma.$connect()
+  console.log('[INFO] Database connection successful.')
 
-  let email = await promptUser('Admin Email [admin@prepoc.in]: ')
-  if (!email.trim()) {
-    email = 'admin@prepoc.in'
+  const email = process.env.ADMIN_EMAIL
+  const password = process.env.ADMIN_PASSWORD
+
+  if (!email || !password) {
+    console.error('[ERROR] Missing ADMIN_EMAIL or ADMIN_PASSWORD environment variables.')
+    process.exit(1)
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email)) {
-    console.error('Invalid email format.')
+    console.error(`[ERROR] Invalid email format: ${email}`)
     process.exit(1)
   }
 
-  const existingAdmin = await prisma.adminUser.findUnique({
-    where: { email },
-  })
-
-  if (existingAdmin) {
-    console.log(`\nAdmin account '${email}' already exists. We will update the password.`)
+  if (!validatePassword(password)) {
+    console.error('[ERROR] The provided password does not meet security requirements.')
+    process.exit(1)
   }
 
-  let password = ''
-  let confirmPassword = ''
-
-  while (true) {
-    password = await promptUser(existingAdmin ? 'New Admin Password: ' : 'Admin Password: ', true)
-    if (!validatePassword(password)) {
-      console.log('\nPlease try a stronger password.\n')
-      continue
-    }
-
-    confirmPassword = await promptUser('Confirm Password: ', true)
-    if (password !== confirmPassword) {
-      console.log('Passwords do not match. Try again.\n')
-      continue
-    }
-    
-    break
-  }
-
-  console.log(existingAdmin ? '\nUpdating admin password...' : '\nCreating SUPER_ADMIN account...')
-
-  const saltRounds = 12
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-
-  if (existingAdmin) {
-    await prisma.adminUser.update({
+  try {
+    const existingAdmin = await prisma.adminUser.findUnique({
       where: { email },
-      data: {
-        passwordHash,
-        requiresPasswordChange: false,
-        passwordChangedAt: new Date(),
-      },
     })
-    console.log(`\n✅ Successfully updated password for: ${email}\n`)
-  } else {
-    const admin = await prisma.adminUser.create({
-      data: {
-        email,
-        passwordHash,
-        role: 'SUPER_ADMIN',
-        requiresPasswordChange: false,
-      },
-    })
-    console.log(`\n✅ Successfully created SUPER_ADMIN: ${admin.email}\n`)
+
+    const saltRounds = 12
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    if (existingAdmin) {
+      console.log(`[INFO] Existing admin found for email: ${email}. Updating password...`)
+      await prisma.adminUser.update({
+        where: { email },
+        data: {
+          passwordHash,
+          requiresPasswordChange: false,
+          passwordChangedAt: new Date(),
+        },
+      })
+      console.log(`[SUCCESS] Password updated successfully for: ${email}`)
+    } else {
+      console.log(`[INFO] No existing admin found. Creating new SUPER_ADMIN...`)
+      const admin = await prisma.adminUser.create({
+        data: {
+          email,
+          passwordHash,
+          role: 'SUPER_ADMIN',
+          requiresPasswordChange: false,
+        },
+      })
+      console.log(`[SUCCESS] Successfully created SUPER_ADMIN: ${admin.email}`)
+    }
+  } catch (error) {
+    console.error('[ERROR] An unexpected error occurred during seeding:', error)
+    process.exit(1)
   }
 }
 
 main()
   .catch((e) => {
-    console.error('Error seeding admin user:', e)
+    console.error('[FATAL ERROR] Failed to run seed script:', e)
     process.exit(1)
   })
   .finally(async () => {
+    console.log('[INFO] Closing database connection.')
     await prisma.$disconnect()
   })
