@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogPage() {
+  console.time('blog-posts-query')
   const posts = await prisma.blogPost.findMany({
     where: { status: 'PUBLISHED' },
     include: {
@@ -17,6 +18,7 @@ export default async function BlogPage() {
     },
     orderBy: { publishedAt: 'desc' },
   })
+  console.timeEnd('blog-posts-query')
 
   // Normalize data for the client component
   const normalizedPosts = posts.map(post => ({
@@ -28,7 +30,9 @@ export default async function BlogPage() {
     tagsList: post.tags.map(t => t.name),
   }))
 
+  console.time('blog-categories-query')
   const categories = await prisma.blogCategory.findMany()
+  console.timeEnd('blog-categories-query')
 
   return <BlogClient initialPosts={normalizedPosts} categories={categories} />
 }

@@ -2,7 +2,7 @@
 
 import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import { Resend } from 'resend'
@@ -14,7 +14,6 @@ function getResend() {
   }
   return new Resend(apiKey)
 }
-const prisma = new PrismaClient()
 
 export interface LoginResult {
   success: boolean

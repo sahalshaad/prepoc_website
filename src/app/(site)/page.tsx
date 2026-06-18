@@ -12,11 +12,13 @@ import FAQClient from '@/components/sections/FAQClient'
 import { prisma } from '@/lib/prisma'
 
 export default async function Home() {
+  console.time('faq-query')
   const faqs = await prisma.faq.findMany({
     where: { isActive: true },
     orderBy: { order: 'asc' },
     select: { id: true, question: true, answer: true },
   })
+  console.timeEnd('faq-query')
 
   return (
     <main id="main-content">
