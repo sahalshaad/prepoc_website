@@ -12,7 +12,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
-    cpus: 4,
+    cpus: 1,
     workerThreads: false,
   },
   typescript: {
