@@ -57,15 +57,6 @@ function validatePassword(password: string): boolean {
 async function main() {
   console.log('\n--- PREPOC Admin Seeding ---\n')
 
-  const existingSuperAdmin = await prisma.adminUser.findFirst({
-    where: { role: 'SUPER_ADMIN' },
-  })
-
-  if (existingSuperAdmin) {
-    console.error('Super admin already exists. Seeding aborted.')
-    process.exit(1)
-  }
-
   let email = await promptUser('Admin Email [admin@prepoc.in]: ')
   if (!email.trim()) {
     email = 'admin@prepoc.in'
@@ -77,11 +68,19 @@ async function main() {
     process.exit(1)
   }
 
+  const existingAdmin = await prisma.adminUser.findUnique({
+    where: { email },
+  })
+
+  if (existingAdmin) {
+    console.log(`\nAdmin account '${email}' already exists. We will update the password.`)
+  }
+
   let password = ''
   let confirmPassword = ''
 
   while (true) {
-    password = await promptUser('Admin Password: ', true)
+    password = await promptUser(existingAdmin ? 'New Admin Password: ' : 'Admin Password: ', true)
     if (!validatePassword(password)) {
       console.log('\nPlease try a stronger password.\n')
       continue
@@ -96,21 +95,32 @@ async function main() {
     break
   }
 
-  console.log('\nCreating SUPER_ADMIN account...')
+  console.log(existingAdmin ? '\nUpdating admin password...' : '\nCreating SUPER_ADMIN account...')
 
   const saltRounds = 12
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const admin = await prisma.adminUser.create({
-    data: {
-      email,
-      passwordHash,
-      role: 'SUPER_ADMIN',
-      requiresPasswordChange: false, // Since they just set it manually securely
-    },
-  })
-
-  console.log(`\nSuccessfully created SUPER_ADMIN: ${admin.email}\n`)
+  if (existingAdmin) {
+    await prisma.adminUser.update({
+      where: { email },
+      data: {
+        passwordHash,
+        requiresPasswordChange: false,
+        passwordChangedAt: new Date(),
+      },
+    })
+    console.log(`\n✅ Successfully updated password for: ${email}\n`)
+  } else {
+    const admin = await prisma.adminUser.create({
+      data: {
+        email,
+        passwordHash,
+        role: 'SUPER_ADMIN',
+        requiresPasswordChange: false,
+      },
+    })
+    console.log(`\n✅ Successfully created SUPER_ADMIN: ${admin.email}\n`)
+  }
 }
 
 main()
