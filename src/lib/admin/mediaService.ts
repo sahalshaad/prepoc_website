@@ -17,7 +17,7 @@ if (typeof window === 'undefined') {
   }
 }
 
-const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads')
+const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), 'storage', 'uploads')
 const THUMBNAILS_DIR = path.join(UPLOADS_DIR, 'thumbnails')
 
 // Ensure directories exist
@@ -144,8 +144,8 @@ async function processImage(
 
     return {
       success: true,
-      url: `/uploads/${category}/${filename}`,
-      thumbnailUrl: `/uploads/thumbnails/${category}/${filename}`,
+      url: `/api/public/media/${category}/${filename}`,
+      thumbnailUrl: `/api/public/media/thumbnails/${category}/${filename}`,
       filename
     }
   }
@@ -237,8 +237,8 @@ async function processVideo(
 
     return {
       success: true,
-      url: `/uploads/${category}/${outputFilename}`,
-      thumbnailUrl: `/uploads/thumbnails/${category}/${thumbFilename}`,
+      url: `/api/public/media/${category}/${outputFilename}`,
+      thumbnailUrl: `/api/public/media/thumbnails/${category}/${thumbFilename}`,
       filename: outputFilename
     }
 
@@ -255,9 +255,15 @@ export async function deleteMedia(fileUrl: string): Promise<boolean> {
     // Basic path traversal prevention
     if (fileUrl.includes('..')) return false
 
-    // Expected format: /uploads/category/filename.ext
-    const relativePath = fileUrl.startsWith('/') ? fileUrl.slice(1) : fileUrl
-    const absolutePath = path.join(process.cwd(), 'public', relativePath)
+    // Expected format: /api/public/media/category/filename.ext or /api/public/media/thumbnails/...
+    let relativePath = fileUrl.startsWith('/') ? fileUrl.slice(1) : fileUrl
+    if (relativePath.startsWith('api/public/media/')) {
+      relativePath = relativePath.replace('api/public/media/', '')
+    } else if (relativePath.startsWith('uploads/')) {
+      // Legacy support
+      relativePath = relativePath.replace('uploads/', '')
+    }
+    const absolutePath = path.join(UPLOADS_DIR, relativePath)
 
     if (existsSync(absolutePath)) {
       await fs.unlink(absolutePath)
@@ -307,8 +313,8 @@ export async function listMedia(category?: string) {
 
       results.push({
         id: file, // simple ID
-        url: `/uploads/${cat}/${file}`,
-        thumbnailUrl: `/uploads/thumbnails/${cat}/${thumbFilename}`,
+        url: `/api/public/media/${cat}/${file}`,
+        thumbnailUrl: `/api/public/media/thumbnails/${cat}/${thumbFilename}`,
         filename: file,
         category: cat,
         type: isVideo ? 'video' : 'image',

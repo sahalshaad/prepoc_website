@@ -9,9 +9,10 @@ export function middleware(request: NextRequest) {
   const isAdminPage = pathname.startsWith('/admin')
   const isAdminApi = pathname.startsWith('/api/admin')
   const isUploadApi = pathname === '/api/upload'
-  const isMediaApi = pathname.startsWith('/api/media')
+  const isProtectedMediaApi = pathname.startsWith('/api/media') && !pathname.startsWith('/api/public/media')
+  const isMediaApi = isProtectedMediaApi
 
-  if (!isAdminPage && !isAdminApi && !isUploadApi && !isMediaApi) {
+  if (!isAdminPage && !isAdminApi && !isUploadApi && !isProtectedMediaApi) {
     return NextResponse.next()
   }
 
