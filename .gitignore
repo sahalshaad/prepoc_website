@@ -43,3 +43,4 @@ storage/private/resumes/*
 src/data/leadsData.json
 src/data/jobApplicationsData.json
 dev.db
+*.zip

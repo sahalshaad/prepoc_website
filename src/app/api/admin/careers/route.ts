@@ -43,7 +43,9 @@ export async function POST(req: NextRequest) {
       // Validate
       const parseResult = JobVacancySchema.safeParse(vacancy)
       if (!parseResult.success) {
-        return NextResponse.json({ success: false, errors: parseResult.error.errors }, { status: 400 })
+        const safeErrors = parseResult.error.issues.map(err => ({ path: err.path.join('.'), message: err.message }))
+        console.error("JobVacancy Validation Failed:", safeErrors)
+        return NextResponse.json({ success: false, error: 'Validation failed', errors: safeErrors }, { status: 400 })
       }
 
       if (vacancy.id) {
