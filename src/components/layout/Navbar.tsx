@@ -14,6 +14,7 @@ const navItems = [
   { label: 'Portfolio', href: '#portfolio', isLink: false, homeHref: '/#portfolio', hasDropdown: false },
   { label: 'About Us', href: '/about', isLink: true, homeHref: '/about', hasDropdown: false },
   { label: 'Blog', href: '/blog', isLink: true, homeHref: '/blog', hasDropdown: false },
+  { label: 'Careers', href: '/careers', isLink: true, homeHref: '/careers', hasDropdown: false },
 ]
 
 export default function Navbar() {
