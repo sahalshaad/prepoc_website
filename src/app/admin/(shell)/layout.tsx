@@ -2,6 +2,7 @@ import { AdminSidebar } from '@/components/admin/shell/AdminSidebar'
 import { AdminTopbar } from '@/components/admin/shell/AdminTopbar'
 import { requireAdmin } from '@/lib/admin/auth'
 import { redirect } from 'next/navigation'
+export const dynamic = 'force-dynamic'
 
 export default async function AdminShellLayout({
   children,
