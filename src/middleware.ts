@@ -41,6 +41,9 @@ export function middleware(request: NextRequest) {
 
   // Handle Admin Pages
   if (PUBLIC_ADMIN_PATHS.includes(pathname)) {
+    if (isAuthenticated) {
+      return NextResponse.redirect(new URL('/admin/dashboard', request.url))
+    }
     return NextResponse.next()
   }
 

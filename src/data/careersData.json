@@ -1,24 +1,3 @@
 {
-  "VACANCIES": [
-    {
-      "title": "digital marketing",
-      "department": "Digital Marketing",
-      "location": "calicut",
-      "type": "Full-time",
-      "description": "hiring digital marketing",
-      "requirements": [
-        "digital marketing"
-      ],
-      "responsibilities": [
-        "hekko "
-      ],
-      "benefits": [
-        "helloj"
-      ],
-      "isActive": true,
-      "id": "job-1781868603695",
-      "createdAt": "2026-06-19T11:30:03.695Z",
-      "updatedAt": "2026-06-19T11:30:03.695Z"
-    }
-  ]
+  "VACANCIES": []
 }

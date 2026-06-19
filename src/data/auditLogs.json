@@ -1,36 +1,6 @@
 {
   "AUDIT_LOGS": [
     {
-      "id": "log_1781868603703_ut0hxzf",
-      "timestamp": "2026-06-19T11:30:03.703Z",
-      "adminId": "system",
-      "action": "CREATE",
-      "entity": "VACANCY",
-      "entityId": "job-1781868603695",
-      "details": {
-        "title": "digital marketing"
-      }
-    },
-    {
-      "id": "log_1781868528117_yd147ef",
-      "timestamp": "2026-06-19T11:28:48.117Z",
-      "adminId": "system",
-      "action": "DELETE",
-      "entity": "VACANCY",
-      "entityId": "job-1781868506098"
-    },
-    {
-      "id": "log_1781868506132_nk1wdyv",
-      "timestamp": "2026-06-19T11:28:26.132Z",
-      "adminId": "system",
-      "action": "CREATE",
-      "entity": "VACANCY",
-      "entityId": "job-1781868506098",
-      "details": {
-        "title": "hello"
-      }
-    },
-    {
       "id": "log_1781618732219_lpsz905",
       "timestamp": "2026-06-16T14:05:32.219Z",
       "adminId": "system",
