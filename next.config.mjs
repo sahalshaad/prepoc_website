@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// import.meta.dirname is the ESM equivalent of __dirname (Node 20.11+)
 const nextConfig = {
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   images: {
@@ -16,6 +17,13 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
     cpus: 1,
     workerThreads: false,
+  },
+  turbopack: {
+    // Scope Turbopack to this project root so it does not scan ancestor
+    // directories and find the stub /Users/sahal/package-lock.json.
+    // This eliminates the "multiple lockfiles detected" warning.
+    // Note: import.meta.dirname is the ESM equivalent of __dirname.
+    root: import.meta.dirname,
   },
   typescript: {
     ignoreBuildErrors: true,

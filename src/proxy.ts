@@ -1,3 +1,15 @@
+/**
+ * PREPOC Admin Proxy — Edge Runtime (Next.js 16)
+ *
+ * Migrated from `middleware.ts` → `proxy.ts` per Next.js 16 convention.
+ * The function is renamed from `middleware` to `proxy`.
+ * All authentication, redirect, and route-protection logic is preserved.
+ *
+ * Design: Intentionally stays in Edge Runtime for low-latency cookie checks.
+ * Full cryptographic session validation is deferred to Server Components /
+ * Actions via `requireAdmin()` because Edge Runtime cannot query the
+ * SQLite/Prisma database directly.
+ */
 import { NextRequest, NextResponse } from 'next/server'
 
 const PUBLIC_ADMIN_PATHS = [
@@ -6,7 +18,7 @@ const PUBLIC_ADMIN_PATHS = [
   '/admin/login/reset'
 ]
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Define protected path prefixes
@@ -21,7 +33,7 @@ export function middleware(request: NextRequest) {
   }
 
   const session = request.cookies.get('prepoc-admin-session')
-  
+
   // Edge runtime cannot query SQLite directly.
   // Middleware does a lightweight check for cookie existence.
   // Full cryptographically secure DB session validation is enforced
@@ -69,6 +81,7 @@ export const config = {
     '/admin/:path*',
     '/api/admin/:path*',
     '/api/upload',
-    '/api/media'
+    // Match /api/media and all sub-paths (but NOT /api/public/media — that is public)
+    '/api/media/:path*',
   ],
 }

@@ -25,6 +25,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://prepoc.in'),
   title: 'PREPOC Technologies | Premium Digital Agency',
   description:
     'PREPOC Technologies is an award-winning full-service digital agency specializing in Digital Marketing, SEO, Web Development, Mobile Apps, AI Solutions, and Business Automation.',
@@ -41,6 +42,22 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'PREPOC Technologies',
+    title: 'PREPOC Technologies | Premium Digital Agency',
+    description:
+      'Award-winning full-service digital agency specializing in Digital Marketing, SEO, Web Development, Mobile Apps, AI Solutions, and Business Automation.',
+    url: 'https://prepoc.in',
+    images: [{ url: '/images/default-og.jpg', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PREPOC Technologies | Premium Digital Agency',
+    description:
+      'Award-winning full-service digital agency specializing in Digital Marketing, SEO, Web Development, Mobile Apps, AI Solutions, and Business Automation.',
+    images: ['/images/default-og.jpg'],
   },
 }
 
