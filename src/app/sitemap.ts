@@ -1,10 +1,11 @@
 import { MetadataRoute } from 'next'
-import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://prepoc.in'
+  const isDev = process.env.NODE_ENV === 'development'
+  const apiUrl = isDev ? 'http://localhost:3000' : baseUrl
 
   // Static routes
   const routes = [
@@ -23,17 +24,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Fetch dynamic blog posts
-  const posts = await prisma.blogPost.findMany({
-    where: { status: 'PUBLISHED' },
-    select: {
-      slug: true,
-      updatedAt: true,
-    },
-  })
+  let posts: Array<{ slug: string; updatedAt: string }> = []
+
+  try {
+    const res = await fetch(`${apiUrl}/api/sitemap-posts`, {
+      cache: 'no-store'
+    })
+
+    if (res.ok) {
+      const data = await res.json()
+      posts = data.posts || []
+    }
+  } catch (error) {
+    console.error('Error fetching blog posts for sitemap:', error)
+  }
 
   const blogRoutes = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.updatedAt,
+    lastModified: new Date(post.updatedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }))
