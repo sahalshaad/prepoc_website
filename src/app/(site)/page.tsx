@@ -11,6 +11,8 @@ import CTA from '@/components/sections/CTA'
 import FAQClient from '@/components/sections/FAQClient'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   console.time('faq-query')
   const faqs = await prisma.faq.findMany({

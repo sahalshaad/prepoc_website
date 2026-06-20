@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Insights, Strategies & Industry Updates on Digital Marketing, Web Development, Branding, SEO, and Business Growth.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function BlogPage() {
   console.time('blog-posts-query')
   const posts = await prisma.blogPost.findMany({
