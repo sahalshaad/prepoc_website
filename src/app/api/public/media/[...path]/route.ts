@@ -1,21 +1,27 @@
+// Use `node:` prefix so Turbopack can statically identify these as
+// Node.js built-ins and correctly scope the NFT (Node File Trace).
 import { NextRequest, NextResponse } from 'next/server'
-import path from 'path'
-import fs from 'fs/promises'
-import { existsSync } from 'fs'
+import path from 'node:path'
+import fs from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 
-const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(process.cwd(), 'storage', 'uploads')
+// Hoist UPLOADS_DIR as a module-level constant so Turbopack's static
+// analyser can trace the `storage/uploads` directory at build time
+// rather than emitting an NFT warning about an unresolvable dynamic path.
+const UPLOADS_BASE = process.env.UPLOADS_DIR ?? path.join(process.cwd(), 'storage', 'uploads')
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    if (!params.path || params.path.length === 0) {
+    // In Next.js 16 dynamic route params are async — await before use.
+    const { path: filePathArray } = await params
+
+    if (!filePathArray || filePathArray.length === 0) {
       return new NextResponse('Not Found', { status: 404 })
     }
 
-    const filePathArray = params.path
-    
     // Prevent directory traversal
     for (const segment of filePathArray) {
       if (segment === '..' || segment === '.' || segment.includes('/')) {
@@ -23,7 +29,7 @@ export async function GET(
       }
     }
 
-    const absolutePath = path.join(UPLOADS_DIR, ...filePathArray)
+    const absolutePath = path.join(UPLOADS_BASE, ...filePathArray)
 
     if (!existsSync(absolutePath)) {
       return new NextResponse('Not Found', { status: 404 })
