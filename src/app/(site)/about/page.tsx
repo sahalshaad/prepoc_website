@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import fs from 'fs/promises'
 import path from 'path'
-import CustomCursor from '@/components/common/CustomCursor'
 import AboutTimeline from '@/components/about/AboutTimeline'
 import AboutHero from '@/components/about/AboutHero'
 import OurStory from '@/components/about/OurStory'
@@ -89,8 +88,6 @@ export default async function AboutPage() {
 
   return (
     <>
-      <CustomCursor />
-
       {/* Left-side floating section timeline (desktop only) */}
       <AboutTimeline />
 

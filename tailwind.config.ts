@@ -72,6 +72,7 @@ module.exports = {
         'glow': 'glow 3s ease-in-out infinite',
         'spin-slow': 'spin 8s linear infinite',
         'pulse-slow': 'pulse 4s ease-in-out infinite',
+        'shimmer': 'shimmer 2.4s infinite',
       },
       keyframes: {
         marquee: {
@@ -89,6 +90,10 @@ module.exports = {
         glow: {
           '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
           '50%': { opacity: '1', transform: 'scale(1.05)' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       backgroundImage: {

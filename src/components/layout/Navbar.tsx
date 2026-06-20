@@ -314,15 +314,30 @@ export default function Navbar() {
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="pt-8"
               >
-                <a
+                <motion.a
                   href="https://wa.me/9072595415"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#0E5D47] text-white w-full flex items-center justify-center gap-2 text-base py-4 rounded-full font-medium"
+                  whileTap={{ scale: 0.97 }}
+                  className="relative overflow-hidden w-full flex items-center justify-center gap-3 px-6 text-base py-4 rounded-full font-semibold text-white shadow-[0_8px_32px_-4px_rgba(14,93,71,0.55)] active:shadow-[0_4px_16px_-2px_rgba(14,93,71,0.4)] transition-shadow"
+                  style={{
+                    background: 'linear-gradient(135deg, #0E5D47 0%, #128C5E 50%, #0E5D47 100%)',
+                  }}
                 >
-                  <FaWhatsapp className="w-5 h-5" />
-                  Chat with us
-                </a>
+                  {/* Shimmer sweep */}
+                  <span
+                    className="absolute inset-0 -translate-x-full animate-[shimmer_2.4s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none"
+                    style={{ animationDelay: '0.8s' }}
+                  />
+
+                  {/* Pulsing ring around icon — sized to icon so ping stays contained */}
+                  <span className="relative flex-shrink-0 flex items-center justify-center w-5 h-5">
+                    <span className="absolute inline-flex h-8 w-8 rounded-full bg-white/20 animate-ping opacity-60" />
+                    <FaWhatsapp className="relative w-5 h-5 z-10" />
+                  </span>
+
+                  <span className="tracking-wide text-center leading-snug">Chat with us on WhatsApp</span>
+                </motion.a>
               </motion.div>
             </div>
           </motion.div>

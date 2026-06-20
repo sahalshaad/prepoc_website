@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     description: post.seoDescription || post.excerpt || '',
     keywords: post.seoKeywords || '',
     alternates: {
-      canonical: post.canonicalUrl || `https://prepoctechnologies.com/blog/${post.slug}`,
+      canonical: post.canonicalUrl || `https://prepoc.in/blog/${post.slug}`,
     },
     openGraph: {
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.excerpt || '',
-      url: `https://prepoctechnologies.com/blog/${post.slug}`,
+      url: `https://prepoc.in/blog/${post.slug}`,
       images: [
         {
           url: post.ogImage || post.featuredImage || '/images/default-og.jpg',

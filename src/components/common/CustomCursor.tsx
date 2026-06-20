@@ -7,9 +7,14 @@ export default function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Only show on non-touch devices
-    if (!window.matchMedia('(pointer: fine)').matches) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const isFinePointer = window.matchMedia('(pointer: fine)').matches
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    // CSS hides the elements by default via `display: none`.
+    // We only add the enabling class when a real mouse is confirmed.
+    if (!isFinePointer || prefersReducedMotion) return
+
+    document.documentElement.classList.add('has-fine-pointer')
 
     const dot = dotRef.current
     const ring = ringRef.current
@@ -24,21 +29,17 @@ export default function CustomCursor() {
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX
       mouseY = e.clientY
-
-      // Dot follows immediately
       dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`
     }
 
     const onMouseDown = () => ring.classList.add('cursor-click')
     const onMouseUp = () => ring.classList.remove('cursor-click')
-
     const onMouseEnterHoverable = () => ring.classList.add('cursor-hover')
     const onMouseLeaveHoverable = () => ring.classList.remove('cursor-hover')
 
     const lerp = (start: number, end: number, t: number) => start + (end - start) * t
 
     const animate = () => {
-      // Ring follows with lerp for smooth trailing
       ringX = lerp(ringX, mouseX, 0.12)
       ringY = lerp(ringY, mouseY, 0.12)
       ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`
@@ -50,14 +51,12 @@ export default function CustomCursor() {
     window.addEventListener('mousedown', onMouseDown)
     window.addEventListener('mouseup', onMouseUp)
 
-    // Attach hover effects to interactive elements
     const hoverables = document.querySelectorAll('a, button, [data-cursor-hover]')
     hoverables.forEach(el => {
       el.addEventListener('mouseenter', onMouseEnterHoverable)
       el.addEventListener('mouseleave', onMouseLeaveHoverable)
     })
 
-    // Hide cursor when leaving window
     const onMouseLeave = () => {
       dot.style.opacity = '0'
       ring.style.opacity = '0'
@@ -71,6 +70,7 @@ export default function CustomCursor() {
 
     return () => {
       cancelAnimationFrame(animFrame)
+      document.documentElement.classList.remove('has-fine-pointer')
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mousedown', onMouseDown)
       window.removeEventListener('mouseup', onMouseUp)
@@ -83,6 +83,8 @@ export default function CustomCursor() {
     }
   }, [])
 
+  // Always render the elements — CSS keeps them `display: none` until
+  // `.has-fine-pointer` is added to <html> by the effect above.
   return (
     <>
       <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
