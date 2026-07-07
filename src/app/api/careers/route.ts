@@ -46,8 +46,13 @@ export async function GET(req: NextRequest) {
         }
       }
     )
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed to load careers data from ERP:', err)
-    return NextResponse.json({ success: false, error: 'Failed to load careers data' }, { status: 500 })
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Failed to load careers data',
+      details: err.message,
+      attemptedUrl: `${process.env.ERP_API_URL || 'http://localhost:8000'}/api/recruitment/jobs/`
+    }, { status: 500 })
   }
 }

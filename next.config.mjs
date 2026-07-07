@@ -28,6 +28,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  env: {
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://prepoc.in',
+    ERP_API_URL: process.env.ERP_API_URL || 'https://erp.prepoc.in',
+  },
   output: 'standalone',
   serverExternalPackages: ['sharp', 'fluent-ffmpeg', '@ffmpeg-installer/ffmpeg'],
   async headers() {
