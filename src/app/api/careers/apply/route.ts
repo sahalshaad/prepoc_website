@@ -63,59 +63,48 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Resume must be a PDF, DOC, or DOCX file. Detected type: ' + resumeFile.type }, { status: 400 })
     }
 
-    // Save resume to public/uploads/resumes
-    const bytes = await resumeFile.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
-    const filename = `${uniqueSuffix}-${resumeFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
-    
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'resumes')
-    await fs.mkdir(uploadDir, { recursive: true })
-    
-    const filepath = path.join(uploadDir, filename)
-    await fs.writeFile(filepath, buffer)
-    
-    const resumeUrl = `/uploads/resumes/${filename}`
+    // Split name into first and last name for ERP backend
+    const nameParts = name.trim().split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'Applicant';
 
-    // Save to local jobApplicationsData.json
-    const dataPath = path.join(process.cwd(), 'src', 'data', 'jobApplicationsData.json')
-    const dataJson = await readData(dataPath, { APPLICATIONS: [] })
+    // Forward the application to ERP backend
+    const erpFormData = new FormData();
+    erpFormData.append('first_name', firstName);
+    erpFormData.append('last_name', lastName);
+    erpFormData.append('email', email);
+    if (phone) erpFormData.append('phone', phone);
+    if (coverLetter) erpFormData.append('cover_letter', coverLetter);
+    erpFormData.append('resume', resumeFile);
+
+    const baseUrl = process.env.ERP_API_URL || 'https://erp.prepoc.in';
+    const applyUrl = `${baseUrl}/api/v1/public/recruitment/jobs/${jobId}/apply/`;
     
-    // Check if already applied
-    const existing = (dataJson.APPLICATIONS || []) as JobApplication[]
-    const alreadyApplied = existing.find(a => a.jobId === jobId && a.email === email)
-    if (alreadyApplied) {
-      return NextResponse.json({ success: false, error: 'You have already applied for this position.' }, { status: 400 })
+    console.log(`Forwarding application for ${email} to ${applyUrl}`);
+    const response = await fetch(applyUrl, {
+      method: 'POST',
+      body: erpFormData,
+      // Note: Do not set Content-Type header when sending FormData via fetch.
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`ERP Backend rejected application: ${response.status} ${errorText}`);
+      try {
+        const errorJson = JSON.parse(errorText);
+        return NextResponse.json({ success: false, error: errorJson.error || 'Failed to submit application to ERP system.' }, { status: response.status });
+      } catch (e) {
+        return NextResponse.json({ success: false, error: 'Failed to submit application to ERP system.' }, { status: 500 });
+      }
     }
 
-    const newApp: JobApplication = {
-      id: `app-${Date.now()}`,
-      jobId,
-      jobTitle,
-      name,
-      email,
-      phone,
-      location,
-      linkedinUrl,
-      portfolioUrl,
-      coverLetter,
-      resumeUrl,
-      status: 'new',
-      submittedAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
-    
-    existing.push(newApp)
-    dataJson.APPLICATIONS = existing
-    
-    await writeData(dataPath, dataJson)
+    const result = await response.json();
 
     // Success response
     return NextResponse.json({ 
       success: true, 
       data: {
-        reference: newApp.id
+        reference: result.reference || `app-${Date.now()}`
       } 
     })
   } catch (err) {
