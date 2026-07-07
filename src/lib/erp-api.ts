@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 
-const ERP_API_URL = process.env.ERP_API_URL || 'http://localhost:8000';
+const ERP_API_URL = process.env.ERP_API_URL || 'https://erp.prepoc.in';
 const ERP_API_VERSION = process.env.ERP_API_VERSION || 'v1';
 const BASE_URL = `${ERP_API_URL}/api/${ERP_API_VERSION}/public/recruitment`;
 

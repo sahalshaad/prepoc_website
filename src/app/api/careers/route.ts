@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
   try {
-    const baseUrl = process.env.ERP_API_URL || 'http://localhost:8000';
+    const baseUrl = process.env.ERP_API_URL || 'https://erp.prepoc.in';
     const response = await fetch(`${baseUrl}/api/recruitment/jobs/`, {
       // Use no-store to always fetch fresh data from ERP
       cache: 'no-store'
@@ -47,12 +47,15 @@ export async function GET(req: NextRequest) {
       }
     )
   } catch (err: any) {
-    console.error('Failed to load careers data from ERP:', err)
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Failed to load careers data',
-      details: err.message,
-      attemptedUrl: `${process.env.ERP_API_URL || 'http://localhost:8000'}/api/recruitment/jobs/`
-    }, { status: 500 })
+    console.error("ERP Careers API Error:", err);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: err?.message || "Unknown error",
+        attemptedUrl: `${baseUrl}/api/recruitment/jobs/`
+      },
+      { status: 500 }
+    );
   }
 }
