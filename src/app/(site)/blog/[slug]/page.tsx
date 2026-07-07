@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import SinglePostClient from './SinglePostClient'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await prisma.blogPost.findUnique({
     where: { slug: params.slug },
