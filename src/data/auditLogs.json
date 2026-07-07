@@ -1,6 +1,116 @@
 {
   "AUDIT_LOGS": [
     {
+      "id": "log_1783339974277_tt1b021",
+      "timestamp": "2026-07-06T12:12:54.279Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "JOB_APPLICATION",
+      "entityId": "app-1783332118044",
+      "details": {
+        "status": "interview_scheduled"
+      }
+    },
+    {
+      "id": "log_1783332568735_n80hodd",
+      "timestamp": "2026-07-06T10:09:28.735Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783332561261_t0vo94p",
+      "timestamp": "2026-07-06T10:09:21.261Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783332374316_aqbj10d",
+      "timestamp": "2026-07-06T10:06:14.316Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783332360563_3jd0mjj",
+      "timestamp": "2026-07-06T10:06:00.563Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783332208764_7mw49xn",
+      "timestamp": "2026-07-06T10:03:28.764Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783332194435_ajoc1jw",
+      "timestamp": "2026-07-06T10:03:14.435Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783331238385_2giu2yj",
+      "timestamp": "2026-07-06T09:47:18.385Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783331237445_slluoje",
+      "timestamp": "2026-07-06T09:47:17.445Z",
+      "adminId": "system",
+      "action": "UPDATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
+      "id": "log_1783331168731_v3vp26v",
+      "timestamp": "2026-07-06T09:46:08.731Z",
+      "adminId": "system",
+      "action": "CREATE",
+      "entity": "VACANCY",
+      "entityId": "job-1783331168703",
+      "details": {
+        "title": "meta ads "
+      }
+    },
+    {
       "id": "log_1781618732219_lpsz905",
       "timestamp": "2026-06-16T14:05:32.219Z",
       "adminId": "system",

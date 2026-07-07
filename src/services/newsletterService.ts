@@ -1,15 +1,28 @@
 import { prisma } from '@/lib/prisma'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'newsletter@prepoc.in'
+const FROM_EMAIL = process.env.SMTP_FROM_EMAIL || 'newsletter@prepoc.in'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://prepoc.in'
 
-function getResend() {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) {
-    throw new Error('RESEND_API_KEY is not configured')
+function getTransporter() {
+  const host = process.env.SMTP_HOST
+  const port = parseInt(process.env.SMTP_PORT || '587', 10)
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASSWORD
+
+  if (!host || !user || !pass) {
+    throw new Error('SMTP credentials are not fully configured')
   }
-  return new Resend(apiKey)
+
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: {
+      user,
+      pass,
+    },
+  })
 }
 
 export const newsletterService = {
@@ -64,14 +77,14 @@ export const newsletterService = {
    * Send the welcome email
    */
   async sendWelcomeEmail(email: string) {
-    if (!process.env.RESEND_API_KEY) return // Skip if no API key in dev
+    if (!process.env.SMTP_USER) return // Skip if no SMTP configured in dev
 
     const unsubscribeLink = `${SITE_URL}/api/unsubscribe?email=${encodeURIComponent(email)}`
 
     try {
-      const resend = getResend()
-      await resend.emails.send({
-        from: `PREPOC Technologies <${FROM_EMAIL}>`,
+      const transporter = getTransporter()
+      await transporter.sendMail({
+        from: `"PREPOC Technologies" <${FROM_EMAIL}>`,
         to: email,
         subject: 'Welcome to PREPOC Technologies 🚀',
         html: `
@@ -113,7 +126,7 @@ export const newsletterService = {
    * Batch send a campaign
    */
   async sendCampaign(campaignId: string) {
-    if (!process.env.RESEND_API_KEY) throw new Error('Missing Resend API Key')
+    if (!process.env.SMTP_USER) throw new Error('Missing SMTP Configuration')
 
     const campaign = await prisma.campaign.findUnique({ where: { id: campaignId } })
     if (!campaign) throw new Error('Campaign not found.')
@@ -164,7 +177,7 @@ export const newsletterService = {
         `
 
         return {
-          from: `PREPOC Technologies <${FROM_EMAIL}>`,
+          from: `"PREPOC Technologies" <${FROM_EMAIL}>`,
           to: sub.email,
           subject: campaign.subject,
           html: finalContent,
@@ -172,8 +185,10 @@ export const newsletterService = {
       })
 
       try {
-        const resend = getResend()
-        await resend.batch.send(emailPayloads)
+        const transporter = getTransporter()
+        for (const payload of emailPayloads) {
+          await transporter.sendMail(payload)
+        }
         totalSent += batch.length
         
         // Update progress continuously

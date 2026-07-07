@@ -1,37 +1,42 @@
-import { NextResponse } from 'next/server'
-import fs from 'fs/promises'
+import { NextResponse, NextRequest } from 'next/server'
 import path from 'path'
-import { JobVacancy } from '@/types/admin'
+import { readData } from '@/lib/dataStore'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const dataPath = path.join(process.cwd(), 'src', 'data', 'careersData.json')
-    const fileContent = await fs.readFile(dataPath, 'utf-8')
-    const dataJson = JSON.parse(fileContent)
+    const baseUrl = process.env.ERP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${baseUrl}/api/recruitment/jobs/`, {
+      // Use no-store to always fetch fresh data from ERP
+      cache: 'no-store'
+    });
     
-    // Filter to only include active vacancies
-    const allVacancies = (dataJson.VACANCIES || []) as JobVacancy[]
-    const activeVacancies = allVacancies.filter((v) => v.isActive)
-    
-    // Select specific fields safe for public exposure
-    const publicData = activeVacancies.map((v) => ({
-      id: v.id,
-      title: v.title,
-      department: v.department,
-      location: v.location,
-      type: v.type,
-      description: v.description,
-      requirements: v.requirements,
-      responsibilities: v.responsibilities,
-      benefits: v.benefits,
-      salaryRange: v.salaryRange,
-      createdAt: v.createdAt
-    }))
+    if (!response.ok) {
+      throw new Error(`Failed to fetch from ERP: ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    const erpJobs = json.results || [];
+
+    const activeVacancies = erpJobs.map((job: any) => ({
+      id: job.id,
+      title: job.title,
+      department: job.department_name || '',
+      location: job.location || '',
+      type: job.employment_type === 'FULL_TIME' ? 'Full-time' : 
+            job.employment_type === 'PART_TIME' ? 'Part-time' : 'Contract',
+      description: job.description || '',
+      requirements: job.requirements || '',
+      responsibilities: job.responsibilities || '',
+      benefits: job.benefits || '',
+      isActive: job.status === 'PUBLISHED',
+      createdAt: job.created_at,
+      updatedAt: job.updated_at
+    }));
 
     return NextResponse.json(
-      { success: true, data: publicData },
+      { success: true, data: activeVacancies },
       {
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
@@ -42,7 +47,7 @@ export async function GET() {
       }
     )
   } catch (err) {
-    console.error('Failed to load careers data:', err)
+    console.error('Failed to load careers data from ERP:', err)
     return NextResponse.json({ success: false, error: 'Failed to load careers data' }, { status: 500 })
   }
 }

@@ -16,11 +16,25 @@ export async function GET() {
     deps.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
 
     const teamData = await readData<Record<string, unknown>>(path.join(process.cwd(), 'src', 'data', 'aboutData.json'), { TEAM_MEMBERS: [] })
-    const careersData = await readData<Record<string, unknown>>(path.join(process.cwd(), 'src', 'data', 'careersData.json'), { VACANCIES: [] })
+    
+    let erpJobs: any[] = [];
+    try {
+      const baseUrl = process.env.ERP_API_URL || 'http://localhost:8000';
+      const resp = await fetch(`${baseUrl}/api/recruitment/jobs/`, {
+        headers: { 'x-internal-admin-bypass': 'true' },
+        cache: 'no-store'
+      });
+      if (resp.ok) {
+        const json = await resp.json();
+        erpJobs = json.results || [];
+      }
+    } catch (e) {
+      console.error('Failed to fetch jobs for department counts', e);
+    }
 
     const enhancedDeps = deps.map(d => {
       const teamCount = Array.isArray(teamData.TEAM_MEMBERS) ? teamData.TEAM_MEMBERS.filter((m: any) => m.department === d.name || m.department === d.id).length : 0
-      const vacancyCount = Array.isArray(careersData.VACANCIES) ? careersData.VACANCIES.filter((v: any) => v.department === d.name || v.department === d.id).length : 0
+      const vacancyCount = erpJobs.filter((v: any) => v.department_name === d.name || v.department_name === d.id).length
       return { ...d, teamCount, vacancyCount }
     })
 
@@ -130,8 +144,22 @@ export async function DELETE(req: NextRequest) {
       inUse = true
     }
 
-    const careersData = await readData<Record<string, unknown>>(path.join(process.cwd(), 'src', 'data', 'careersData.json'), { VACANCIES: [] })
-    if (Array.isArray(careersData.VACANCIES) && careersData.VACANCIES.some((v: any) => v.department === target.name || v.department === target.id)) {
+    let erpJobs: any[] = [];
+    try {
+      const baseUrl = process.env.ERP_API_URL || 'http://localhost:8000';
+      const resp = await fetch(`${baseUrl}/api/recruitment/jobs/`, {
+        headers: { 'x-internal-admin-bypass': 'true' },
+        cache: 'no-store'
+      });
+      if (resp.ok) {
+        const json = await resp.json();
+        erpJobs = json.results || [];
+      }
+    } catch (e) {
+      console.error('Failed to fetch jobs for dependency check', e);
+    }
+    
+    if (erpJobs.some((v: any) => v.department_name === target.name || v.department_name === target.id)) {
       inUse = true
     }
 

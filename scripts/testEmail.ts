@@ -1,44 +1,56 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import { config } from 'dotenv'
 
 // Load environment variables from .env.local
 config({ path: '.env.local' })
 
 async function sendTestEmail() {
-  console.log('--- Resend API Test ---')
+  console.log('--- Nodemailer SMTP Test ---')
 
-  const resendKey = process.env.RESEND_API_KEY
-  if (!resendKey) {
-    console.error('[TEST_FATAL] RESEND_API_KEY is not defined in .env.local')
+  const host = process.env.SMTP_HOST
+  const port = parseInt(process.env.SMTP_PORT || '587', 10)
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASSWORD
+  const fromEmail = process.env.SMTP_FROM_EMAIL || user
+
+  if (!host || !user || !pass) {
+    console.error('[TEST_FATAL] SMTP credentials are not fully defined in .env.local')
     process.exit(1)
   }
 
-  const resend = new Resend(resendKey)
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
-  
-  // Resend onboarding domains can ONLY send to the registered user's email address
-  const toEmail = 'sahalshaad@gmail.com'
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: {
+      user,
+      pass,
+    },
+  })
+
+  // We'll send it to the same email address that is sending it for testing purposes
+  const toEmail = user
 
   console.log(`[TEST_INFO] Sending test email from ${fromEmail} to ${toEmail}`)
 
-  const { data, error } = await resend.emails.send({
-    from: fromEmail,
-    to: toEmail,
-    subject: 'PREPOC - Resend API Test',
-    html: `
-      <h2>Resend API Test Successful</h2>
-      <p>This is a standalone test email verifying that your local environment variables and Resend API configuration are fully functional.</p>
-      <p>If you received this, the Resend integration is working perfectly.</p>
-    `
-  })
+  try {
+    const info = await transporter.sendMail({
+      from: `"PREPOC Test" <${fromEmail}>`,
+      to: toEmail,
+      subject: 'PREPOC - Nodemailer SMTP Test',
+      html: `
+        <h2>Nodemailer SMTP Test Successful</h2>
+        <p>This is a standalone test email verifying that your local environment variables and Gmail SMTP configuration are fully functional.</p>
+        <p>If you received this, the Nodemailer integration is working perfectly.</p>
+      `
+    })
 
-  if (error) {
-    console.error('[RESEND_ERROR]', error)
+    console.log('[SMTP_SUCCESS]', info.messageId)
+    console.log('Test completed successfully.')
+  } catch (error) {
+    console.error('[SMTP_ERROR]', error)
     process.exit(1)
   }
-
-  console.log('[RESEND_SUCCESS]', data)
-  console.log('Test completed successfully.')
 }
 
 sendTestEmail().catch(console.error)

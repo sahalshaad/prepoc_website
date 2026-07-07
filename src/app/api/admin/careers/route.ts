@@ -10,11 +10,38 @@ export async function GET() {
   try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
 
   try {
-    const dataPath = path.join(process.cwd(), 'src', 'data', 'careersData.json')
-    const dataJson = await readData(dataPath, { VACANCIES: [] })
-    return NextResponse.json({ success: true, data: dataJson.VACANCIES || [] })
+    const baseUrl = process.env.ERP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${baseUrl}/api/recruitment/jobs/`, {
+      headers: {
+        'x-internal-admin-bypass': 'true'
+      },
+      cache: 'no-store'
+    });
+    
+    if (!response.ok) throw new Error(`Failed to fetch from ERP: ${response.statusText}`);
+
+    const json = await response.json();
+    const erpJobs = json.results || [];
+
+    const vacancies = erpJobs.map((job: any) => ({
+      id: job.id,
+      title: job.title,
+      department: job.department_name || '',
+      location: job.location || '',
+      type: job.employment_type === 'FULL_TIME' ? 'Full-time' : 
+            job.employment_type === 'PART_TIME' ? 'Part-time' : 'Contract',
+      description: job.description || '',
+      requirements: job.requirements || '',
+      responsibilities: job.responsibilities || '',
+      benefits: job.benefits || '',
+      isActive: job.status === 'PUBLISHED',
+      createdAt: job.created_at,
+      updatedAt: job.updated_at
+    }));
+
+    return NextResponse.json({ success: true, data: vacancies })
   } catch (err) {
-    console.error('Failed to load careers data:', err)
+    console.error('Failed to load careers data from ERP:', err)
     const msg = err instanceof Error ? err.message : String(err)
     return NextResponse.json({ success: false, error: msg }, { status: 500 })
   }
@@ -23,75 +50,8 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
 
-  try {
-    const body = await req.json()
-    const { vacancy, action, id } = body
-
-    const dataPath = path.join(process.cwd(), 'src', 'data', 'careersData.json')
-    const dataJson = await readData(dataPath, { VACANCIES: [] })
-    let existingVacancies = (dataJson.VACANCIES || []) as JobVacancy[]
-
-    if (action === 'delete' && id) {
-      existingVacancies = existingVacancies.filter(v => v.id !== id)
-      dataJson.VACANCIES = existingVacancies
-      await writeData(dataPath, dataJson)
-      await logAdminAction('DELETE', 'VACANCY', id)
-      return NextResponse.json({ success: true, data: existingVacancies })
-    }
-
-    if (vacancy) {
-      // Validate
-      const parseResult = JobVacancySchema.safeParse(vacancy)
-      if (!parseResult.success) {
-        const safeErrors = parseResult.error.issues.map(err => ({ path: err.path.join('.'), message: err.message }))
-        console.error("JobVacancy Validation Failed:", safeErrors)
-        return NextResponse.json({ success: false, error: 'Validation failed', errors: safeErrors }, { status: 400 })
-      }
-
-      if (vacancy.id) {
-        // Update existing
-        const index = existingVacancies.findIndex(v => v.id === vacancy.id)
-        if (index > -1) {
-          existingVacancies[index] = {
-            ...existingVacancies[index],
-            ...vacancy,
-            updatedAt: new Date().toISOString()
-          }
-          dataJson.VACANCIES = existingVacancies
-          await writeData(dataPath, dataJson)
-          await logAdminAction('UPDATE', 'VACANCY', vacancy.id, { title: vacancy.title })
-        } else {
-          // Insert new with ID
-          existingVacancies.push({
-            ...vacancy,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          })
-          dataJson.VACANCIES = existingVacancies
-          await writeData(dataPath, dataJson)
-          await logAdminAction('CREATE', 'VACANCY', vacancy.id, { title: vacancy.title })
-        }
-      } else {
-        // Create new without id
-        const newId = `job-${Date.now()}`
-        existingVacancies.push({
-          ...vacancy,
-          id: newId,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        })
-        dataJson.VACANCIES = existingVacancies
-        await writeData(dataPath, dataJson)
-        await logAdminAction('CREATE', 'VACANCY', newId, { title: vacancy.title })
-      }
-    } else {
-      return NextResponse.json({ success: false, error: 'No data provided' }, { status: 400 })
-    }
-
-    return NextResponse.json({ success: true, data: existingVacancies })
-  } catch (err) {
-    console.error('Failed to save careers data:', err)
-    const msg = err instanceof Error ? err.message : String(err)
-    return NextResponse.json({ success: false, error: msg }, { status: 500 })
-  }
+  return NextResponse.json({ 
+    success: false, 
+    error: 'Job management is now handled exclusively in the ERP Dashboard. Please edit or delete jobs there.' 
+  }, { status: 400 })
 }

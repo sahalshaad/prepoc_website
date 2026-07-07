@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Briefcase, Clock, ChevronDown, CheckCircle2, Upload, Loader2, X, FileText, Eye } from 'lucide-react'
+import Link from 'next/link'
 import { JobVacancy } from '@/types/admin'
 
 function timeAgo(dateStr: string) {
@@ -22,6 +23,7 @@ export default function CareersPage() {
   const [applyingTo, setApplyingTo] = useState<JobVacancy | null>(null)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const [appReference, setAppReference] = useState<string | null>(null)
 
   // Resume file state
   const [resumeFile, setResumeFile] = useState<File | null>(null)
@@ -142,6 +144,7 @@ export default function CareersPage() {
     if (!applyingTo) return
     setSubmitStatus('submitting')
     setErrorMsg('')
+    setAppReference(null)
 
     const formData = new FormData(e.currentTarget)
     formData.append('jobId', applyingTo.id)
@@ -157,6 +160,9 @@ export default function CareersPage() {
         throw new Error(data.error || 'Failed to submit application')
       }
       setSubmitStatus('success')
+      if (data.data?.reference) {
+        setAppReference(data.data.reference)
+      }
     } catch (err) {
       console.error(err)
       setSubmitStatus('error')
@@ -210,7 +216,11 @@ export default function CareersPage() {
                     onClick={() => setExpandedId(expandedId === vacancy.id ? null : vacancy.id)}
                   >
                     <div>
-                      <h3 className="text-xl md:text-2xl font-heading font-semibold mb-3">{vacancy.title}</h3>
+                      <h3 className="text-xl md:text-2xl font-heading font-semibold mb-3">
+                        <Link href={`/careers/${vacancy.id}`} className="hover:text-primary transition-colors" onClick={e => e.stopPropagation()}>
+                          {vacancy.title}
+                        </Link>
+                      </h3>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted">
                         <span className="flex items-center gap-1.5"><Briefcase className="w-4 h-4" /> {vacancy.department}</span>
                         <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" /> {vacancy.location}</span>
@@ -246,19 +256,19 @@ export default function CareersPage() {
                           <div>
                             <h4 className="text-white font-semibold mb-3 font-heading text-lg">Requirements</h4>
                             <ul className="list-disc pl-5 space-y-2">
-                              {vacancy.requirements.split('\n').filter(Boolean).map((req, i) => <li key={i}>{req}</li>)}
+                              {(Array.isArray(vacancy.requirements) ? vacancy.requirements : (vacancy.requirements || '').split('\n')).filter(Boolean).map((req, i) => <li key={i}>{req}</li>)}
                             </ul>
                           </div>
                           <div>
                             <h4 className="text-white font-semibold mb-3 font-heading text-lg">Responsibilities</h4>
                             <ul className="list-disc pl-5 space-y-2">
-                              {vacancy.responsibilities.split('\n').filter(Boolean).map((res, i) => <li key={i}>{res}</li>)}
+                              {(Array.isArray(vacancy.responsibilities) ? vacancy.responsibilities : (vacancy.responsibilities || '').split('\n')).filter(Boolean).map((res, i) => <li key={i}>{res}</li>)}
                             </ul>
                           </div>
                           <div>
                             <h4 className="text-white font-semibold mb-3 font-heading text-lg">Benefits</h4>
                             <ul className="list-disc pl-5 space-y-2">
-                              {vacancy.benefits.split('\n').filter(Boolean).map((ben, i) => <li key={i}>{ben}</li>)}
+                              {(Array.isArray(vacancy.benefits) ? vacancy.benefits : (vacancy.benefits || '').split('\n')).filter(Boolean).map((ben, i) => <li key={i}>{ben}</li>)}
                             </ul>
                           </div>
                         </div>
@@ -323,6 +333,12 @@ export default function CareersPage() {
                     <p className="text-zinc-400 max-w-sm mx-auto leading-relaxed">
                       Thank you for applying. Our team will review your profile and reach out if you&apos;re a great fit.
                     </p>
+                    {appReference && (
+                      <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-xl inline-block">
+                        <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Application Reference</p>
+                        <p className="font-mono font-medium text-white">{appReference}</p>
+                      </div>
+                    )}
                     <button onClick={() => setApplyingTo(null)} className="btn-primary mt-8 px-8">
                       Done
                     </button>

@@ -72,19 +72,29 @@ export async function GET() {
     }
 
     // 3. Job Vacancies
-    const careersData = await safeReadFile('careersData.json')
-    if (careersData?.VACANCIES) {
-      careersData.VACANCIES.forEach((v: any) => {
-        if (v.isActive) {
-          results.push({
-            id: `vacancy-${v.id}`,
-            title: v.title,
-            subtitle: `Careers • ${v.department || 'Department'} • ${v.type || 'Full-time'}`,
-            category: 'Careers',
-            href: `/admin/careers/${v.id}`
-          })
-        }
-      })
+    try {
+      const baseUrl = process.env.ERP_API_URL || 'http://localhost:8000';
+      const resp = await fetch(`${baseUrl}/api/recruitment/jobs/`, {
+        headers: { 'x-internal-admin-bypass': 'true' },
+        cache: 'no-store'
+      });
+      if (resp.ok) {
+        const json = await resp.json();
+        const erpJobs = json.results || [];
+        erpJobs.forEach((v: any) => {
+          if (v.status === 'PUBLISHED') {
+            results.push({
+              id: `vacancy-${v.id}`,
+              title: v.title,
+              subtitle: `Careers • ${v.department_name || 'Department'} • ${v.employment_type === 'FULL_TIME' ? 'Full-time' : 'Job'}`,
+              category: 'Careers',
+              href: `/admin/careers/${v.id}`
+            })
+          }
+        })
+      }
+    } catch (e) {
+      console.error('Failed to index ERP jobs', e);
     }
 
     // 4. Departments

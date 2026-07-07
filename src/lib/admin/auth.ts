@@ -5,14 +5,27 @@ import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-function getResend() {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) {
-    throw new Error('RESEND_API_KEY is not configured')
+function getTransporter() {
+  const host = process.env.SMTP_HOST
+  const port = parseInt(process.env.SMTP_PORT || '587', 10)
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASSWORD
+
+  if (!host || !user || !pass) {
+    throw new Error('SMTP credentials are not fully configured')
   }
-  return new Resend(apiKey)
+
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: {
+      user,
+      pass,
+    },
+  })
 }
 
 export interface LoginResult {
@@ -189,13 +202,13 @@ export async function requestPasswordResetAction(rawEmail: string): Promise<Logi
   console.log("[FORGOT_PASSWORD] STEP 1 - Request received for:", email)
 
   // Verify Environment Variables
-  const resendKeyConfigured = !!process.env.RESEND_API_KEY
-  const fromEmail = process.env.RESEND_FROM_EMAIL
+  const smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER)
+  const fromEmail = process.env.SMTP_FROM_EMAIL
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-  console.log("[FORGOT_PASSWORD] Env validation:", { resendKeyConfigured, fromEmail, siteUrl })
+  console.log("[FORGOT_PASSWORD] Env validation:", { smtpConfigured, fromEmail, siteUrl })
   
-  if (!resendKeyConfigured) {
-    console.error("[FORGOT_PASSWORD] FATAL: RESEND_API_KEY is not configured!")
+  if (!smtpConfigured) {
+    console.error("[FORGOT_PASSWORD] FATAL: SMTP is not configured!")
   }
 
   const headersList = await headers()
@@ -265,14 +278,15 @@ export async function requestPasswordResetAction(rawEmail: string): Promise<Logi
   const resetLink = `${siteUrlFinal}/admin/login/reset?token=${token}`
   console.log("[FORGOT_PASSWORD] Reset URL generated:", resetLink)
 
-  const finalFromEmail = process.env.RESEND_FROM_EMAIL || (process.env.NODE_ENV === 'production' ? 'noreply@prepoc.in' : 'onboarding@resend.dev')
+  const finalFromEmail = process.env.SMTP_FROM_EMAIL || (process.env.NODE_ENV === 'production' ? 'noreply@prepoc.in' : 'onboarding@resend.dev')
 
   console.log("[FORGOT_PASSWORD] STEP 5 - Sending email from:", finalFromEmail)
-  const resend = getResend()
-  const { data, error } = await resend.emails.send({
-    from: finalFromEmail,
-    to: admin.email,
-    subject: 'Password Reset Request - PREPOC',
+  const transporter = getTransporter()
+  try {
+    const info = await transporter.sendMail({
+      from: `"PREPOC Admin" <${finalFromEmail}>`,
+      to: admin.email,
+      subject: 'Password Reset Request - PREPOC',
     html: `
       <p>You requested a password reset for your PREPOC admin account.</p>
       <p>Click the link below to securely reset your password. This link expires in 1 hour.</p>
@@ -281,13 +295,11 @@ export async function requestPasswordResetAction(rawEmail: string): Promise<Logi
     `
   })
 
-  console.log("[FORGOT_PASSWORD] STEP 6 - Email response received")
-
-  if (error) {
-    console.error('[RESEND_ERROR]', error)
+    console.log("[FORGOT_PASSWORD] STEP 6 - Email response received")
+    console.log('[SMTP_SUCCESS]', info.messageId)
+  } catch (error) {
+    console.error('[SMTP_ERROR]', error)
     // We log the error but still return success to the client to avoid email enumeration
-  } else {
-    console.log('[RESEND_SUCCESS]', data)
   }
 
   return { success: true, error: successMessage }

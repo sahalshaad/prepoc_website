@@ -1,3 +1,36 @@
 {
-  "VACANCIES": []
+  "VACANCIES": [
+    {
+      "title": "meta ads ",
+      "department": "Digital Marketing",
+      "location": "calicut",
+      "type": "Full-time",
+      "description": "hiringjshdbvjhbjhdbfjhvdfv",
+      "requirements": [
+        "hhf",
+        "nnnf",
+        "jj",
+        "njdjd",
+        "ndkd"
+      ],
+      "responsibilities": [
+        "hdhhhd",
+        "dhdjhjdd",
+        "dhdhjjdjdbbd",
+        "dbdhhjhd",
+        "jhjdhjbshdbcjhbsdc",
+        "jghsvdcjhbsdc"
+      ],
+      "benefits": [
+        "jhsbdvjhbhjsbdv",
+        "sbnd c sjd cj j sdc",
+        "sbnd c jhs dc",
+        "jas c h cjwe hjbhqwbhjbdbwefjhavbdfkjhbqerg"
+      ],
+      "isActive": true,
+      "id": "job-1783331168703",
+      "createdAt": "2026-07-06T09:46:08.703Z",
+      "updatedAt": "2026-07-06T10:09:28.731Z"
+    }
+  ]
 }

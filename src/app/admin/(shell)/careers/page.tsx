@@ -83,9 +83,17 @@ export default function CareersPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ vacancy: { ...target, isActive: newStatus } }),
       })
-      if (!res.ok) throw new Error('Failed to update status')
+      const data = await res.json()
+      if (!res.ok || !data.success) {
+        let errMsg = data.error || 'Failed to update status'
+        if (data.errors) {
+          errMsg += ': ' + JSON.stringify(data.errors)
+        }
+        throw new Error(errMsg)
+      }
     } catch (err) {
       console.error(err)
+      alert(err instanceof Error ? err.message : String(err))
       setVacancies((prev) => prev.map((v) => (v.id === id ? { ...v, isActive: target.isActive } : v)))
     }
   }
