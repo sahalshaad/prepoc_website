@@ -32,6 +32,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'PREPOC Technologies' }],
   creator: 'PREPOC Technologies',
   publisher: 'PREPOC Technologies',
+  icons: {
+    icon: '/favicon.svg',
+  },
   robots: {
     index: true,
     follow: true,
