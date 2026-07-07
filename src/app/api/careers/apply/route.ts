@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
 
     const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown'
     const identifier = `${ip}:${email || ''}`
-    // Rate limit by IP + Email
-    const isAllowed = checkRateLimit(identifier, 'careers_apply', 5, 60 * 60 * 1000)
+    // Rate limit by IP + Email (Temporarily increased to 50 for testing)
+    const isAllowed = checkRateLimit(identifier, 'careers_apply', 50, 60 * 60 * 1000)
     
     if (!isAllowed) {
       console.error('[Apply Error] Rate limit exceeded for:', identifier)
