@@ -157,7 +157,10 @@ export default function CareersPage() {
       })
       const data = await res.json()
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to submit application')
+        const errorDetail = typeof data.error === 'string' 
+          ? data.error 
+          : (data.error?.detail || data.error?.message || JSON.stringify(data.error) || 'Failed to submit application')
+        throw new Error(errorDetail)
       }
       setSubmitStatus('success')
       if (data.data?.reference) {

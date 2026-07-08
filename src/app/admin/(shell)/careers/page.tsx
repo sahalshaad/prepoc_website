@@ -17,9 +17,6 @@ function timeAgo(dateStr: string) {
 export default function CareersPage() {
   const [vacancies, setVacancies] = useState<JobVacancy[]>([])
   const [search, setSearch] = useState('')
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
-  const [deleteSuccess, setDeleteSuccess] = useState<string | null>(null)
-
   useEffect(() => {
     async function loadVacancies() {
       try {
@@ -47,76 +44,17 @@ export default function CareersPage() {
     )
   })
 
-  const handleDelete = async (id: string) => {
-    if (deleteConfirm === id) {
-      const updated = vacancies.filter((v) => v.id !== id)
-      try {
-        const res = await fetch('/api/admin/careers', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'delete', id }),
-        })
-        const data = await res.json()
-        if (!res.ok || !data.success) throw new Error(data.error)
-        setVacancies(updated)
-        setDeleteConfirm(null)
-        setDeleteSuccess('Vacancy deleted.')
-        setTimeout(() => setDeleteSuccess(null), 3000)
-      } catch (err) {
-        console.error(err)
-        alert('Failed to delete: ' + (err instanceof Error ? err.message : String(err)))
-      }
-    } else {
-      setDeleteConfirm(id)
-      setTimeout(() => setDeleteConfirm(null), 3000)
-    }
-  }
-
-  const toggleStatus = async (id: string) => {
-    const target = vacancies.find((v) => v.id === id)
-    if (!target) return
-    const newStatus = !target.isActive
-    setVacancies((prev) => prev.map((v) => (v.id === id ? { ...v, isActive: newStatus } : v)))
-    try {
-      const res = await fetch('/api/admin/careers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vacancy: { ...target, isActive: newStatus } }),
-      })
-      const data = await res.json()
-      if (!res.ok || !data.success) {
-        let errMsg = data.error || 'Failed to update status'
-        if (data.errors) {
-          errMsg += ': ' + JSON.stringify(data.errors)
-        }
-        throw new Error(errMsg)
-      }
-    } catch (err) {
-      console.error(err)
-      alert(err instanceof Error ? err.message : String(err))
-      setVacancies((prev) => prev.map((v) => (v.id === id ? { ...v, isActive: target.isActive } : v)))
-    }
-  }
-
   return (
     <div className="p-6 max-w-[1100px]">
       <PageHeader
         title="Careers"
         description={`${vacancies.length} total vacancies (${vacancies.filter(v => v.isActive).length} active)`}
         action={
-          <Link href="/admin/careers/new"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-150 hover:opacity-90"
-            style={{ background: '#D4AF37', color: '#050505', fontFamily: 'var(--font-sora)' }}>
-            <Plus size={14} /> Add Vacancy
-          </Link>
+          <div className="text-xs px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', color: '#71717a' }}>
+            Managed in ERP
+          </div>
         }
       />
-
-      {deleteSuccess && (
-        <div className="mb-5 flex items-center gap-2 px-4 py-3 rounded-lg text-sm" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#4ade80' }}>
-          ✓ {deleteSuccess}
-        </div>
-      )}
 
       <div className="flex gap-3 mb-5 justify-end">
         <div className="relative w-full sm:w-64">
@@ -147,15 +85,6 @@ export default function CareersPage() {
                     {v.isActive ? 'Active' : 'Hidden'}
                   </span>
                 </div>
-                
-                <button
-                  onClick={() => toggleStatus(v.id)}
-                  title={v.isActive ? 'Hide Vacancy' : 'Publish Vacancy'}
-                  className="p-1 rounded hover:bg-zinc-800 transition-colors"
-                  style={{ color: v.isActive ? '#4ade80' : '#71717a' }}
-                >
-                  {v.isActive ? <Eye size={14} /> : <EyeOff size={14} />}
-                </button>
               </div>
 
               <h3 className="text-sm font-medium mb-1" style={{ color: '#F8F8F8' }}>{v.title}</h3>
@@ -163,22 +92,8 @@ export default function CareersPage() {
               <p className="text-xs mb-2" style={{ color: '#71717a' }}>{v.location}</p>
               <p className="text-[10px] mb-4" style={{ color: '#52525b' }}>Posted {timeAgo(v.createdAt)}</p>
             </div>
-
-            <div className="flex items-center justify-between gap-2 mt-4 pt-3" style={{ borderTop: '1px solid #18181b' }}>
-              <Link href={`/admin/careers/${v.id}`} className="text-xs transition-colors duration-150 hover:underline" style={{ color: '#D4AF37' }}>
-                Edit Vacancy →
-              </Link>
-              
-              <button
-                onClick={() => handleDelete(v.id)}
-                className="w-7 h-7 flex items-center justify-center rounded-lg transition-all duration-150"
-                style={{ color: deleteConfirm === v.id ? '#f87171' : '#52525b', background: deleteConfirm === v.id ? 'rgba(239,68,68,0.1)' : 'transparent' }}
-                onMouseEnter={(e) => { if (deleteConfirm !== v.id) { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; e.currentTarget.style.color = '#f87171' } }}
-                onMouseLeave={(e) => { if (deleteConfirm !== v.id) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#52525b' } }}
-                title={deleteConfirm === v.id ? 'Click again to confirm' : 'Delete'}
-              >
-                <Trash2 size={13} />
-              </button>
+            <div className="mt-4 pt-3 text-xs" style={{ borderTop: '1px solid #18181b', color: '#71717a' }}>
+              Managed via ERP Dashboard
             </div>
           </div>
         ))}

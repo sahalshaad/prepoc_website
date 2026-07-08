@@ -10,7 +10,7 @@ export async function GET() {
   try { await requireAdmin(); } catch (e) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
 
   try {
-    const baseUrl = process.env.ERP_API_URL || 'http://localhost:8000';
+    const baseUrl = process.env.ERP_API_URL || 'https://erp.prepoc.in';
     const response = await fetch(`${baseUrl}/api/recruitment/jobs/`, {
       headers: {
         'x-internal-admin-bypass': 'true'

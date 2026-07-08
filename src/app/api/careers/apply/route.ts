@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
     erpFormData.append('email', email);
     if (phone) erpFormData.append('phone', phone);
     if (coverLetter) erpFormData.append('cover_letter', coverLetter);
-    erpFormData.append('resume', resumeFile);
+    erpFormData.append('resume', resumeFile, resumeFile.name || 'resume.pdf');
 
     const baseUrl = process.env.ERP_API_URL || 'https://erp.prepoc.in';
     const applyUrl = `${baseUrl}/api/v1/public/recruitment/jobs/${jobId}/apply/`;
@@ -92,13 +92,62 @@ export async function POST(req: NextRequest) {
       console.error(`ERP Backend rejected application: ${response.status} ${errorText}`);
       try {
         const errorJson = JSON.parse(errorText);
-        return NextResponse.json({ success: false, error: errorJson.error || 'Failed to submit application to ERP system.' }, { status: response.status });
+        // DRF usually returns {"detail": "..."} or {"field": ["error"]}
+        let errorMessage = errorJson.error || errorJson.detail;
+        if (typeof errorMessage === 'object' && errorMessage !== null) {
+          errorMessage = errorMessage.detail || errorMessage.message || JSON.stringify(errorMessage);
+        }
+        if (!errorMessage) {
+          errorMessage = typeof errorJson === 'object' ? JSON.stringify(errorJson) : 'Failed to submit application to ERP system.';
+        }
+        return NextResponse.json({ success: false, error: errorMessage }, { status: response.status });
       } catch (e) {
         return NextResponse.json({ success: false, error: 'Failed to submit application to ERP system.' }, { status: 500 });
       }
     }
 
     const result = await response.json();
+
+    // --- Save locally for Next.js CMS Admin ---
+    try {
+      const buffer = Buffer.from(await resumeFile.arrayBuffer());
+      const safeName = name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'applicant';
+      const localFilename = `${Date.now()}-${safeName}.${ext}`;
+      const resumesDir = path.join(process.cwd(), 'storage', 'resumes');
+      await fs.mkdir(resumesDir, { recursive: true });
+      await fs.writeFile(path.join(resumesDir, localFilename), buffer);
+      
+      const localResumeUrl = `/api/admin/resumes/${localFilename}`;
+      const dataPath = path.join(process.cwd(), 'src', 'data', 'jobApplicationsData.json');
+      const dataJson = await readData(dataPath, { APPLICATIONS: [] });
+      const applications = dataJson.APPLICATIONS || [];
+      
+      const appId = `app_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+      const newApplication: JobApplication = {
+        id: appId,
+        jobId,
+        jobTitle,
+        name,
+        email,
+        phone,
+        location,
+        linkedinUrl,
+        portfolioUrl,
+        coverLetter,
+        resumeUrl: localResumeUrl,
+        status: 'new',
+        submittedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
+      applications.push(newApplication);
+      dataJson.APPLICATIONS = applications;
+      await writeData(dataPath, dataJson);
+    } catch (localErr) {
+      console.error('Failed to save application locally to CMS:', localErr);
+      // We do not fail the request if ERP succeeded but local save failed,
+      // as the primary system of record is the ERP.
+    }
 
     // Success response
     return NextResponse.json({ 
